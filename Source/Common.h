@@ -17,5 +17,6 @@ template<typename T>
 using Ptr = std::shared_ptr<T>;
 
 using String = std::string;
+using Char = String::value_type;
 
 AGZ_NAMESPACE_END(AGZ)

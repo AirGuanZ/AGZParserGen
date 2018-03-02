@@ -1,32 +1,30 @@
 /*================================================================
-Filename: Rule.h
+Filename: Exception.h
 Date: 2018.3.2
 Created by AirGuanZ
 ================================================================*/
 #pragma once
 
-#include <vector>
-
 #include "Common.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
-struct Rule
+class Exception
 {
-    struct Symbol
+public:
+    Exception(const String &msg)
+        : msg_(msg)
     {
-        enum Type
-        {
-            Token,
-            NonTerminate
-        };
 
-        Type type;
-        String name;
-    };
+    }
 
-    String left;
-    std::vector<Symbol> syms;
+    const String &What(void) const
+    {
+        return msg_;
+    }
+
+private:
+    String msg_;
 };
 
 AGZ_NAMESPACE_END(AGZ)

@@ -5,8 +5,14 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source\AST">
+    <Filter Include="Source\Internal">
+      <UniqueIdentifier>{63c8ad91-0aeb-4dc7-88a1-005e0a132fb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Internal\AST">
       <UniqueIdentifier>{4d9961a5-d1d2-440a-87c4-0ee8cf1f9ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Internal\Tokenizer">
+      <UniqueIdentifier>{2e2a9061-0d1e-4b63-b2b1-09c8bbb08a51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -14,7 +20,10 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\ASTNode.cpp">
-      <Filter>Source\AST</Filter>
+      <Filter>Source\Internal\AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\InternalTokenizer.cpp">
+      <Filter>Source\Internal\Tokenizer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -22,11 +31,17 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\ASTNode.h">
-      <Filter>Source\AST</Filter>
+      <Filter>Source\Internal\AST</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Rule.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Grammar.txt" />
+    <ClInclude Include="..\Source\InternalTokenizer.h">
+      <Filter>Source\Internal\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Exception.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

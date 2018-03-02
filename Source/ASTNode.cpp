@@ -5,8 +5,8 @@ Created by AirGuanZ
 ================================================================*/
 #include <cassert>
 
-#include <ASTNode.h>
-#include <Rule.h>
+#include "ASTNode.h"
+#include "Rule.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 

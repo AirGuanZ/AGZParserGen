@@ -8,8 +8,8 @@ Created by AirGuanZ
 #include <map>
 #include <memory>
 
-#include <Common.h>
-#include <Rule.h>
+#include "Common.h"
+#include "Rule.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
