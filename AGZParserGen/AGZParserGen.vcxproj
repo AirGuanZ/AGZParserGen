@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\ASTNode.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\ASTNode.h" />
     <ClInclude Include="..\Source\Common.h" />
-    <ClInclude Include="..\Source\Grammar.h" />
+    <ClInclude Include="..\Source\Grammar.txt" />
+    <ClInclude Include="..\Source\Rule.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

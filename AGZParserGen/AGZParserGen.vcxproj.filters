@@ -13,16 +13,20 @@
     <ClCompile Include="..\Source\Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\ASTNode.cpp">
+      <Filter>Source\AST</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Common.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Grammar.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\ASTNode.h">
       <Filter>Source\AST</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Rule.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Grammar.txt" />
   </ItemGroup>
 </Project>
