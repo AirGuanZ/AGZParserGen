@@ -12,14 +12,14 @@
 
    ```
    # 注释以'#'开头
-   import Utility/Utility.agz # 支持模块导入
+   import [Utility/Utility.agz] # 支持模块导入
 
    # 支持命名空间
    namespace MyNamespace
    {
-   	   # 定义非终结符
-       A := Utility.Comma + A; # 使用'.'访问命名空间成员
-       A := Utility.Comma;
+   	# 定义非终结符
+   	A := Utility.Comma + A; # 使用'.'访问命名空间成员
+   	A := Utility.Comma;
    }
 
    # 定义开始符号
