@@ -93,11 +93,13 @@ void ASTNode_Rule::PrettyPrint(std::ostream &out,
                                bool leftBracNewline,
                                bool inlineImported) const
 {
-    out << prefix << id_ << " :=";
-    for(auto sym : syms_)
+    out << prefix << id_ << " := ";
+    assert(syms_.size());
+    syms_[0]->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
+    for(size_t i = 1; i < syms_.size(); ++i)
     {
         out << " + ";
-        sym->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
+        syms_[i]->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
     }
     out << ";";
 }
