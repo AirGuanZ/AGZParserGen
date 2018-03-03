@@ -17,7 +17,7 @@
    # 支持命名空间
    namespace MyNamespace
    {
-   	# 定义非终结符
+   	   # 定义非终结符
        A := Utility.Comma + A; # 使用'.'访问命名空间成员
        A := Utility.Comma;
    }
