@@ -24,9 +24,9 @@ Ptr<ASTNode_Script> InternalParser::Parse(InternalTokenizer &toks)
     return rt;
 }
 
-Ptr<ASTNode_Script> InternalParser::ParseFromFile(const String &path, int line, const String &filename)
+Ptr<ASTNode_Script> InternalParser::ParseFromFile(const std::string &path, int line, const std::string &filename)
 {
-    String src;
+    std::string src;
     if(!ReadFile(path, src))
     {
         throw InternalParserException(
@@ -79,7 +79,7 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
             throw InternalParserException(
                 "namespace name expected", toks.GetLine(), toks.GetFilename());
         }
-        String name = toks.Current().str;
+        std::string name = toks.Current().str;
         toks.Next();
 
         if(!toks.Match(InternalToken::Type::LeftBrace))
@@ -110,7 +110,7 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
                 "filepath excepted", toks.GetLine(), toks.GetFilename());
         }
 
-        String path = toks.Current().str;
+        std::string path = toks.Current().str;
         toks.Next();
         {
             //计算正确的文件相对路径
@@ -129,7 +129,7 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
     //identifier := symbol (plus symbol)*;
     if(toks.Current().type == InternalToken::Type::Identifier)
     {
-        String id = toks.Current().str;
+        std::string id = toks.Current().str;
         toks.Next();
 
         if(!toks.Match(InternalToken::Type::DefinedAs))
@@ -183,7 +183,7 @@ Ptr<ASTNode_Symbol> InternalParser::ParseSymbol(InternalTokenizer &toks)
                 "token name excepted", toks.GetLine(), toks.GetFilename());
         }
 
-        String id = toks.Current().str;
+        std::string id = toks.Current().str;
         toks.Next();
         Ptr<ASTNode_Symbol> rt = MakePtr<ASTNode_Symbol>(std::move(id));
 
@@ -200,7 +200,7 @@ Ptr<ASTNode_Symbol> InternalParser::ParseSymbol(InternalTokenizer &toks)
     //identifier(.identifier)*
     if(toks.Current().type == InternalToken::Type::Identifier)
     {
-        std::vector<String> ids;
+        std::vector<std::string> ids;
         do
         {
             if(toks.Current().type != InternalToken::Type::Identifier)

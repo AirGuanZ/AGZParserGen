@@ -12,19 +12,19 @@ AGZ_NAMESPACE_BEGIN(AGZ)
 class Exception
 {
 public:
-    Exception(const String &msg)
+    Exception(const std::string &msg)
         : msg_(msg)
     {
 
     }
 
-    const String &What(void) const
+    const std::string &What(void) const
     {
         return msg_;
     }
 
 private:
-    String msg_;
+    std::string msg_;
 };
 
 AGZ_NAMESPACE_END(AGZ)

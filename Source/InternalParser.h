@@ -15,21 +15,21 @@ AGZ_NAMESPACE_BEGIN(AGZ)
 class InternalParserException : public Exception
 {
 public:
-    InternalParserException(const std::string &msg, int line, const String &filename)
+    InternalParserException(const std::string &msg, int line, const std::string &filename)
         : Exception(msg), line_(line), filename_(filename)
     {
 
     }
 
     int line_;
-    String filename_;
+    std::string filename_;
 };
 
 class InternalParser
 {
 public:
     Ptr<ASTNode_Script> Parse(InternalTokenizer &toks);
-    Ptr<ASTNode_Script> ParseFromFile(const String &path, int line, const String &filename);
+    Ptr<ASTNode_Script> ParseFromFile(const std::string &path, int line, const std::string &filename);
 
 private:
     Ptr<ASTNode_Script> ParseScript(InternalTokenizer &toks);

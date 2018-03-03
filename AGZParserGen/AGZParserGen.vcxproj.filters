@@ -42,7 +42,6 @@
     <ClInclude Include="..\Source\Rule.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Grammar.txt" />
     <ClInclude Include="..\Source\InternalTokenizer.h">
       <Filter>Source\Internal\Tokenizer</Filter>
     </ClInclude>
@@ -55,5 +54,8 @@
     <ClInclude Include="..\Source\InternalASTNode.h">
       <Filter>Source\Internal\AST</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Grammar.txt" />
   </ItemGroup>
 </Project>

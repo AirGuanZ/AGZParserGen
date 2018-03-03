@@ -22,9 +22,6 @@ inline Ptr<T> MakePtr(Args&&...args)
     return std::make_shared<T>(std::forward<Args>(args)...);
 }
 
-using String = std::string;
-using Char = String::value_type;
-
-bool ReadFile(const String &path, String &output);
+bool ReadFile(const std::string &path, std::string &output);
 
 AGZ_NAMESPACE_END(AGZ)

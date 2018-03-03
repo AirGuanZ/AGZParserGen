@@ -5,8 +5,10 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <cassert>
 #include <map>
 #include <memory>
+#include <ostream>
 
 #include "Common.h"
 #include "Rule.h"
@@ -21,12 +23,15 @@ class ASTNode_StartDefinition;
 class ASTNode_Import;
 class ASTNode_Rule;
 class ASTNode_Symbol;
-class ASTNode_Token;
 
 class ASTNode
 {
 public:
-
+    virtual void PrettyPrint(std::ostream &out,
+                             const std::string &prefix,
+                             const std::string &tab,
+                             bool leftBracNewline) const
+    {  }
 };
 
 class ASTNode_Script : public ASTNode
@@ -36,7 +41,13 @@ public:
         : stmts_(stmts)
     {
 
-    }
+    }
+
+    void PrettyPrint(std::ostream &out,
+                     const std::string &prefix,
+                     const std::string &tab,
+                     bool leftBracNewline) const;
+
     std::vector<Ptr<ASTNode_Statement>> stmts_;
 };
 
@@ -67,6 +78,11 @@ public:
 
     }
 
+    void PrettyPrint(std::ostream &out,
+                     const std::string &prefix,
+                     const std::string &tab,
+                     bool leftBracNewline) const;
+
     Ptr<ASTNode_StartDefinition> startDef_;
     Ptr<ASTNode_Namespace>       namespace_;
     Ptr<ASTNode_Import>          import_;
@@ -76,13 +92,18 @@ public:
 class ASTNode_Namespace : public ASTNode
 {
 public:
-    ASTNode_Namespace(String &&name, Ptr<ASTNode_Script> &&content)
+    ASTNode_Namespace(std::string &&name, Ptr<ASTNode_Script> &&content)
         : name_(name), content_(content)
     {
 
     }
 
-    String name_;
+    void PrettyPrint(std::ostream &out,
+                     const std::string &prefix,
+                     const std::string &tab,
+                     bool leftBracNewline) const;
+
+    std::string name_;
     Ptr<ASTNode_Script> content_;
 };
 
@@ -95,52 +116,72 @@ public:
 
     }
 
+    void PrettyPrint(std::ostream &out,
+                     const std::string &prefix,
+                     const std::string &tab,
+                     bool leftBracNewline) const;
+
     Ptr<ASTNode_Symbol> sym_;
 };
 
 class ASTNode_Import : public ASTNode
 {
 public:
-    ASTNode_Import(String &&path, Ptr<ASTNode_Script> &&imported)
+    ASTNode_Import(std::string &&path, Ptr<ASTNode_Script> &&imported)
         : path_(path), imported_(imported)
     {
 
     }
 
-    String path_;
+    void PrettyPrint(std::ostream &out,
+                     const std::string &prefix,
+                     const std::string &tab,
+                     bool leftBracNewline) const;
+
+    std::string path_;
     Ptr<ASTNode_Script> imported_;
 };
 
 class ASTNode_Rule : public ASTNode
 {
 public:
-    ASTNode_Rule(String &&id, std::vector<Ptr<ASTNode_Symbol>> &&syms)
+    ASTNode_Rule(std::string &&id, std::vector<Ptr<ASTNode_Symbol>> &&syms)
         : id_(id), syms_(syms)
     {
 
     }
 
-    String id_;
+    void PrettyPrint(std::ostream &out,
+                     const std::string &prefix,
+                     const std::string &tab,
+                     bool leftBracNewline) const;
+
+    std::string id_;
     std::vector<Ptr<ASTNode_Symbol>> syms_;
 };
 
 class ASTNode_Symbol : public ASTNode
 {
 public:
-    ASTNode_Symbol(String &&token)
+    ASTNode_Symbol(std::string &&token)
         : token_(token)
     {
-
+        assert(token_.size());
     }
 
-    ASTNode_Symbol(std::vector<String> &&ids)
+    ASTNode_Symbol(std::vector<std::string> &&ids)
         : ids_(ids)
     {
-
+        assert(ids_.size());
     }
 
-    String token_;
-    std::vector<String> ids_;
+    void PrettyPrint(std::ostream &out,
+                     const std::string &prefix,
+                     const std::string &tab,
+                     bool leftBracNewline) const;
+
+    std::string token_;
+    std::vector<std::string> ids_;
 };
 
 AGZ_NAMESPACE_END(AGZ)

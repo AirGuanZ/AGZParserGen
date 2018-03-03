@@ -22,10 +22,10 @@ struct Rule
         };
 
         Type type;
-        String name;
+        std::string name;
     };
 
-    String left;
+    std::string left;
     std::vector<Symbol> syms;
 };
 

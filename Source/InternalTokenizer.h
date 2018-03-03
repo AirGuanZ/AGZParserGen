@@ -35,13 +35,13 @@ struct InternalToken
         End,
     };
     Type type;
-    String str;
+    std::string str;
 };
 
 class InternalTokenException : public Exception
 {
 public:
-    InternalTokenException(const String &msg, int line, int srcPos, const std::string &filename)
+    InternalTokenException(const std::string &msg, int line, int srcPos, const std::string &filename)
         : Exception(msg), line_(line), srcPos_(srcPos), filename_(filename)
     {
 
@@ -54,7 +54,7 @@ public:
 class InternalTokenizer
 {
 public:
-    InternalTokenizer(const String &src, const String &filename);
+    InternalTokenizer(const std::string &src, const std::string &filename);
 
     const InternalToken &Current(void) const;
     
@@ -64,23 +64,23 @@ public:
 
     int GetLine(void) const { return line_; }
     
-    const String &GetFilename(void) const { return filename_; }
+    const std::string &GetFilename(void) const { return filename_; }
 
 private:
     //ÌÞ³ýÇ°×ºµÄ¿Õ°××Ö·ûºÍ×¢ÊÍ
     void DelFirstSpaces(void);
 
-    bool NextIdentifier(String &output);
+    bool NextIdentifier(std::string &output);
 
     InternalToken FirstToken(void);
 
 private:
     InternalToken cur_;
 
-    const Char *pos_;
-    String src_;
+    const char *pos_;
+    std::string src_;
 
-    String filename_;
+    std::string filename_;
     int line_;
 };
 

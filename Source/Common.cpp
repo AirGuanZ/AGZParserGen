@@ -10,7 +10,7 @@ Created by AirGuanZ
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
-bool ReadFile(const String &filename, String &output)
+bool ReadFile(const std::string &filename, std::string &output)
 {
     output = "";
     std::ifstream fin(filename, std::ifstream::in);

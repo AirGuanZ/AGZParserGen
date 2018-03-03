@@ -10,7 +10,7 @@ Created by AirGuanZ
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
-InternalTokenizer::InternalTokenizer(const String &src, const String &filename)
+InternalTokenizer::InternalTokenizer(const std::string &src, const std::string &filename)
     : src_(src), filename_(filename), line_(1)
 {
     pos_ = &src_[0];
@@ -70,7 +70,7 @@ void InternalTokenizer::DelFirstSpaces(void)
     }
 }
 
-bool InternalTokenizer::NextIdentifier(String &output)
+bool InternalTokenizer::NextIdentifier(std::string &output)
 {
     output = "";
 
@@ -110,7 +110,7 @@ InternalToken InternalTokenizer::FirstToken(void)
             return { InternalToken::Type::DefinedAs, ":=" };
         }
         throw InternalTokenException(
-            String("Unknown token :") + String({ *pos_ }),
+            std::string("Unknown token :") + std::string({ *pos_ }),
             line_, pos_ - &src_[0], filename_);
     }
 
@@ -141,7 +141,7 @@ InternalToken InternalTokenizer::FirstToken(void)
     if(*pos_ == '[')
     {
         ++pos_;
-        String path;
+        std::string path;
         while(true)
         {
             if(*pos_ == '\0')
@@ -163,7 +163,7 @@ InternalToken InternalTokenizer::FirstToken(void)
     if(*pos_ == '\0')
         return { InternalToken::Type::End, "" };
 
-    String nextIden;
+    std::string nextIden;
     if(NextIdentifier(nextIden))
     {
         if(nextIden == "namespace")
@@ -178,7 +178,7 @@ InternalToken InternalTokenizer::FirstToken(void)
     }
 
     throw InternalTokenException(
-        String("Unknown token ") + String({ *pos_ }),
+        std::string("Unknown token ") + std::string({ *pos_ }),
         line_, pos_ - &src_[0], filename_);
     return { InternalToken::Type::End, "" };
 }

@@ -29,10 +29,12 @@
     <ClInclude Include="..\Source\InternalASTNode.h" />
     <ClInclude Include="..\Source\Common.h" />
     <ClInclude Include="..\Source\Exception.h" />
-    <ClInclude Include="..\Source\Grammar.txt" />
     <ClInclude Include="..\Source\InternalParser.h" />
     <ClInclude Include="..\Source\InternalTokenizer.h" />
     <ClInclude Include="..\Source\Rule.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Grammar.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
