@@ -22,6 +22,7 @@ struct Token
 
         DefinedAs,
 
+        Semicolon,
         DoubleQuotation,
 
         Kw_Namespace,
@@ -38,11 +39,14 @@ struct Token
 class InternalTokenException : public Exception
 {
 public:
-    InternalTokenException(const String &msg)
-        : Exception(msg)
+    InternalTokenException(const String &msg, int line, const std::string &filename)
+        : Exception(msg), line_(line), filename_(filename)
     {
 
     }
+
+    int line_;
+    std::string filename_;
 };
 
 class InternalTokenizer

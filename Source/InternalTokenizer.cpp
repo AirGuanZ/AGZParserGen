@@ -113,15 +113,20 @@ Token InternalTokenizer::FirstToken(const Char *&p)
             return { Token::Type::DefinedAs, ":=" };
         }
         throw InternalTokenException(
-            String("Unknown token: :") + String(p) +
-            "\n in line " + std::to_string(line_) +
-            " in " + filename_);
+            String("Unknown token :") + String({ *p }),
+            line_, filename_);
     }
 
     if(*p == '"')
     {
         ++p;
         return { Token::Type::DoubleQuotation, "\"" };
+    }
+
+    if(*p == ';')
+    {
+        ++p;
+        return { Token::Type::Semicolon, ";" };
     }
 
     if(*p == '[')
@@ -133,9 +138,7 @@ Token InternalTokenizer::FirstToken(const Char *&p)
             if(*p == '\0')
             {
                 throw InternalTokenException(
-                    "Unclosed '['"
-                    "\n in line " + std::to_string(line_) +
-                    "in file " + filename_);
+                    "Unclosed '['", line_, filename_);
             }
 
             if(*p == ']')
@@ -166,9 +169,8 @@ Token InternalTokenizer::FirstToken(const Char *&p)
     }
 
     throw InternalTokenException(
-        String("Unknown token:") + String(p) +
-        "\n in line " + std::to_string(line_) +
-        " in " + filename_);
+        String("Unknown token ") + String({ *p }),
+        line_, filename_);
     return { Token::Type::End, "" };
 }
 
