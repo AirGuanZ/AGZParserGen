@@ -10,24 +10,6 @@ Created by AirGuanZ
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
-namespace
-{
-    bool NextIdentifier(const Char *&p, String &output)
-    {
-        output = "";
-
-        if(std::isalpha(*p) || *p == '_')
-        {
-            output = *p++;
-            while(std::isalnum(*p) || *p == '_')
-                output += *p++;
-            return true;
-        }
-
-        return false;
-    }
-}
-
 InternalTokenizer::InternalTokenizer(const String &src, const String &filename)
     : src_(src), filename_(filename), line_(1)
 {
@@ -35,17 +17,17 @@ InternalTokenizer::InternalTokenizer(const String &src, const String &filename)
     Next();
 }
 
-const Token &InternalTokenizer::Current(void) const
+const InternalToken &InternalTokenizer::Current(void) const
 {
     return cur_;
 }
 
 void InternalTokenizer::Next(void)
 {
-    cur_ = FirstToken(pos_);
+    cur_ = FirstToken();
 }
 
-bool InternalTokenizer::Match(Token::Type type)
+bool InternalTokenizer::Match(InternalToken::Type type)
 {
     if(cur_.type == type)
     {
@@ -55,32 +37,32 @@ bool InternalTokenizer::Match(Token::Type type)
     return false;
 }
 
-void InternalTokenizer::DelFirstSpaces(const Char *&p)
+void InternalTokenizer::DelFirstSpaces(void)
 {
-    assert(p != nullptr);
+    assert(pos_ != nullptr);
 
     while(true)
     {
         //»»ÐÐ
-        if(*p == '\n')
+        if(*pos_ == '\n')
         {
-            ++p;
+            ++pos_;
             ++line_;
             continue;
         }
 
         //¿Õ°××Ö·û
-        if(std::isspace(*p))
+        if(std::isspace(*pos_))
         {
-            ++p;
+            ++pos_;
             continue;
         }
 
         //×¢ÊÍ
-        if(*p == '#')
+        if(*pos_ == '#')
         {
-            while(*p != '\n' && *p != '\0')
-                ++p;
+            while(*pos_ != '\n' && *pos_ != '\0')
+                ++pos_;
             continue;
         }
 
@@ -88,90 +70,117 @@ void InternalTokenizer::DelFirstSpaces(const Char *&p)
     }
 }
 
-Token InternalTokenizer::FirstToken(const Char *&p)
+bool InternalTokenizer::NextIdentifier(String &output)
 {
-    assert(p != nullptr);
-    DelFirstSpaces(p);
+    output = "";
 
-    if(*p == '{')
+    if(std::isalpha(*pos_) || *pos_ == '_')
     {
-        ++p;
-        return { Token::Type::LeftBrace, "{" };
+        output = *pos_++;
+        while(std::isalnum(*pos_) || *pos_ == '_')
+            output += *pos_++;
+        return true;
     }
 
-    if(*p == '}')
+    return false;
+}
+
+InternalToken InternalTokenizer::FirstToken(void)
+{
+    assert(pos_ != nullptr);
+    DelFirstSpaces();
+
+    if(*pos_ == '{')
     {
-        ++p;
-        return { Token::Type::RightBrace, "}" };
+        ++pos_;
+        return { InternalToken::Type::LeftBrace, "{" };
     }
 
-    if(*p == ':')
+    if(*pos_ == '}')
     {
-        if(*++p == '=')
+        ++pos_;
+        return { InternalToken::Type::RightBrace, "}" };
+    }
+
+    if(*pos_ == ':')
+    {
+        if(*++pos_ == '=')
         {
-            ++p;
-            return { Token::Type::DefinedAs, ":=" };
+            ++pos_;
+            return { InternalToken::Type::DefinedAs, ":=" };
         }
         throw InternalTokenException(
-            String("Unknown token :") + String({ *p }),
-            line_, filename_);
+            String("Unknown token :") + String({ *pos_ }),
+            line_, pos_ - &src_[0], filename_);
     }
 
-    if(*p == '"')
+    if(*pos_ == '.')
     {
-        ++p;
-        return { Token::Type::DoubleQuotation, "\"" };
+        ++pos_;
+        return { InternalToken::Type::Point, "." };
     }
 
-    if(*p == ';')
+    if(*pos_ == '+')
     {
-        ++p;
-        return { Token::Type::Semicolon, ";" };
+        ++pos_;
+        return { InternalToken::Type::Plus, "+" };
     }
 
-    if(*p == '[')
+    if(*pos_ == '"')
     {
-        ++p;
+        ++pos_;
+        return { InternalToken::Type::DoubleQuotation, "\"" };
+    }
+
+    if(*pos_ == ';')
+    {
+        ++pos_;
+        return { InternalToken::Type::Semicolon, ";" };
+    }
+
+    if(*pos_ == '[')
+    {
+        ++pos_;
         String path;
         while(true)
         {
-            if(*p == '\0')
+            if(*pos_ == '\0')
             {
                 throw InternalTokenException(
-                    "Unclosed '['", line_, filename_);
+                    "Unclosed '['", line_, pos_ - &src_[0], filename_);
             }
 
-            if(*p == ']')
+            if(*pos_ == ']')
             {
-                ++p;
-                return { Token::Type::Path, path };
+                ++pos_;
+                return { InternalToken::Type::Path, path };
             }
 
-            path += *p++;
+            path += *pos_++;
         }
     }
 
-    if(*p == '\0')
-        return { Token::Type::End, "" };
+    if(*pos_ == '\0')
+        return { InternalToken::Type::End, "" };
 
     String nextIden;
-    if(NextIdentifier(p, nextIden))
+    if(NextIdentifier(nextIden))
     {
         if(nextIden == "namespace")
-            return { Token::Type::Kw_Namespace, "namespace" };
+            return { InternalToken::Type::Kw_Namespace, "namespace" };
         if(nextIden == "AGZ_Start")
-            return { Token::Type::Kw_Start, "AGZ_Start" };
+            return { InternalToken::Type::Kw_Start, "AGZ_Start" };
         if(nextIden == "import")
-            return { Token::Type::Kw_Import, "import" };
+            return { InternalToken::Type::Kw_Import, "import" };
         if(nextIden == "token")
-            return { Token::Type::Kw_Token, "token" };
-        return { Token::Type::Identifier, nextIden };
+            return { InternalToken::Type::Kw_Token, "token" };
+        return { InternalToken::Type::Identifier, nextIden };
     }
 
     throw InternalTokenException(
-        String("Unknown token ") + String({ *p }),
-        line_, filename_);
-    return { Token::Type::End, "" };
+        String("Unknown token ") + String({ *pos_ }),
+        line_, pos_ - &src_[0], filename_);
+    return { InternalToken::Type::End, "" };
 }
 
 AGZ_NAMESPACE_END(AGZ)

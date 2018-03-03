@@ -19,15 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\ASTNode.cpp" />
+    <ClCompile Include="..\Source\Common.cpp" />
+    <ClCompile Include="..\Source\InternalASTNode.cpp" />
+    <ClCompile Include="..\Source\InternalParser.cpp" />
     <ClCompile Include="..\Source\InternalTokenizer.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\ASTNode.h" />
+    <ClInclude Include="..\Source\InternalASTNode.h" />
     <ClInclude Include="..\Source\Common.h" />
     <ClInclude Include="..\Source\Exception.h" />
     <ClInclude Include="..\Source\Grammar.txt" />
+    <ClInclude Include="..\Source\InternalParser.h" />
     <ClInclude Include="..\Source\InternalTokenizer.h" />
     <ClInclude Include="..\Source\Rule.h" />
   </ItemGroup>

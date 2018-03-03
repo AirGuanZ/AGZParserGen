@@ -3,7 +3,6 @@ AGZParserGen本身所使用的用来描述文法的脚本语法
 
 IDENTIFIER：字母或下划线打头，后面跟零个或多个数字/字母/下划线
 PATH：文件的相对路径，以'['开头、']'结尾
-TOKEN_NAME：词法单元类型名。通过在程序中提供模板参数来实现词法单元类型比较
 
 SCRIPT := STATEMENT*
 
@@ -13,11 +12,11 @@ STATEMENT := RULE
 STATEMENT := NAMESPACE
 
 NAMESPACE := 'namespace' IDENTIFIER '{' SCRIPT '}'
-START_DEFINITION := 'AGZ_Start' ':=' IDENTIFIER
+START_DEFINITION := 'AGZ_Start' ':=' SYMBOL;
 IMPORT := 'import' PATH
-RULE := IDENTIFIER ':=' SYMBOL+
+RULE := IDENTIFIER ':=' SYMBOL(+SYMBOL)*;
 
-SYMBOL := IDENTIFIER
+SYMBOL := IDENTIFIER(.IDENTIFIER)*
 SYMBOL := TOKEN
 
-TOKEN := 'token' '"' TOKEN_NAME '"'
+TOKEN := 'token' '"' IDENTIFIER '"'

@@ -10,7 +10,7 @@ Created by AirGuanZ
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
-struct Token
+struct InternalToken
 {
     enum class Type
     {
@@ -22,6 +22,8 @@ struct Token
 
         DefinedAs,
 
+        Plus,
+        Point,
         Semicolon,
         DoubleQuotation,
 
@@ -39,13 +41,13 @@ struct Token
 class InternalTokenException : public Exception
 {
 public:
-    InternalTokenException(const String &msg, int line, const std::string &filename)
-        : Exception(msg), line_(line), filename_(filename)
+    InternalTokenException(const String &msg, int line, int srcPos, const std::string &filename)
+        : Exception(msg), line_(line), srcPos_(srcPos), filename_(filename)
     {
 
     }
 
-    int line_;
+    int line_, srcPos_;
     std::string filename_;
 };
 
@@ -54,19 +56,26 @@ class InternalTokenizer
 public:
     InternalTokenizer(const String &src, const String &filename);
 
-    const Token &Current(void) const;
+    const InternalToken &Current(void) const;
+    
     void Next(void);
 
-    bool Match(Token::Type type);
+    bool Match(InternalToken::Type type);
+
+    int GetLine(void) const { return line_; }
+    
+    const String &GetFilename(void) const { return filename_; }
 
 private:
     //ÌÞ³ýÇ°×ºµÄ¿Õ°××Ö·ûºÍ×¢ÊÍ
-    void DelFirstSpaces(const Char *&p);
+    void DelFirstSpaces(void);
 
-    Token FirstToken(const Char *&p);
+    bool NextIdentifier(String &output);
+
+    InternalToken FirstToken(void);
 
 private:
-    Token cur_;
+    InternalToken cur_;
 
     const Char *pos_;
     String src_;

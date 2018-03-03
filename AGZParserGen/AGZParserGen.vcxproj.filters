@@ -14,24 +14,30 @@
     <Filter Include="Source\Internal\Tokenizer">
       <UniqueIdentifier>{2e2a9061-0d1e-4b63-b2b1-09c8bbb08a51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Internal\Parser">
+      <UniqueIdentifier>{4b77b951-f441-478e-95dd-e1e10b4326dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\ASTNode.cpp">
-      <Filter>Source\Internal\AST</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\InternalTokenizer.cpp">
       <Filter>Source\Internal\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\InternalASTNode.cpp">
+      <Filter>Source\Internal\AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\InternalParser.cpp">
+      <Filter>Source\Internal\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Common.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Common.h">
       <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\ASTNode.h">
-      <Filter>Source\Internal\AST</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Rule.h">
       <Filter>Source</Filter>
@@ -42,6 +48,12 @@
     </ClInclude>
     <ClInclude Include="..\Source\Exception.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\InternalParser.h">
+      <Filter>Source\Internal\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\InternalASTNode.h">
+      <Filter>Source\Internal\AST</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
