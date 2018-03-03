@@ -13,37 +13,42 @@ AGZ_NAMESPACE_BEGIN(AGZ)
 void ASTNode_Script::PrettyPrint(std::ostream &out,
                                  const std::string &prefix,
                                  const std::string &tab,
-                                 bool leftBracNewline) const
+                                 bool leftBracNewline,
+                                 bool inlineImported) const
 {
-    for(auto stmt : stmts_)
+    if(stmts_.size())
+        stmts_[0]->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
+    for(size_t i = 1; i < stmts_.size(); ++i)
     {
-        stmt->PrettyPrint(out, prefix, tab, leftBracNewline);
         out << std::endl;
+        stmts_[i]->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
     }
 }
 
 void ASTNode_Statement::PrettyPrint(std::ostream &out,
                                     const std::string &prefix,
                                     const std::string &tab,
-                                    bool leftBracNewline) const
+                                    bool leftBracNewline,
+                                    bool inlineImported) const
 {
     if(startDef_)
-        startDef_->PrettyPrint(out, prefix, tab, leftBracNewline);
+        startDef_->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
     else if(namespace_)
-        namespace_->PrettyPrint(out, prefix, tab, leftBracNewline);
+        namespace_->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
     else if(import_)
-        import_->PrettyPrint(out, prefix, tab, leftBracNewline);
+        import_->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
     else
     {
         assert(rule_);
-        rule_->PrettyPrint(out, prefix, tab, leftBracNewline);
+        rule_->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
     }
 }
 
 void ASTNode_Namespace::PrettyPrint(std::ostream &out,
                                     const std::string &prefix,
                                     const std::string &tab,
-                                    bool leftBracNewline) const
+                                    bool leftBracNewline,
+                                    bool inlineImported) const
 {
     out << prefix << "namespace " << name_;
     if(leftBracNewline)
@@ -55,38 +60,44 @@ void ASTNode_Namespace::PrettyPrint(std::ostream &out,
     {
         out << " {" << std::endl;
     }
-    content_->PrettyPrint(out, prefix + tab, tab, leftBracNewline);
-    out << prefix << "}";
+    content_->PrettyPrint(out, prefix + tab, tab, leftBracNewline, inlineImported);
+    out << std::endl << prefix << "}";
 }
 
 void ASTNode_StartDefinition::PrettyPrint(std::ostream &out,
                                           const std::string &prefix,
                                           const std::string &tab,
-                                          bool leftBracNewline) const
+                                          bool leftBracNewline,
+                                          bool inlineImported) const
 {
     out << prefix << "AGZ_Start := ";
-    sym_->PrettyPrint(out, prefix, tab, leftBracNewline);
+    sym_->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
     out << ";";
 }
 
 void ASTNode_Import::PrettyPrint(std::ostream &out,
                                  const std::string &prefix,
                                  const std::string &tab,
-                                 bool leftBracNewline) const
+                                 bool leftBracNewline,
+                                 bool inlineImported) const
 {
-    out << prefix << "import [" << path_ << "]";
+    if(inlineImported)
+        imported_->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
+    else
+        out << prefix << "import [" << path_ << "]";
 }
 
 void ASTNode_Rule::PrettyPrint(std::ostream &out,
                                const std::string &prefix,
                                const std::string &tab,
-                               bool leftBracNewline) const
+                               bool leftBracNewline,
+                               bool inlineImported) const
 {
     out << prefix << id_ << " :=";
     for(auto sym : syms_)
     {
-        out << " ";
-        sym->PrettyPrint(out, prefix, tab, leftBracNewline);
+        out << " + ";
+        sym->PrettyPrint(out, prefix, tab, leftBracNewline, inlineImported);
     }
     out << ";";
 }
@@ -94,7 +105,8 @@ void ASTNode_Rule::PrettyPrint(std::ostream &out,
 void ASTNode_Symbol::PrettyPrint(std::ostream &out,
                                  const std::string &prefix,
                                  const std::string &tab,
-                                 bool leftBracNewline) const
+                                 bool leftBracNewline,
+                                 bool inlineImported) const
 {
     if(token_.size())
         out << "token\"" << token_ << "\"";

@@ -30,7 +30,8 @@ public:
     virtual void PrettyPrint(std::ostream &out,
                              const std::string &prefix,
                              const std::string &tab,
-                             bool leftBracNewline) const
+                             bool leftBracNewline,
+                             bool inlineImported) const
     {  }
 };
 
@@ -46,7 +47,8 @@ public:
     void PrettyPrint(std::ostream &out,
                      const std::string &prefix,
                      const std::string &tab,
-                     bool leftBracNewline) const;
+                     bool leftBracNewline,
+                     bool inlineImported) const;
 
     std::vector<Ptr<ASTNode_Statement>> stmts_;
 };
@@ -81,7 +83,8 @@ public:
     void PrettyPrint(std::ostream &out,
                      const std::string &prefix,
                      const std::string &tab,
-                     bool leftBracNewline) const;
+                     bool leftBracNewline,
+                     bool inlineImported) const;
 
     Ptr<ASTNode_StartDefinition> startDef_;
     Ptr<ASTNode_Namespace>       namespace_;
@@ -101,7 +104,8 @@ public:
     void PrettyPrint(std::ostream &out,
                      const std::string &prefix,
                      const std::string &tab,
-                     bool leftBracNewline) const;
+                     bool leftBracNewline,
+                     bool inlineImported) const;
 
     std::string name_;
     Ptr<ASTNode_Script> content_;
@@ -119,7 +123,8 @@ public:
     void PrettyPrint(std::ostream &out,
                      const std::string &prefix,
                      const std::string &tab,
-                     bool leftBracNewline) const;
+                     bool leftBracNewline,
+                     bool inlineImported) const;
 
     Ptr<ASTNode_Symbol> sym_;
 };
@@ -136,7 +141,8 @@ public:
     void PrettyPrint(std::ostream &out,
                      const std::string &prefix,
                      const std::string &tab,
-                     bool leftBracNewline) const;
+                     bool leftBracNewline,
+                     bool inlineImported) const;
 
     std::string path_;
     Ptr<ASTNode_Script> imported_;
@@ -154,7 +160,8 @@ public:
     void PrettyPrint(std::ostream &out,
                      const std::string &prefix,
                      const std::string &tab,
-                     bool leftBracNewline) const;
+                     bool leftBracNewline,
+                     bool inlineImported) const;
 
     std::string id_;
     std::vector<Ptr<ASTNode_Symbol>> syms_;
@@ -178,7 +185,8 @@ public:
     void PrettyPrint(std::ostream &out,
                      const std::string &prefix,
                      const std::string &tab,
-                     bool leftBracNewline) const;
+                     bool leftBracNewline,
+                     bool inlineImported) const;
 
     std::string token_;
     std::vector<std::string> ids_;

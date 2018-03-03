@@ -1,0 +1,5 @@
+namespace NamespaceHaHaHa
+{
+    X := Y;
+    Y := token"minecraft" + token"microsoft";
+}

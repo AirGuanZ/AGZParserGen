@@ -33,7 +33,7 @@ Ptr<ASTNode_Script> InternalParser::ParseFromFile(const std::string &path, int l
             "Failed to open file: " + path, line, filename);
     }
 
-    InternalTokenizer toks(src, filename);
+    InternalTokenizer toks(src, path);
     return Parse(toks);
 }
 
