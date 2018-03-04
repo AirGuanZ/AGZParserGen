@@ -15,7 +15,7 @@ struct Rule
 {
     struct Symbol
     {
-        enum Type
+        enum class Type
         {
             Token,
             NonTerminate

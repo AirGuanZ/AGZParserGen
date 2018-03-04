@@ -9,9 +9,9 @@ Created by AirGuanZ
 #include <map>
 #include <memory>
 #include <ostream>
+#include <vector>
 
 #include "Common.h"
-#include "Rule.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
@@ -32,7 +32,9 @@ public:
                              const std::string &tab,
                              bool leftBracNewline,
                              bool inlineImported) const
-    {  }
+    {
+
+    }
 };
 
 class ASTNode_Script : public ASTNode
@@ -114,8 +116,8 @@ public:
 class ASTNode_StartDefinition : public ASTNode
 {
 public:
-    ASTNode_StartDefinition(Ptr<ASTNode_Symbol> &&sym)
-        : sym_(sym)
+    ASTNode_StartDefinition(Ptr<ASTNode_Symbol> &&sym, int line, const std::string &filename)
+        : sym_(sym), line_(line), filename_(filename)
     {
 
     }
@@ -126,6 +128,8 @@ public:
                      bool leftBracNewline,
                      bool inlineImported) const;
 
+    int line_;
+    std::string filename_;
     Ptr<ASTNode_Symbol> sym_;
 };
 
@@ -151,8 +155,8 @@ public:
 class ASTNode_Rule : public ASTNode
 {
 public:
-    ASTNode_Rule(std::string &&id, std::vector<Ptr<ASTNode_Symbol>> &&syms)
-        : id_(id), syms_(syms)
+    ASTNode_Rule(std::string &&id, std::vector<Ptr<ASTNode_Symbol>> &&syms, int line, const std::string &filename)
+        : id_(id), syms_(syms), line_(line), filename_(filename)
     {
 
     }
@@ -163,6 +167,8 @@ public:
                      bool leftBracNewline,
                      bool inlineImported) const;
 
+    int line_;
+    std::string filename_;
     std::string id_;
     std::vector<Ptr<ASTNode_Symbol>> syms_;
 };

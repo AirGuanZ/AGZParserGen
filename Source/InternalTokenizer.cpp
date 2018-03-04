@@ -10,6 +10,10 @@ Created by AirGuanZ
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
+const std::string InternalKeyword_Namespace = "namespace";
+const std::string InternalKeyword_Start     = "AGZ_Start";
+const std::string InternalKeyword_Import    = "import";
+
 InternalTokenizer::InternalTokenizer(const std::string &src, const std::string &filename)
     : src_(src), filename_(filename), line_(1)
 {
@@ -166,14 +170,12 @@ InternalToken InternalTokenizer::FirstToken(void)
     std::string nextIden;
     if(NextIdentifier(nextIden))
     {
-        if(nextIden == "namespace")
-            return { InternalToken::Type::Kw_Namespace, "namespace" };
-        if(nextIden == "AGZ_Start")
-            return { InternalToken::Type::Kw_Start, "AGZ_Start" };
-        if(nextIden == "import")
-            return { InternalToken::Type::Kw_Import, "import" };
-        if(nextIden == "token")
-            return { InternalToken::Type::Kw_Token, "token" };
+        if(nextIden == InternalKeyword_Namespace)
+            return { InternalToken::Type::Kw_Namespace, InternalKeyword_Namespace };
+        if(nextIden == InternalKeyword_Start)
+            return { InternalToken::Type::Kw_Start, InternalKeyword_Start };
+        if(nextIden == InternalKeyword_Import)
+            return { InternalToken::Type::Kw_Import, InternalKeyword_Import };
         return { InternalToken::Type::Identifier, nextIden };
     }
 

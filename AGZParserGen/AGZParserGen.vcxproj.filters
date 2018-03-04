@@ -17,6 +17,9 @@
     <Filter Include="Source\Internal\Parser">
       <UniqueIdentifier>{4b77b951-f441-478e-95dd-e1e10b4326dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Internal\ScopeTree">
+      <UniqueIdentifier>{47c83a30-d589-499f-a6e8-37712f5d9f5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Main.cpp">
@@ -33,6 +36,9 @@
     </ClCompile>
     <ClCompile Include="..\Source\Common.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\InternalSymbolTable.cpp">
+      <Filter>Source\Internal\ScopeTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +59,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\InternalASTNode.h">
       <Filter>Source\Internal\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\InternalSymbolTable.h">
+      <Filter>Source\Internal\ScopeTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

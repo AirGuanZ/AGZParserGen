@@ -30,13 +30,16 @@ struct InternalToken
         Kw_Namespace,
         Kw_Start,
         Kw_Import,
-        Kw_Token,
 
         End,
     };
     Type type;
     std::string str;
 };
+
+extern const std::string InternalKeyword_Namespace;
+extern const std::string InternalKeyword_Start;
+extern const std::string InternalKeyword_Import;
 
 class InternalTokenException : public Exception
 {

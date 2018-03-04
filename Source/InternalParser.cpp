@@ -50,6 +50,7 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
 {
     //START_DEFINITION
     //AGZ_Start := symbol;
+    int startDefinitionLine = toks.GetLine();
     if(toks.Match(InternalToken::Type::Kw_Start))
     {
         if(!toks.Match(InternalToken::Type::DefinedAs))
@@ -59,7 +60,8 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
         }
 
         Ptr<ASTNode_Statement> rt =  MakePtr<ASTNode_Statement>(
-            MakePtr<ASTNode_StartDefinition>(ParseSymbol(toks)));
+            MakePtr<ASTNode_StartDefinition>(
+                ParseSymbol(toks), startDefinitionLine, toks.GetFilename()));
 
         if(!toks.Match(InternalToken::Type::Semicolon))
         {
@@ -130,6 +132,7 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
     if(toks.Current().type == InternalToken::Type::Identifier)
     {
         std::string id = toks.Current().str;
+        int idLine = toks.GetLine();
         toks.Next();
 
         if(!toks.Match(InternalToken::Type::DefinedAs))
@@ -151,7 +154,7 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
         } while(toks.Match(InternalToken::Type::Plus));
 
         Ptr<ASTNode_Statement> rt = MakePtr<ASTNode_Statement>(
-            MakePtr<ASTNode_Rule>(std::move(id), std::move(syms)));
+            MakePtr<ASTNode_Rule>(std::move(id), std::move(syms), idLine, toks.GetFilename()));
 
         if(!toks.Match(InternalToken::Type::Semicolon))
         {
@@ -168,15 +171,9 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
 Ptr<ASTNode_Symbol> InternalParser::ParseSymbol(InternalTokenizer &toks)
 {
     //TOKEN
-    //token"identifier"
-    if(toks.Match(InternalToken::Type::Kw_Token))
+    //"identifier"
+    if(toks.Match(InternalToken::Type::DoubleQuotation))
     {
-        if(!toks.Match(InternalToken::Type::DoubleQuotation))
-        {
-            throw InternalParserException(
-                "'\"' excepted", toks.GetLine(), toks.GetFilename());
-        }
-
         if(toks.Current().type != InternalToken::Type::Identifier)
         {
             throw InternalParserException(
