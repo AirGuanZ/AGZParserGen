@@ -151,12 +151,37 @@ AGZ_LOCAL_DEFINITION bool FindReference(
     }
 
     assert(ctx);
-    if(ctx->localSymbols.find(sym->ids_.back()) != ctx->localSymbols.end())
+
+    if(symScopeIdxEnd > 0)
     {
-        result.type = Rule::Symbol::Type::NonTerminate;
-        result.name = (ctx->globalNameStr.empty() ? "" : ctx->globalNameStr + ".")
-                      + sym->ids_.back();
-        return true;
+        if(ctx->localSymbols.find(sym->ids_.back()) != ctx->localSymbols.end())
+        {
+            result.type = Rule::Symbol::Type::NonTerminate;
+            result.name = (ctx->globalNameStr.empty() ? "" : ctx->globalNameStr + ".")
+                           + sym->ids_.back();
+            return true;
+        }
+    }
+    else
+    {
+        while(true)
+        {
+            if(ctx->localSymbols.find(sym->ids_.back()) != ctx->localSymbols.end())
+            {
+                result.type = Rule::Symbol::Type::NonTerminate;
+                result.name = (ctx->globalNameStr.empty() ? "" : ctx->globalNameStr + ".")
+                               + sym->ids_.back();
+                return true;
+            }
+
+            if(ctx->parent.use_count())
+            {
+                ctx = ctx->parent.lock();
+                continue;
+            }
+
+            return false;
+        }
     }
 
     return false;
@@ -211,7 +236,7 @@ AGZ_LOCAL_DEFINITION void GlobalizeSymbols(
                     {
                         assert(ruleFilename);
                         throw InternalSymbolTableException(
-                            "Symbol reference(s) not found", ruleLine, *ruleFilename);
+                            "Symbol reference(s) for rule " + globalLeft + " not found", ruleLine, *ruleFilename);
                     }
                 }
 
@@ -233,6 +258,7 @@ AGZ_LOCAL_DEFINITION void GlobalizeSymbols(
 Ptr<InternalSymbolTable> InternalSymbolTableBuilder::Build(Ptr<ASTNode_Script> root) const
 {
     assert(root);
+
 
     Ptr<ScopeNode> scopeTree = MakeScopeTree(root, { }, "");
     

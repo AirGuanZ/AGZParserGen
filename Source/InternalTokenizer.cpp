@@ -115,7 +115,7 @@ InternalToken InternalTokenizer::FirstToken(void)
         }
         throw InternalTokenException(
             std::string("Unknown token :") + std::string({ *pos_ }),
-            line_, pos_ - &src_[0], filename_);
+            line_, static_cast<int>(pos_ - &src_[0]), filename_);
     }
 
     if(*pos_ == '.')
@@ -151,7 +151,7 @@ InternalToken InternalTokenizer::FirstToken(void)
             if(*pos_ == '\0')
             {
                 throw InternalTokenException(
-                    "Unclosed '['", line_, pos_ - &src_[0], filename_);
+                    "Unclosed '['", line_, static_cast<int>(pos_ - &src_[0]), filename_);
             }
 
             if(*pos_ == ']')
@@ -181,7 +181,7 @@ InternalToken InternalTokenizer::FirstToken(void)
 
     throw InternalTokenException(
         std::string("Unknown token ") + std::string({ *pos_ }),
-        line_, pos_ - &src_[0], filename_);
+        line_, static_cast<int>(pos_ - &src_[0]), filename_);
     return { InternalToken::Type::End, "" };
 }
 
