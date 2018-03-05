@@ -11,17 +11,17 @@ Created by AirGuanZ
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
-struct Rule
+enum class RuleSymbolType
+{
+    Token,
+    NonTerminate
+};
+
+struct RawRule
 {
     struct Symbol
     {
-        enum class Type
-        {
-            Token,
-            NonTerminate
-        };
-
-        Type type;
+        RuleSymbolType type;
         std::string name;
     };
 

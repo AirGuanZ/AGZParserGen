@@ -9,8 +9,9 @@ Created by AirGuanZ
 #include "Exception.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
+AGZ_NAMESPACE_BEGIN(Internal)
 
-struct InternalToken
+struct Token
 {
     enum class Type
     {
@@ -37,14 +38,14 @@ struct InternalToken
     std::string str;
 };
 
-extern const std::string InternalKeyword_Namespace;
-extern const std::string InternalKeyword_Start;
-extern const std::string InternalKeyword_Import;
+extern const std::string Keyword_Namespace;
+extern const std::string Keyword_Start;
+extern const std::string Keyword_Import;
 
-class InternalTokenException : public Exception
+class TokenException : public Exception
 {
 public:
-    InternalTokenException(const std::string &msg, int line, int srcPos, const std::string &filename)
+    TokenException(const std::string &msg, int line, int srcPos, const std::string &filename)
         : Exception(msg), line_(line), srcPos_(srcPos), filename_(filename)
     {
 
@@ -54,16 +55,16 @@ public:
     std::string filename_;
 };
 
-class InternalTokenizer
+class Tokenizer
 {
 public:
-    InternalTokenizer(const std::string &src, const std::string &filename);
+    Tokenizer(const std::string &src, const std::string &filename);
 
-    const InternalToken &Current(void) const;
+    const Token &Current(void) const;
     
     void Next(void);
 
-    bool Match(InternalToken::Type type);
+    bool Match(Token::Type type);
 
     int GetLine(void) const { return line_; }
     
@@ -75,10 +76,10 @@ private:
 
     bool NextIdentifier(std::string &output);
 
-    InternalToken FirstToken(void);
+    Token FirstToken(void);
 
 private:
-    InternalToken cur_;
+    Token cur_;
 
     const char *pos_;
     std::string src_;
@@ -87,4 +88,5 @@ private:
     int line_;
 };
 
+AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)

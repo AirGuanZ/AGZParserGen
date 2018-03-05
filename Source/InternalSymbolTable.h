@@ -12,18 +12,24 @@ Created by AirGuanZ
 #include "Rule.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
+AGZ_NAMESPACE_BEGIN(Internal)
 
 class ASTNode_Script;
 
-struct InternalSymbolTable
+struct RawSymbolTable
 {
-    std::multimap<std::string, Rule> rules;
+    std::multimap<std::string, RawRule> rules;
 };
 
-class InternalSymbolTableException : public Exception
+struct SymbolTable
+{
+
+};
+
+class SymbolTableException : public Exception
 {
 public:
-    InternalSymbolTableException(const std::string &msg, int line, const std::string &filename)
+    SymbolTableException(const std::string &msg, int line, const std::string &filename)
         : Exception(msg), line_(line), filename_(filename)
     {
 
@@ -33,10 +39,11 @@ public:
     std::string filename_;
 };
 
-class InternalSymbolTableBuilder
+class SymbolTableBuilder
 {
 public:
-    Ptr<InternalSymbolTable> Build(Ptr<ASTNode_Script> root) const;
+    Ptr<RawSymbolTable> Build(Ptr<ASTNode_Script> root) const;
 };
 
+AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)

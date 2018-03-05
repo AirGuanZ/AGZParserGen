@@ -13,6 +13,7 @@ Created by AirGuanZ
 #include "InternalTokenizer.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
+AGZ_NAMESPACE_BEGIN(Internal)
 
 AGZ_LOCAL_DEFINITIONS_BEGIN
 
@@ -27,9 +28,7 @@ struct ScopeNode
     std::set<Ptr<ASTNode_Script>> entrys;
 };
 
-AGZ_LOCAL_DEFINITIONS_END
-
-AGZ_LOCAL_DEFINITION void AddChildren(
+void AddChildren(
     std::map<std::string, Ptr<ScopeNode>> &children,
     const std::string &childName,
     Ptr<ScopeNode> child)
@@ -59,7 +58,7 @@ AGZ_LOCAL_DEFINITION void AddChildren(
     }
 }
 
-AGZ_LOCAL_DEFINITION Ptr<ScopeNode> MakeScopeTree(
+Ptr<ScopeNode> MakeScopeTree(
     Ptr<ASTNode_Script> node,
     const std::vector<std::string> &globalName,
     const std::string &globalNameStr)
@@ -72,7 +71,7 @@ AGZ_LOCAL_DEFINITION Ptr<ScopeNode> MakeScopeTree(
     for(auto stmt : node->stmts_)
     {
         if(stmt->startDef_)
-            rt->localSymbols.insert(InternalKeyword_Start);
+            rt->localSymbols.insert(Keyword_Start);
         else if(stmt->namespace_)
         {
             std::vector<std::string> childGlobalName = globalName;
@@ -109,14 +108,14 @@ AGZ_LOCAL_DEFINITION Ptr<ScopeNode> MakeScopeTree(
     return rt;
 }
 
-AGZ_LOCAL_DEFINITION bool FindReference(
+bool FindReference(
     const std::vector<Ptr<ScopeNode>> &context,
     const Ptr<ASTNode_Symbol> sym,
-    Rule::Symbol &result)
+    RawRule::Symbol &result)
 {
     if(sym->token_.size())
     {
-        result.type = Rule::Symbol::Type::Token;
+        result.type = RuleSymbolType::Token;
         result.name = sym->token_;
         return true;
     }
@@ -156,7 +155,7 @@ AGZ_LOCAL_DEFINITION bool FindReference(
     {
         if(ctx->localSymbols.find(sym->ids_.back()) != ctx->localSymbols.end())
         {
-            result.type = Rule::Symbol::Type::NonTerminate;
+            result.type = RuleSymbolType::NonTerminate;
             result.name = (ctx->globalNameStr.empty() ? "" : ctx->globalNameStr + ".")
                            + sym->ids_.back();
             return true;
@@ -168,7 +167,7 @@ AGZ_LOCAL_DEFINITION bool FindReference(
         {
             if(ctx->localSymbols.find(sym->ids_.back()) != ctx->localSymbols.end())
             {
-                result.type = Rule::Symbol::Type::NonTerminate;
+                result.type = RuleSymbolType::NonTerminate;
                 result.name = (ctx->globalNameStr.empty() ? "" : ctx->globalNameStr + ".")
                                + sym->ids_.back();
                 return true;
@@ -187,10 +186,10 @@ AGZ_LOCAL_DEFINITION bool FindReference(
     return false;
 }
 
-AGZ_LOCAL_DEFINITION void GlobalizeSymbols(
+void GlobalizeSymbols(
     Ptr<ScopeNode> scope,
     std::vector<Ptr<ScopeNode>> &context,
-    InternalSymbolTable &symbolTable)
+    RawSymbolTable &symbolTable)
 {
     assert(scope);
 
@@ -208,7 +207,7 @@ AGZ_LOCAL_DEFINITION void GlobalizeSymbols(
             if(stmt->startDef_)
             {
                 startDefRight = { stmt->startDef_->sym_ };
-                ruleLeft     = &InternalKeyword_Start;
+                ruleLeft     = &Keyword_Start;
                 ruleRight    = &startDefRight;
                 ruleLine     = stmt->startDef_->line_;
                 ruleFilename = &stmt->startDef_->filename_;
@@ -229,19 +228,19 @@ AGZ_LOCAL_DEFINITION void GlobalizeSymbols(
                     (context.back()->globalNameStr.empty() ? "" : context.back()->globalNameStr + ".")
                     + *ruleLeft;
 
-                std::vector<Rule::Symbol> ruleSymbols(ruleRight->size());
+                std::vector<RawRule::Symbol> ruleSymbols(ruleRight->size());
                 for(size_t i = 0; i < ruleRight->size(); ++i)
                 {
                     if(!FindReference(context, (*ruleRight)[i], ruleSymbols[i]))
                     {
                         assert(ruleFilename);
-                        throw InternalSymbolTableException(
+                        throw SymbolTableException(
                             "Symbol reference(s) for rule " + globalLeft + " not found", ruleLine, *ruleFilename);
                     }
                 }
 
                 symbolTable.rules.insert(
-                    std::make_pair(globalLeft, Rule{ globalLeft, std::move(ruleSymbols) }));
+                    std::make_pair(globalLeft, RawRule{ globalLeft, std::move(ruleSymbols) }));
             }
         }
     }
@@ -255,18 +254,19 @@ AGZ_LOCAL_DEFINITION void GlobalizeSymbols(
     }
 }
 
-Ptr<InternalSymbolTable> InternalSymbolTableBuilder::Build(Ptr<ASTNode_Script> root) const
+AGZ_LOCAL_DEFINITIONS_END
+
+Ptr<RawSymbolTable> SymbolTableBuilder::Build(Ptr<ASTNode_Script> root) const
 {
     assert(root);
 
-
     Ptr<ScopeNode> scopeTree = MakeScopeTree(root, { }, "");
-    
-    Ptr<InternalSymbolTable> globalizedSymbolTable = MakePtr<InternalSymbolTable>();
+    Ptr<RawSymbolTable> globalizedSymbolTable = MakePtr<RawSymbolTable>();
     std::vector<Ptr<ScopeNode>> context = { scopeTree };
     GlobalizeSymbols(scopeTree, context, *globalizedSymbolTable);
 
     return globalizedSymbolTable;
 }
 
+AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)

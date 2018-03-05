@@ -10,34 +10,35 @@ Created by AirGuanZ
 #include "InternalTokenizer.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
+AGZ_NAMESPACE_BEGIN(Internal)
 
 namespace filesystem = std::experimental::filesystem;
 
-Ptr<ASTNode_Script> InternalParser::Parse(InternalTokenizer &toks)
+Ptr<ASTNode_Script> Parser::Parse(Tokenizer &toks)
 {
     Ptr<ASTNode_Script> rt = ParseScript(toks);
-    if(toks.Current().type != InternalToken::Type::End)
+    if(toks.Current().type != Token::Type::End)
     {
-        throw InternalParserException(
+        throw ParserException(
             "unexpected token " + toks.Current().str, toks.GetLine(), toks.GetFilename());
     }
     return rt;
 }
 
-Ptr<ASTNode_Script> InternalParser::ParseFromFile(const std::string &path, int line, const std::string &filename)
+Ptr<ASTNode_Script> Parser::ParseFromFile(const std::string &path, int line, const std::string &filename)
 {
     std::string src;
     if(!ReadFile(path, src))
     {
-        throw InternalParserException(
+        throw ParserException(
             "Failed to open file: " + path, line, filename);
     }
 
-    InternalTokenizer toks(src, path);
+    Tokenizer toks(src, path);
     return Parse(toks);
 }
 
-Ptr<ASTNode_Script> InternalParser::ParseScript(InternalTokenizer &toks)
+Ptr<ASTNode_Script> Parser::ParseScript(Tokenizer &toks)
 {
     std::vector<Ptr<ASTNode_Statement>> stmts;
     Ptr<ASTNode_Statement> stmt;
@@ -46,16 +47,16 @@ Ptr<ASTNode_Script> InternalParser::ParseScript(InternalTokenizer &toks)
     return MakePtr<ASTNode_Script>(std::move(stmts));
 }
 
-Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
+Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
 {
     //START_DEFINITION
     //AGZ_Start := symbol;
     int startDefinitionLine = toks.GetLine();
-    if(toks.Match(InternalToken::Type::Kw_Start))
+    if(toks.Match(Token::Type::Kw_Start))
     {
-        if(!toks.Match(InternalToken::Type::DefinedAs))
+        if(!toks.Match(Token::Type::DefinedAs))
         {
-            throw InternalParserException(
+            throw ParserException(
                 "':=' expected", toks.GetLine(), toks.GetFilename());
         }
 
@@ -63,9 +64,9 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
             MakePtr<ASTNode_StartDefinition>(
                 ParseSymbol(toks), startDefinitionLine, toks.GetFilename()));
 
-        if(!toks.Match(InternalToken::Type::Semicolon))
+        if(!toks.Match(Token::Type::Semicolon))
         {
-            throw InternalParserException(
+            throw ParserException(
                 "';' expected", toks.GetLine(), toks.GetFilename());
         }
 
@@ -74,27 +75,27 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
 
     //NAMESPACE
     //namespace identifier { script }
-    if(toks.Match(InternalToken::Type::Kw_Namespace))
+    if(toks.Match(Token::Type::Kw_Namespace))
     {
-        if(toks.Current().type != InternalToken::Type::Identifier)
+        if(toks.Current().type != Token::Type::Identifier)
         {
-            throw InternalParserException(
+            throw ParserException(
                 "namespace name expected", toks.GetLine(), toks.GetFilename());
         }
         std::string name = toks.Current().str;
         toks.Next();
 
-        if(!toks.Match(InternalToken::Type::LeftBrace))
+        if(!toks.Match(Token::Type::LeftBrace))
         {
-            throw InternalParserException(
+            throw ParserException(
                 "'{' expected", toks.GetLine(), toks.GetFilename());
         }
 
         Ptr<ASTNode_Script> content = ParseScript(toks);
 
-        if(!toks.Match(InternalToken::Type::RightBrace))
+        if(!toks.Match(Token::Type::RightBrace))
         {
-            throw InternalParserException(
+            throw ParserException(
                 "'}' expected", toks.GetLine(), toks.GetFilename());
         }
 
@@ -104,11 +105,11 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
 
     //IMPORT
     //import path
-    if(toks.Match(InternalToken::Type::Kw_Import))
+    if(toks.Match(Token::Type::Kw_Import))
     {
-        if(toks.Current().type != InternalToken::Type::Path)
+        if(toks.Current().type != Token::Type::Path)
         {
-            throw InternalParserException(
+            throw ParserException(
                 "filepath excepted", toks.GetLine(), toks.GetFilename());
         }
 
@@ -129,15 +130,15 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
 
     //RULE
     //identifier := symbol (plus symbol)*;
-    if(toks.Current().type == InternalToken::Type::Identifier)
+    if(toks.Current().type == Token::Type::Identifier)
     {
         std::string id = toks.Current().str;
         int idLine = toks.GetLine();
         toks.Next();
 
-        if(!toks.Match(InternalToken::Type::DefinedAs))
+        if(!toks.Match(Token::Type::DefinedAs))
         {
-            throw InternalParserException(
+            throw ParserException(
                 "':=' excepted", toks.GetLine(), toks.GetFilename());
         }
 
@@ -147,18 +148,18 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
             Ptr<ASTNode_Symbol> sym = ParseSymbol(toks);
             if(!sym)
             {
-                throw InternalParserException(
+                throw ParserException(
                     "symbol reference excepted", toks.GetLine(), toks.GetFilename());
             }
             syms.push_back(std::move(sym));
-        } while(toks.Match(InternalToken::Type::Plus));
+        } while(toks.Match(Token::Type::Plus));
 
         Ptr<ASTNode_Statement> rt = MakePtr<ASTNode_Statement>(
             MakePtr<ASTNode_Rule>(std::move(id), std::move(syms), idLine, toks.GetFilename()));
 
-        if(!toks.Match(InternalToken::Type::Semicolon))
+        if(!toks.Match(Token::Type::Semicolon))
         {
-            throw InternalParserException(
+            throw ParserException(
                 "';' excepted", toks.GetLine(), toks.GetFilename());
         }
 
@@ -168,15 +169,15 @@ Ptr<ASTNode_Statement> InternalParser::ParseStatement(InternalTokenizer &toks)
     return Ptr<ASTNode_Statement>();
 }
 
-Ptr<ASTNode_Symbol> InternalParser::ParseSymbol(InternalTokenizer &toks)
+Ptr<ASTNode_Symbol> Parser::ParseSymbol(Tokenizer &toks)
 {
     //TOKEN
     //"identifier"
-    if(toks.Match(InternalToken::Type::DoubleQuotation))
+    if(toks.Match(Token::Type::DoubleQuotation))
     {
-        if(toks.Current().type != InternalToken::Type::Identifier)
+        if(toks.Current().type != Token::Type::Identifier)
         {
-            throw InternalParserException(
+            throw ParserException(
                 "token name excepted", toks.GetLine(), toks.GetFilename());
         }
 
@@ -184,9 +185,9 @@ Ptr<ASTNode_Symbol> InternalParser::ParseSymbol(InternalTokenizer &toks)
         toks.Next();
         Ptr<ASTNode_Symbol> rt = MakePtr<ASTNode_Symbol>(std::move(id));
 
-        if(!toks.Match(InternalToken::Type::DoubleQuotation))
+        if(!toks.Match(Token::Type::DoubleQuotation))
         {
-            throw InternalParserException(
+            throw ParserException(
                 "'\"' excepted", toks.GetLine(), toks.GetFilename());
         }
 
@@ -195,19 +196,19 @@ Ptr<ASTNode_Symbol> InternalParser::ParseSymbol(InternalTokenizer &toks)
 
     //REFERENCE
     //identifier(.identifier)*
-    if(toks.Current().type == InternalToken::Type::Identifier)
+    if(toks.Current().type == Token::Type::Identifier)
     {
         std::vector<std::string> ids;
         do
         {
-            if(toks.Current().type != InternalToken::Type::Identifier)
+            if(toks.Current().type != Token::Type::Identifier)
             {
-                throw InternalParserException(
+                throw ParserException(
                     "identifier excepted", toks.GetLine(), toks.GetFilename());
             }
             ids.push_back(toks.Current().str);
             toks.Next();
-        } while(toks.Match(InternalToken::Type::Point));
+        } while(toks.Match(Token::Type::Point));
 
         return MakePtr<ASTNode_Symbol>(std::move(ids));
     }
@@ -215,4 +216,5 @@ Ptr<ASTNode_Symbol> InternalParser::ParseSymbol(InternalTokenizer &toks)
     return Ptr<ASTNode_Symbol>();
 }
 
+AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)

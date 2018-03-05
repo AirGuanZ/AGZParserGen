@@ -9,6 +9,7 @@ Created by AirGuanZ
 #include "Rule.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
+AGZ_NAMESPACE_BEGIN(Internal)
 
 void ASTNode_Script::PrettyPrint(std::ostream &out,
                                  const std::string &prefix,
@@ -121,4 +122,5 @@ void ASTNode_Symbol::PrettyPrint(std::ostream &out,
     }
 }
 
+AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)

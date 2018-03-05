@@ -11,11 +11,12 @@ Created by AirGuanZ
 #include "InternalTokenizer.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
+AGZ_NAMESPACE_BEGIN(Internal)
 
-class InternalParserException : public Exception
+class ParserException : public Exception
 {
 public:
-    InternalParserException(const std::string &msg, int line, const std::string &filename)
+    ParserException(const std::string &msg, int line, const std::string &filename)
         : Exception(msg), line_(line), filename_(filename)
     {
 
@@ -25,16 +26,17 @@ public:
     std::string filename_;
 };
 
-class InternalParser
+class Parser
 {
 public:
-    Ptr<ASTNode_Script> Parse(InternalTokenizer &toks);
+    Ptr<ASTNode_Script> Parse(Tokenizer &toks);
     Ptr<ASTNode_Script> ParseFromFile(const std::string &path, int line, const std::string &filename);
 
 private:
-    Ptr<ASTNode_Script> ParseScript(InternalTokenizer &toks);
-    Ptr<ASTNode_Statement> ParseStatement(InternalTokenizer &toks);
-    Ptr<ASTNode_Symbol> ParseSymbol(InternalTokenizer &toks);
+    Ptr<ASTNode_Script> ParseScript(Tokenizer &toks);
+    Ptr<ASTNode_Statement> ParseStatement(Tokenizer &toks);
+    Ptr<ASTNode_Symbol> ParseSymbol(Tokenizer &toks);
 };
 
+AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)

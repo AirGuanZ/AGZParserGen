@@ -14,6 +14,7 @@ Created by AirGuanZ
 #include "Common.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
+AGZ_NAMESPACE_BEGIN(Internal)
 
 class ASTNode;
 class ASTNode_Script;
@@ -198,4 +199,5 @@ public:
     std::vector<std::string> ids_;
 };
 
+AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)

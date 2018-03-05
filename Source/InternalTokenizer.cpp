@@ -9,29 +9,30 @@ Created by AirGuanZ
 #include "InternalTokenizer.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
+AGZ_NAMESPACE_BEGIN(Internal)
 
-const std::string InternalKeyword_Namespace = "namespace";
-const std::string InternalKeyword_Start     = "AGZ_Start";
-const std::string InternalKeyword_Import    = "import";
+const std::string Keyword_Namespace = "namespace";
+const std::string Keyword_Start     = "AGZ_Start";
+const std::string Keyword_Import    = "import";
 
-InternalTokenizer::InternalTokenizer(const std::string &src, const std::string &filename)
+Tokenizer::Tokenizer(const std::string &src, const std::string &filename)
     : src_(src), filename_(filename), line_(1)
 {
     pos_ = &src_[0];
     Next();
 }
 
-const InternalToken &InternalTokenizer::Current(void) const
+const Token &Tokenizer::Current(void) const
 {
     return cur_;
 }
 
-void InternalTokenizer::Next(void)
+void Tokenizer::Next(void)
 {
     cur_ = FirstToken();
 }
 
-bool InternalTokenizer::Match(InternalToken::Type type)
+bool Tokenizer::Match(Token::Type type)
 {
     if(cur_.type == type)
     {
@@ -41,7 +42,7 @@ bool InternalTokenizer::Match(InternalToken::Type type)
     return false;
 }
 
-void InternalTokenizer::DelFirstSpaces(void)
+void Tokenizer::DelFirstSpaces(void)
 {
     assert(pos_ != nullptr);
 
@@ -74,7 +75,7 @@ void InternalTokenizer::DelFirstSpaces(void)
     }
 }
 
-bool InternalTokenizer::NextIdentifier(std::string &output)
+bool Tokenizer::NextIdentifier(std::string &output)
 {
     output = "";
 
@@ -89,7 +90,7 @@ bool InternalTokenizer::NextIdentifier(std::string &output)
     return false;
 }
 
-InternalToken InternalTokenizer::FirstToken(void)
+Token Tokenizer::FirstToken(void)
 {
     assert(pos_ != nullptr);
     DelFirstSpaces();
@@ -97,13 +98,13 @@ InternalToken InternalTokenizer::FirstToken(void)
     if(*pos_ == '{')
     {
         ++pos_;
-        return { InternalToken::Type::LeftBrace, "{" };
+        return { Token::Type::LeftBrace, "{" };
     }
 
     if(*pos_ == '}')
     {
         ++pos_;
-        return { InternalToken::Type::RightBrace, "}" };
+        return { Token::Type::RightBrace, "}" };
     }
 
     if(*pos_ == ':')
@@ -111,9 +112,9 @@ InternalToken InternalTokenizer::FirstToken(void)
         if(*++pos_ == '=')
         {
             ++pos_;
-            return { InternalToken::Type::DefinedAs, ":=" };
+            return { Token::Type::DefinedAs, ":=" };
         }
-        throw InternalTokenException(
+        throw TokenException(
             std::string("Unknown token :") + std::string({ *pos_ }),
             line_, static_cast<int>(pos_ - &src_[0]), filename_);
     }
@@ -121,25 +122,25 @@ InternalToken InternalTokenizer::FirstToken(void)
     if(*pos_ == '.')
     {
         ++pos_;
-        return { InternalToken::Type::Point, "." };
+        return { Token::Type::Point, "." };
     }
 
     if(*pos_ == '+')
     {
         ++pos_;
-        return { InternalToken::Type::Plus, "+" };
+        return { Token::Type::Plus, "+" };
     }
 
     if(*pos_ == '"')
     {
         ++pos_;
-        return { InternalToken::Type::DoubleQuotation, "\"" };
+        return { Token::Type::DoubleQuotation, "\"" };
     }
 
     if(*pos_ == ';')
     {
         ++pos_;
-        return { InternalToken::Type::Semicolon, ";" };
+        return { Token::Type::Semicolon, ";" };
     }
 
     if(*pos_ == '[')
@@ -150,14 +151,14 @@ InternalToken InternalTokenizer::FirstToken(void)
         {
             if(*pos_ == '\0')
             {
-                throw InternalTokenException(
+                throw TokenException(
                     "Unclosed '['", line_, static_cast<int>(pos_ - &src_[0]), filename_);
             }
 
             if(*pos_ == ']')
             {
                 ++pos_;
-                return { InternalToken::Type::Path, path };
+                return { Token::Type::Path, path };
             }
 
             path += *pos_++;
@@ -165,24 +166,25 @@ InternalToken InternalTokenizer::FirstToken(void)
     }
 
     if(*pos_ == '\0')
-        return { InternalToken::Type::End, "" };
+        return { Token::Type::End, "" };
 
     std::string nextIden;
     if(NextIdentifier(nextIden))
     {
-        if(nextIden == InternalKeyword_Namespace)
-            return { InternalToken::Type::Kw_Namespace, InternalKeyword_Namespace };
-        if(nextIden == InternalKeyword_Start)
-            return { InternalToken::Type::Kw_Start, InternalKeyword_Start };
-        if(nextIden == InternalKeyword_Import)
-            return { InternalToken::Type::Kw_Import, InternalKeyword_Import };
-        return { InternalToken::Type::Identifier, nextIden };
+        if(nextIden == Keyword_Namespace)
+            return { Token::Type::Kw_Namespace, Keyword_Namespace };
+        if(nextIden == Keyword_Start)
+            return { Token::Type::Kw_Start, Keyword_Start };
+        if(nextIden == Keyword_Import)
+            return { Token::Type::Kw_Import, Keyword_Import };
+        return { Token::Type::Identifier, nextIden };
     }
 
-    throw InternalTokenException(
+    throw TokenException(
         std::string("Unknown token ") + std::string({ *pos_ }),
         line_, static_cast<int>(pos_ - &src_[0]), filename_);
-    return { InternalToken::Type::End, "" };
+    return { Token::Type::End, "" };
 }
 
+AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)
