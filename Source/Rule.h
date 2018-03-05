@@ -29,4 +29,18 @@ struct RawRule
     std::vector<Symbol> syms;
 };
 
+struct Rule
+{
+    using Name = int;
+
+    struct Symbol
+    {
+        RuleSymbolType type;
+        Name name;
+    };
+
+    Name left;
+    std::vector<Name> syms;
+};
+
 AGZ_NAMESPACE_END(AGZ)

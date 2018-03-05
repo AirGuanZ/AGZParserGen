@@ -6,6 +6,7 @@ Created by AirGuanZ
 #pragma once
 
 #include <map>
+#include <unordered_map>
 
 #include "Common.h"
 #include "Exception.h"
@@ -18,12 +19,7 @@ class ASTNode_Script;
 
 struct RawSymbolTable
 {
-    std::multimap<std::string, RawRule> rules;
-};
-
-struct SymbolTable
-{
-
+    std::unordered_multimap<std::string, RawRule> rules;
 };
 
 class SymbolTableException : public Exception
