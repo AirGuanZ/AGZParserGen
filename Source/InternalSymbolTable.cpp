@@ -268,5 +268,51 @@ Ptr<RawSymbolTable> SymbolTableBuilder::Build(Ptr<ASTNode_Script> root) const
     return globalizedSymbolTable;
 }
 
+SymbolTable::SymbolTable(const RawSymbolTable &rawSymTab)
+{
+    for(auto &it : rawSymTab.rules)
+    {
+        const RawRule &rawRule = it.second;
+        Rule::Name left = AddRawNonTernimatingSymbol(rawRule.left);
+
+        std::vector<Rule::Symbol> right(rawRule.syms.size());
+        for(size_t i = 0; i < rawRule.syms.size(); ++i)
+            right[i] = AddRawSymbol(rawRule.syms[i]);
+
+        rules_.insert(std::make_pair(left, Rule{ left, std::move(right) }));
+    }
+}
+
+Rule::Name SymbolTable::AddRawNonTernimatingSymbol(const std::string &name)
+{
+    auto it = transTable_.find(name);
+    if(it != transTable_.end())
+        return it->second;
+
+    Rule::Name newName = transTable_.size();
+    transTable_[name] = newName;
+    invTransTable_[newName] = RawRule::Symbol{ RuleSymbolType::NonTerminate, name };
+
+    return newName;
+}
+
+Rule::Symbol SymbolTable::AddRawSymbol(const RawRule::Symbol &sym)
+{
+    if(sym.type == RuleSymbolType::NonTerminate)
+        return Rule::Symbol{ RuleSymbolType::NonTerminate,
+                             AddRawNonTernimatingSymbol(sym.name) };
+
+    std::string idxName = "#" + sym.name;
+    auto it = transTable_.find(idxName);
+    if(it != transTable_.end())
+        return Rule::Symbol{ RuleSymbolType::Token, it->second };
+
+    Rule::Name newName = transTable_.size();
+    transTable_[idxName] = newName;
+    invTransTable_[newName] = sym;
+
+    return Rule::Symbol{ RuleSymbolType::Token, newName };
+}
+
 AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)

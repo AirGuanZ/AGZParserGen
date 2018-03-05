@@ -31,7 +31,7 @@ struct RawRule
 
 struct Rule
 {
-    using Name = int;
+    using Name = size_t;
 
     struct Symbol
     {
@@ -40,7 +40,7 @@ struct Rule
     };
 
     Name left;
-    std::vector<Name> syms;
+    std::vector<Symbol> syms;
 };
 
 AGZ_NAMESPACE_END(AGZ)

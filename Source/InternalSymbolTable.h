@@ -41,5 +41,27 @@ public:
     Ptr<RawSymbolTable> Build(Ptr<ASTNode_Script> root) const;
 };
 
+class SymbolTable
+{
+public:
+    SymbolTable(const RawSymbolTable &rawSymTab);
+
+private:
+    Rule::Name AddRawNonTernimatingSymbol(const std::string &sym);
+    Rule::Symbol AddRawSymbol(const RawRule::Symbol &sym);
+
+private:
+    //用来进行RawSymbol和Symbol之间的互转的表格
+
+    //对non-ternimating symbol，索引字符串是其名字
+    //对token symbol，索引字符串是# + 其名字
+    std::unordered_map<std::string, Rule::Name> transTable_;
+
+    std::unordered_map<Rule::Name, RawRule::Symbol> invTransTable_;
+
+private:
+    std::unordered_multimap<Rule::Name, Rule> rules_;
+};
+
 AGZ_NAMESPACE_END(Internal)
 AGZ_NAMESPACE_END(AGZ)
