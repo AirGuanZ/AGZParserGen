@@ -17,6 +17,9 @@ AGZ_NAMESPACE_BEGIN(Internal)
 
 AGZ_LOCAL_DEFINITIONS_BEGIN
 
+//作用域树的节点
+//既存储作用域形成的树结构，也保留到AST中对应的入口
+//由于一个作用域可能由多个AST入口共同形成，所以存放入口的是set
 struct ScopeNode
 {
     std::vector<std::string> globalName;
@@ -28,6 +31,8 @@ struct ScopeNode
     std::set<Ptr<ASTNode_Script>> entrys;
 };
 
+//把一个scope添加到一组subscope mapping中
+//若mapping中已存在同名subscope，就把新scope和该subscope合并
 void AddChildren(
     std::map<std::string, Ptr<ScopeNode>> &children,
     const std::string &childName,
@@ -58,6 +63,8 @@ void AddChildren(
     }
 }
 
+//给定一个AST节点，建立以其为根节点的作用域树
+//globalName和globalNameStr用作ScopeNode的名字前缀
 Ptr<ScopeNode> MakeScopeTree(
     Ptr<ASTNode_Script> node,
     const std::vector<std::string> &globalName,
@@ -108,6 +115,8 @@ Ptr<ScopeNode> MakeScopeTree(
     return rt;
 }
 
+//以某个作用域树节点为起点，搜索一个符号引用的目标
+//未找到时返回false
 bool FindReference(
     const std::vector<Ptr<ScopeNode>> &context,
     const Ptr<ASTNode_Symbol> sym,
@@ -186,6 +195,8 @@ bool FindReference(
     return false;
 }
 
+//把一棵作用域树中的所有规则涉及到的名字都
+//展开到全局作用域中，得到的“全局规则”存放在symbolTable中
 void GlobalizeSymbols(
     Ptr<ScopeNode> scope,
     std::vector<Ptr<ScopeNode>> &context,

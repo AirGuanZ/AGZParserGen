@@ -38,6 +38,7 @@ public:
 class SymbolTableBuilder
 {
 public:
+    //给定一棵AST，提取出所有规则，其中涉及到的名字都被展开到全局作用域中
     Ptr<RawSymbolTable> Build(Ptr<ASTNode_Script> root) const;
 };
 
