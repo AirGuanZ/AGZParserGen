@@ -25,9 +25,9 @@
     <ClCompile Include="..\Source\InternalSymbolTable.cpp" />
     <ClCompile Include="..\Source\InternalTokenizer.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
-    <ClCompile Include="..\Source\RuleTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\ASTNode.h" />
     <ClInclude Include="..\Source\InternalASTNode.h" />
     <ClInclude Include="..\Source\Common.h" />
     <ClInclude Include="..\Source\Exception.h" />

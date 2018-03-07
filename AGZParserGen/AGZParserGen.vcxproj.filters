@@ -23,6 +23,9 @@
     <Filter Include="Source\Transform">
       <UniqueIdentifier>{f4d15115-839d-4ea9-8abe-22f8dc5ea7c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\AST">
+      <UniqueIdentifier>{d512c60c-3ca8-4e47-9734-b1d7bb20f87e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Main.cpp">
@@ -42,9 +45,6 @@
     </ClCompile>
     <ClCompile Include="..\Source\InternalSymbolTable.cpp">
       <Filter>Source\Internal\ScopeTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\RuleTransform.cpp">
-      <Filter>Source\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\RuleTransform.h">
       <Filter>Source\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ASTNode.h">
+      <Filter>Source\AST</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
