@@ -20,6 +20,9 @@
     <Filter Include="Source\Internal\ScopeTree">
       <UniqueIdentifier>{47c83a30-d589-499f-a6e8-37712f5d9f5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Transform">
+      <UniqueIdentifier>{f4d15115-839d-4ea9-8abe-22f8dc5ea7c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Main.cpp">
@@ -39,6 +42,9 @@
     </ClCompile>
     <ClCompile Include="..\Source\InternalSymbolTable.cpp">
       <Filter>Source\Internal\ScopeTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\RuleTransform.cpp">
+      <Filter>Source\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\InternalSymbolTable.h">
       <Filter>Source\Internal\ScopeTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\RuleTransform.h">
+      <Filter>Source\Transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,7 @@ Created by AirGuanZ
 */
 
 #include "Common.h"
+#include "InternalSymbolTable.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 

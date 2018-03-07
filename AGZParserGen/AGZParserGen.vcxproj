@@ -25,6 +25,7 @@
     <ClCompile Include="..\Source\InternalSymbolTable.cpp" />
     <ClCompile Include="..\Source\InternalTokenizer.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
+    <ClCompile Include="..\Source\RuleTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\InternalASTNode.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="..\Source\InternalSymbolTable.h" />
     <ClInclude Include="..\Source\InternalTokenizer.h" />
     <ClInclude Include="..\Source\Rule.h" />
+    <ClInclude Include="..\Source\RuleTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Grammar.txt" />
