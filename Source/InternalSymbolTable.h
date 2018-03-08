@@ -76,6 +76,11 @@ public:
         }
     }
 
+    size_t GetOriginNonTerminatingSymbolCount(void) const
+    {
+        return transTable_.size();
+    }
+
     const Ptr<SpecRule> GetRuleByID(typename SpecRule::ID id)
     {
         auto it = IDToRules.find(id);

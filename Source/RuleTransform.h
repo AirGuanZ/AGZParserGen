@@ -83,16 +83,31 @@ public:
     using SpecRule = Rule<TokenName>;
 
     RuleTransformManager(Internal::SymbolTable<TokenMapping> &symTab)
+        : symTab_(symTab)
+    {
+        for(size_t i = 0; i < symTab.GetOriginNonTerminatingSymbolCount(); ++i)
+        {
+            for(size_t j = 0; j < i; ++j)
+            {
+                LeftRecursiveSubstitution(i, j);
+                EliminateDirectLeftRecursion(i);
+            }
+        }
+    }
+
+private:
+    void LeftRecursiveSubstitution(size_t i, size_t j)
     {
 
     }
 
-private:
-
+    void EliminateDirectLeftRecursion(size_t i);
 
 private:
     std::unordered_multimap<typename SpecRule::ID, Ptr<ASTTransform<TokenMapping>>>
         ASTTransforms_;
+
+    Internal::SymbolTable<TokenMapping> &symTab_;
 };
 
 AGZ_NAMESPACE_END(AGZ)
