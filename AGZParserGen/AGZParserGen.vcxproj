@@ -28,7 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\ASTNode.h" />
-    <ClInclude Include="..\Source\First.h" />
+    <ClInclude Include="..\Source\InternalFirstSet.h" />
     <ClInclude Include="..\Source\InternalASTNode.h" />
     <ClInclude Include="..\Source\Common.h" />
     <ClInclude Include="..\Source\Exception.h" />

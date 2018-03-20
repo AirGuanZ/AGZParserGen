@@ -62,9 +62,10 @@ public:
             const RawRule &rawRule = it.second;
             typename SpecRule::NonTerminatingName left = AddRawNonTernimatingSymbol(rawRule.left);
 
-            std::vector<typename SpecRule::Symbol> right(rawRule.syms.size());
+            std::vector<typename SpecRule::Symbol> right;
+            right.reserve(rawRule.syms.size());
             for(size_t i = 0; i < rawRule.syms.size(); ++i)
-                right[i] = AddRawSymbol(tokenMapping, rawRule.syms[i]);
+                right.push_back(AddRawSymbol(tokenMapping, rawRule.syms[i]));
 
             Ptr<SpecRule> newRule = MakePtr<SpecRule>();
             newRule->id    = leftToRules.size();
@@ -150,16 +151,10 @@ private:
     {
         if(sym.type == RuleSymbolType::NonTerminate)
         {
-            typename SpecRule::Symbol rt;
-            rt.type = RuleSymbolType::NonTerminate;
-            rt.NTName = AddRawNonTernimatingSymbol(sym.name);
-            return rt;
+            return SpecRule::Symbol(RuleSymbolType::NonTerminate, AddRawNonTernimatingSymbol(sym.name));
         }
 
-        typename SpecRule::Symbol rt;
-        rt.type = RuleSymbolType::Token;
-        rt.tokenName = tokenMapping(sym.name);
-        return rt;
+        return SpecRule::Symbol(RuleSymbolType::Token, tokenMapping(sym.name));
     }
 
 private:

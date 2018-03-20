@@ -5,6 +5,7 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <cstdlib>
 #include <vector>
 
 #include "Common.h"
@@ -45,7 +46,7 @@ struct Rule
         }
 
         Symbol(RuleSymbolType type, const TokenName &tN)
-            : type(type), NTName(0), NTName(tN)
+            : type(type), NTName(0), tokenName(tN)
         {
 
         }
