@@ -12,11 +12,11 @@ Created by AirGuanZ
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 
-template<typename _TokenMapping>
+template<typename _tokenMapping>
 class ASTNode
 {
 public:
-    using TokenMapping = _TokenMapping;
+    using TokenMapping = _tokenMapping;
     using TokenName = typename TokenMapping::TokenName;
     using SpecRule = Rule<TokenName>;
 

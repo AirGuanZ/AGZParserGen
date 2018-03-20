@@ -9,8 +9,6 @@ Created by AirGuanZ
 #include "InternalSymbolTable.h"
 #include "InternalTokenizer.h"
 
-#include "RuleTransform.h"
-
 int main(void)
 {
     using namespace AGZ::Internal;
@@ -67,7 +65,6 @@ int main(void)
         };
         TokenMapping tokenMapping;
         AGZ::Internal::SymbolTable<TokenMapping> sT(tokenMapping, *symTable);
-        AGZ::RuleTransformManager<TokenMapping> rT(sT);
 
         auto r = sT.GetRuleByID(0);
         sT.EraseRule(r);

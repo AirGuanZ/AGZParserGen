@@ -38,6 +38,18 @@ struct Rule
 
     struct Symbol
     {
+        Symbol(RuleSymbolType type, NonTerminatingName nt)
+            : type(type), NTName(nt), tokenName(TokenName())
+        {
+
+        }
+
+        Symbol(RuleSymbolType type, const TokenName &tN)
+            : type(type), NTName(0), NTName(tN)
+        {
+
+        }
+
         RuleSymbolType type;
         NonTerminatingName NTName;
         TokenName tokenName;

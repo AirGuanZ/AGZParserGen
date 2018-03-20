@@ -47,11 +47,11 @@ public:
         NonTerminatingName -> Rules
         RuleID             -> Rule
 */
-template<typename _TokenMapping>
+template<typename _tokenMapping>
 class SymbolTable
 {
 public:
-    using TokenMapping = _TokenMapping;
+    using TokenMapping = _tokenMapping;
     using TokenName = typename TokenMapping::TokenName;
     using SpecRule = Rule<TokenName>;
 
@@ -76,7 +76,8 @@ public:
         }
     }
 
-    size_t GetOriginNonTerminatingSymbolCount(void) const
+    //非终结符Name从0编码到GetNonTerminatingSymbolCount()-1
+    size_t GetNonTerminatingSymbolCount(void) const
     {
         return transTable_.size();
     }
@@ -89,7 +90,7 @@ public:
         return it->second;
     }
 
-    auto GetRulesByLeft(typename SpecRule::NonTerminatingName left)
+    auto GetRulesByLeft(typename SpecRule::NonTerminatingName left) const
     {
         return leftToRules.equal_range(left);
     }
