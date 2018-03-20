@@ -9,6 +9,14 @@ Created by AirGuanZ
 #include "InternalSymbolTable.h"
 #include "InternalTokenizer.h"
 
+/*
+    使用上的一点设计：
+        词法分析由用户自己完成，用户通过提供TokenMapping类作为模板参数来告诉Parser如何处理TokenStream
+        TokenMapping至少要做两件事情：把字符串形式的token名字映射为TokenName类型的值，这个映射是用来处理规则中的终结符的
+                                      把TokenMapping::Token映射为TokenName类型的值，这样Parser就能拿映射结果来匹配规则中的终结符
+        最后Parser给出来的AST中，每个终结符都会持有对应的TokenMapping::Token值
+*/
+
 int main(void)
 {
     using namespace AGZ::Internal;

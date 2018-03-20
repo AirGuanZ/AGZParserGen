@@ -18,6 +18,7 @@ class ASTNode
 public:
     using TokenMapping = _tokenMapping;
     using TokenName = typename TokenMapping::TokenName;
+    using Token = typename TokenMapping::Token;
     using SpecRule = Rule<TokenName>;
 
     struct ASTChild
@@ -30,7 +31,8 @@ public:
 
         Type type;
         Ptr<ASTNode> NTChild;
-        TokenName tokenChild;;
+        Token token;
+        TokenName tokenName;
     };
     
     typename SpecRule::ID ruleID;
