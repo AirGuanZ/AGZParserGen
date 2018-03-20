@@ -58,6 +58,11 @@ public:
         }
     }
 
+    const FirstSet<TokenName> &GetFirstSet(NTName nt) const
+    {
+        return fstSets_[nt];
+    }
+
 private:
     bool UpdateFirstSetByName(typename SpecRule::NonTerminatingName nt, const SymbolTable<TokenMapping> &symTab)
     {
