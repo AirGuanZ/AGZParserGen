@@ -23,7 +23,7 @@
     <Filter Include="Source\AST">
       <UniqueIdentifier>{d512c60c-3ca8-4e47-9734-b1d7bb20f87e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Internal\FirstSet">
+    <Filter Include="Source\Internal\LRTable">
       <UniqueIdentifier>{f5de5d4f-f06b-46cb-a54a-5380444700a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -73,7 +73,10 @@
       <Filter>Source\AST</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\InternalFirstSet.h">
-      <Filter>Source\Internal\FirstSet</Filter>
+      <Filter>Source\Internal\LRTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\InternalLRItem.h">
+      <Filter>Source\Internal\LRTable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

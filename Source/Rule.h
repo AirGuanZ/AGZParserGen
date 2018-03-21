@@ -30,11 +30,11 @@ struct RawRule
     std::vector<Symbol> syms;
 };
 
-template<typename _TokenName>
+template<typename _tokenName>
 struct Rule
 {
     using NonTerminatingName = size_t;
-    using TokenName = _TokenName;
+    using TokenName = _tokenName;
     using ID = size_t;
 
     struct Symbol

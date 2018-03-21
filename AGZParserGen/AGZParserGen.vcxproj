@@ -32,6 +32,7 @@
     <ClInclude Include="..\Source\InternalASTNode.h" />
     <ClInclude Include="..\Source\Common.h" />
     <ClInclude Include="..\Source\Exception.h" />
+    <ClInclude Include="..\Source\InternalLRItem.h" />
     <ClInclude Include="..\Source\InternalParser.h" />
     <ClInclude Include="..\Source\InternalSymbolTable.h" />
     <ClInclude Include="..\Source\InternalTokenizer.h" />
