@@ -5,9 +5,11 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <cassert>
 #include <set>
 
-#include "Rule.h"
+#include "InternalFirstSet.h"
+#include "InternalSymbolTable.h"
 
 AGZ_NAMESPACE_BEGIN(AGZ)
 AGZ_NAMESPACE_BEGIN(Internal)
@@ -50,7 +52,70 @@ public:
     using SpecRule = Rule<TokenName>;
 
 private:
-    void Closure(LRItemSet<TokenMapping> &itemSet);
+    void Closure(LRItemSet<TokenMapping> &itemSet,
+                 const SymbolTable<TokenMapping> &symTab,
+                 const FirstSetTable<TokenMapping> &fstSets)
+    {
+        bool changing = true;
+
+        //IMPROVE：分批次迭代优化
+        while(changing)
+        {
+            size_t oldSize = itemSet.size();
+            LRItemSet<TokenMapping> newItems;
+
+            for(auto &item : itemSet)
+            {
+                auto itemRule = symTab.GetRuleByID(item.ruleID);
+                assert(itemRule.get() != nullptr);
+
+                if(item.dotPosition >= itemRule->syms.size())
+                    continue;
+
+                if(itemRule->syms[item.dotPosition].type != RuleSymbolType::NonTerminate)
+                    continue;
+
+                auto ruleRange = symTab.GetRulesByLeft(itemRule->syms[item.dotPosition].NTName);
+                for(auto it = ruleRange.first; it != ruleRange.second; ++it)
+                {
+                    auto rule = it->second;
+                    if(item.dotPosition + 1 >= itemRule->syms.size())
+                    {
+                        LRItem<TokenMapping> newItem;
+                        newItem.ruleID = rule->id;
+                        newItem.dotPosition = 0;
+                        newItem.lookAhead = itemRule->lookAhead;
+                        newItems.insert(newItem);
+                    }
+                    else if(itemRule->syms[item.dotPosition + 1].type == RuleSymbolType::Token)
+                    {
+                        LRItem<TokenMapping> newItem;
+                        newItem.ruleID = rule->id;
+                        newItem.dotPosition = 0;
+                        newItem.lookAhead = itemRule->syms[item.dotPosition + 1].tokenName;
+                        newItems.insert(newItem);
+                    }
+                    else
+                    {
+                        auto &fstSet = fstSets.GetFirstSet(itemRule->syms[item.dotPosition + 1].NTName);
+                        for(TokenName tokenName : fstSet)
+                        {
+                            LRItem<TokenMapping> newItem;
+                            newItem.ruleID = rule->id;
+                            newItem.dotPosition = 0;
+                            newItem.lookAhead = tokenName;
+                            newItems.insert(newItem);
+                        }
+                    }
+                }
+            }
+
+            for(auto &item : newItems)
+                itemSet.insert(item);
+
+            changing = itemSet.size() > oldSize;
+        }
+    }
 };
 
 AGZ_NAMESPACE_END(Internal)

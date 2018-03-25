@@ -8,6 +8,7 @@ Created by AirGuanZ
 #include "InternalParser.h"
 #include "InternalSymbolTable.h"
 #include "InternalTokenizer.h"
+#include "InternalLRItem.h"
 
 /*
     使用上的一点设计：
@@ -77,6 +78,8 @@ int main(void)
         auto r = sT.GetRuleByID(0);
         sT.EraseRule(r);
         sT.AddRule(r);
+
+        LRItemAutomaton<TokenMapping> automaton;
     }
     catch(const TokenException &err)
     {
