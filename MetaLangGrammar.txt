@@ -1,0 +1,10 @@
+Import [AnotherAGZFile.agz]
+
+# comment
+Namespace
+{
+    B := X.NT + "integer";
+    A := B;                 (DefinitionOfA)
+}
+
+AGZStart := A + A;

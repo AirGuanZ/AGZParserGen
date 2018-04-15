@@ -1,6 +1,6 @@
 /*================================================================
-Filename: Common.h
-Date: 2018.3.2
+Filename: Utility.h
+Date: 2018.4.15
 Created by AirGuanZ
 ================================================================*/
 #pragma once
@@ -9,14 +9,15 @@ Created by AirGuanZ
 #include <string>
 #include <vector>
 
-#define AGZ_NAMESPACE_BEGIN(Name) namespace Name {
-#define AGZ_NAMESPACE_END(Name) }
+#define NS_BEGIN(Name) namespace Name {
+#define NS_END(Name) }
 
-#define AGZ_LOCAL_DEFINITION static
-#define AGZ_LOCAL_DEFINITIONS_BEGIN namespace {
-#define AGZ_LOCAL_DEFINITIONS_END }
+NS_BEGIN(AGZ)
 
-AGZ_NAMESPACE_BEGIN(AGZ)
+template<typename T>
+using Vec = std::vector<T>;
+
+using String = std::string;
 
 template<typename T>
 using Ptr = std::shared_ptr<T>;
@@ -30,8 +31,9 @@ inline Ptr<T> MakePtr(Args&&...args)
 template<typename T>
 using WPtr = std::weak_ptr<T>;
 
-bool ReadFile(const std::string &path, std::string &output);
+bool ReadTxt(const String &filename, String &output);
 
-std::string StrJoin(const std::vector<std::string> &strs, const std::string &join);
+std::string StrJoin(const Vec<String> &strs,
+                    const String &join);
 
-AGZ_NAMESPACE_END(AGZ)
+NS_END(AGZ)

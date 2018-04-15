@@ -1,5 +1,0 @@
-namespace NamespaceHaHaHa
-{
-    X := Y;
-    Y := "minecraft" + "microsoft";
-}
