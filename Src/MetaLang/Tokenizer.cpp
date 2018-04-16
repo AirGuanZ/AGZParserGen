@@ -153,7 +153,7 @@ Token Tokenizer::NextToken(void)
         while(true)
         {
             if(src_[idx_] == '\0')
-                throw TokenException("unclosed [", filename_, line_, idx_);
+                throw TokenException("unclosed [", filename_, line_);
             else if(src_[idx_] == ']')
             {
                 ++idx_;
@@ -172,7 +172,7 @@ Token Tokenizer::NextToken(void)
         while(true)
         {
             if(src_[idx_] == '\0')
-                throw TokenException("unclosed (", filename_, line_, idx_);
+                throw TokenException("unclosed (", filename_, line_);
             else if(src_[idx_] == ')')
             {
                 ++idx_;
@@ -187,7 +187,7 @@ Token Tokenizer::NextToken(void)
     if(ch == '\0')
         return Token{ TokenType::EndMark, "" };
     
-    throw TokenException("unknown token", filename_, line_, idx_);
+    throw TokenException("unknown token", filename_, line_);
     return Token{ TokenType::EndMark, "" };
 }
 

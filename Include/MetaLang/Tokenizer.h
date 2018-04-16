@@ -53,8 +53,8 @@ class TokenException
 public:
     TokenException(const String &msg,
                    const String &filename,
-                   int line, int srcPos)
-        : msg(msg), filename(filename), line(line), srcPos(srcPos)
+                   int line)
+        : msg(msg), filename(filename), line(line)
     {
 
     }
@@ -62,7 +62,6 @@ public:
     String msg;
     String filename;
     int line;
-    int srcPos;
 };
 
 class Tokenizer
