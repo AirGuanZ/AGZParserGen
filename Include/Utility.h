@@ -5,7 +5,9 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -16,6 +18,12 @@ NS_BEGIN(AGZ)
 
 template<typename T>
 using Vec = std::vector<T>;
+
+template<typename K, typename V>
+using Map = std::map<K, V>;
+
+template<typename E>
+using Set = std::set<E>;
 
 using String = std::string;
 
@@ -33,7 +41,6 @@ using WPtr = std::weak_ptr<T>;
 
 bool ReadTxt(const String &filename, String &output);
 
-std::string StrJoin(const Vec<String> &strs,
-                    const String &join);
+String StrJoin(const Vec<String> &strs, const String &join);
 
 NS_END(AGZ)

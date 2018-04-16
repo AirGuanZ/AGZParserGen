@@ -9,7 +9,7 @@ CPP_DPT_FILES = $(patsubst %.cpp, %.d, $(CPP_SRC_FILES))
 DST = ./Build/ParserGen
 
 $(DST) : $(CPP_OBJ_FILES)
-	$(CC) $^ -o $(DST)
+	$(CC) $^ -o $@
 
 %.o : %.cpp
 	$(CC) $(CC_FLAGS) -c $< -o $@

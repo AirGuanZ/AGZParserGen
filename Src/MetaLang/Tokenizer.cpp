@@ -14,9 +14,9 @@ Created by AirGuanZ
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
-const String KEYWORD_STR_NAMESPACE = "Namespace";
-const String KEYWORD_STR_START     = "AGZStart";
-const String KEYWORD_STR_IMPORT    = "Import";
+const String KEYWORD_STR_NAMESPACE = "namespace";
+const String KEYWORD_STR_START     = "aGZStart";
+const String KEYWORD_STR_IMPORT    = "import";
 
 const String &GetTokenTypeName(TokenType type)
 {
@@ -187,7 +187,7 @@ Token Tokenizer::NextToken(void)
     if(ch == '\0')
         return Token{ TokenType::EndMark, "" };
     
-    throw TokenException("unknown token at ", filename_, line_, idx_);
+    throw TokenException("unknown token", filename_, line_, idx_);
     return Token{ TokenType::EndMark, "" };
 }
 

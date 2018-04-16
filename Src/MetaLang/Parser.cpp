@@ -55,7 +55,6 @@ Ptr<ASTNode_Script> Parser::ParseScript(Tokenizer &toks)
         stmts.push_back(std::move(stmt));
 
     auto rt = MakePtr<ASTNode_Script>();
-    rt->filename = toks.Filename();
     rt->stmts    = std::move(stmts);
     return rt;
 }
@@ -75,9 +74,10 @@ Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
         }
 
         auto rt = MakePtr<ASTNode_Statement>();
+        rt->start           = MakePtr<ASTNode_Start>();
         rt->start->filename = toks.Filename();
         rt->start->line     = toks.Line();
-        rt->start->sym = ParseSymbol(toks);
+        rt->start->sym      = ParseSymbol(toks);
 
         if(!toks.Match(TokenType::Semicolon))
         {
@@ -116,8 +116,10 @@ Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
         }
 
         auto rt = MakePtr<ASTNode_Statement>();
-        rt->ns->name = name;
-        rt->ns->content = std::move(content->stmts);
+        rt->ns                 = MakePtr<ASTNode_Namespace>();
+        rt->ns->name           = name;
+        rt->ns->content        = MakePtr<ASTNode_Script>();
+        rt->ns->content->stmts = std::move(content->stmts);
         return rt;
     }
 
@@ -141,6 +143,7 @@ Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
         auto content = ParseFromFile(
             path, toks.Filename(), toks.Line());
         auto rt = MakePtr<ASTNode_Statement>();
+        rt->import          = MakePtr<ASTNode_Import>();
         rt->import->path    = std::move(path);
         rt->import->content = std::move(content);
         return rt;
@@ -154,7 +157,7 @@ Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
         int leftLine = toks.Line();
         toks.Next();
 
-        if(toks.Match(TokenType::DefinedAs))
+        if(!toks.Match(TokenType::DefinedAs))
         {
             throw ParserException(
                 ":= expected", toks.Filename(), toks.Line());
@@ -172,21 +175,22 @@ Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
         } while(toks.Match(TokenType::Plus));
 
         auto rt = MakePtr<ASTNode_Statement>();
+        rt->rule           = MakePtr<ASTNode_Rule>();
         rt->rule->line     = leftLine;
         rt->rule->filename = toks.Filename();
         rt->rule->left     = std::move(left);
         rt->rule->right    = std::move(right);
-
-        if(toks.Current().type == TokenType::RuleName)
-        {
-            rt->rule->rulename = std::move(toks.Current().str);
-            toks.Next();
-        }
         
         if(!toks.Match(TokenType::Semicolon))
         {
             throw ParserException(
                 "; expected", toks.Filename(), toks.Line());
+        }
+
+        if(toks.Current().type == TokenType::RuleName)
+        {
+            rt->rule->rulename = std::move(toks.Current().str);
+            toks.Next();
         }
 
         return rt;

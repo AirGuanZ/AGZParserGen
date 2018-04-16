@@ -22,7 +22,6 @@ struct ASTNode_Symbol;
 
 struct ASTNode_Script
 {
-    String filename;
     Vec<Ptr<ASTNode_Statement>> stmts;
 };
 
@@ -37,7 +36,7 @@ struct ASTNode_Statement
 struct ASTNode_Namespace
 {
     String name;
-    Vec<Ptr<ASTNode_Statement>> content;
+    Ptr<ASTNode_Script> content;
 };
 
 struct ASTNode_Start

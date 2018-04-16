@@ -1,5 +1,8 @@
 #include <iostream>
 
+#include <MetaLang/Parser.h>
+#include <MetaLang/PrettyPrinter.h>
+#include <MetaLang/Scope.h>
 #include <MetaLang/Tokenizer.h>
 
 int main(void)
@@ -29,19 +32,24 @@ int main(void)
             )____";
 
         Tokenizer tokenizer("namespace Global {" + src + "}", "TestFilename");
-        
+        Parser parser;
+        auto ast = parser.ParseFromTokens(tokenizer);
+        PrettyPrinter().Print(std::cout, ast, "");
 
-        do
-        {
-            const Token &tok = tokenizer.Current();
-            tokenizer.Next();
-
-            std::cout << GetTokenTypeName(tok.type) << ", " << tok.str << std::endl;
-        } while(!tokenizer.Match(TokenType::EndMark));
+        auto scopeTree = BuildScopeTree(ast, { }, "");
     }
     catch(const TokenException &err)
     {
         std::cout << "Lex error around line "
+                  << err.line
+                  << " in file "
+                  << err.filename
+                  << ":\n\t"
+                  << err.msg << std::endl;
+    }
+    catch(const ParserException &err)
+    {
+        std::cout << "Syntax error around line "
                   << err.line
                   << " in file "
                   << err.filename
