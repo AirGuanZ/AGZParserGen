@@ -22,6 +22,7 @@
     <ClInclude Include="..\Include\MetaLang\AST.h" />
     <ClInclude Include="..\Include\MetaLang\Parser.h" />
     <ClInclude Include="..\Include\MetaLang\PrettyPrinter.h" />
+    <ClInclude Include="..\Include\MetaLang\RuleTable.h" />
     <ClInclude Include="..\Include\MetaLang\Scope.h" />
     <ClInclude Include="..\Include\MetaLang\Tokenizer.h" />
     <ClInclude Include="..\Include\Utility.h" />
@@ -30,6 +31,7 @@
     <ClCompile Include="..\Src\Main.cpp" />
     <ClCompile Include="..\Src\MetaLang\Parser.cpp" />
     <ClCompile Include="..\Src\MetaLang\PrettyPrinter.cpp" />
+    <ClCompile Include="..\Src\MetaLang\RuleTable.cpp" />
     <ClCompile Include="..\Src\MetaLang\Scope.cpp" />
     <ClCompile Include="..\Src\MetaLang\Tokenizer.cpp" />
     <ClCompile Include="..\Src\Utility.cpp" />
