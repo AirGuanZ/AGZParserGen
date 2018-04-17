@@ -9,6 +9,7 @@ Created by AirGuanZ
 #include <memory>
 #include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #define NS_BEGIN(Name) namespace Name {
@@ -24,6 +25,12 @@ using Map = std::map<K, V>;
 
 template<typename E>
 using Set = std::set<E>;
+
+template<typename K, typename V>
+using UrdMap = std::unordered_map<K, V>;
+
+template<typename K, typename V>
+using UrdMulMap = std::unordered_multimap<K, V>;
 
 using String = std::string;
 
