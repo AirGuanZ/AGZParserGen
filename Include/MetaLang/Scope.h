@@ -3,6 +3,8 @@ Filename: MetaLang/Scope.h
 Date: 2018.4.16
 Created by AirGuanZ
 ================================================================*/
+#pragma once
+
 #include <MetaLang/AST.h>
 
 NS_BEGIN(AGZ)

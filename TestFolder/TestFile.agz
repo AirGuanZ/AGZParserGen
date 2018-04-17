@@ -1,4 +1,4 @@
-namespace TestNamespace
+namespace NamespaceHaHaHa
 {
-    B := "minecraft";
+    Y := "minecraft";
 }

@@ -12,6 +12,26 @@ Created by AirGuanZ
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
+String RawRule::ToString(void) const
+{
+    auto ToStr = [](const RawSymbol &sym) -> String
+    {
+        return sym.type == SymbolType::Token ?
+                    "\"" + sym.sym + "\"" :
+                    sym.sym;
+    };
+
+    std::stringstream sst;
+    sst << left << " := ";
+    sst << ToStr(right[0]);
+    for(size_t i = 1; i != right.size(); ++i)
+        sst << " + " << ToStr(right[i]);
+    sst << ";";
+    if(name.size())
+        sst << "(" << name << ")";
+    return sst.str();
+}
+
 namespace
 {
     bool FindReference(const Ptr<ScopeNode> context,
@@ -29,7 +49,7 @@ namespace
         if(!context)
             return false;
         auto ctx = context;
-        
+
         size_t symScopeIdxEnd = sym->idens.size() - 1;
         for(size_t symScopeIdx = 0; symScopeIdx < symScopeIdxEnd; ++symScopeIdx)
         {
@@ -138,8 +158,8 @@ namespace
                         if(!FindReference(ctx, (*right)[i], ruleSyms[i]))
                         {
                             throw RuleTableException(
-                                "Symbol reference(s) for "
-                              + (name ? *name : globalLeft)
+                                "Symbol reference for "
+                              + StrJoin((*right)[i]->idens, ".")
                               + " not found", *filename, line);
                         }
                     }
