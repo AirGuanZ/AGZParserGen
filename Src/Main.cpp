@@ -5,6 +5,7 @@
 #include <MetaLang/RawRuleTable.h>
 #include <MetaLang/Scope.h>
 #include <MetaLang/Tokenizer.h>
+#include <FirstSet.h>
 #include <RuleTable.h>
 
 int main(void)
@@ -15,22 +16,20 @@ int main(void)
     {
         const std::string src =
             R"____(# this is a comment
-                   import [TestFolder/TestFile.agz]
-                   namespace MyNamespace # this is another comment
+                   namespace Expr
                    {
-                       A := "TestTokenName";
-                       B := A + B;
-                       B := A;                 (DefinitionOfB1)
-                       B := NamespaceHaHaHa.Y; (DefinitionOfB2)
-                       namespace MyNamespace
-                       {
-                           B := A;
-                           B := Global.MyNamespace.B;
-                       }
+                       F  := "integer";             (Int)
+                       F  := "ParL" + F + "ParR";   (Par)
+                       T  := F + T_;                (FRest)
+                       T  := F;                     (F)
+                       T_ := "Times" + F;           (F)
+                       T_ := "Times" + F + T_;      (FRest)
+                       E  := T;                     (T)
+                       E  := T + E_;                (TRest)
+                       E_ := "PLus" + T;            (T)
+                       E_ := "PLus" + T + E_;       (TRest)
                    }
-                   M := "hahaha" + MyNamespace.A;
-                   Z := M;
-                   AGZ_Start := MyNamespace.B;
+                   AGZStart := Expr.E;
             )____";
 
         Tokenizer tokenizer("namespace Global {" + src + "}", "TestFilename");
@@ -56,6 +55,16 @@ int main(void)
         AGZ::RuleTable<TA> ruleTable;
         TA tA;
         ruleTable.Build(*rawRuleTab, tA);
+
+        AGZ::FirstSetTable<TA> fstTab(ruleTable);
+        for(AGZ::NTIdx NT = 0;NT != ruleTable.GetNTCount(); ++NT)
+        {
+            std::cout << AGZ::String(20, '=') << std::endl;
+            std::cout << ruleTable.Detrans(NT) << std::endl;
+            for(auto &tok : fstTab.GetFirstSet(NT))
+                std::cout << tok << " ";
+            std::cout << std::endl;
+        }
     }
     catch(const TokenException &err)
     {

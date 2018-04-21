@@ -65,7 +65,7 @@ public:
 
     const String &Detrans(NTIdx NT) const;
 
-    // 合法的NT index范围为[1, ruleTable.GetNTCount()]
+    // 合法的NT index范围为[0, ruleTable.GetNTCount() - 1]
     NTIdx GetNTCount(void) const;
 
     const Map<String, Ptr<Rule<_tA>>> &GetRulesByLeft(NTIdx left) const;
@@ -86,7 +86,7 @@ private:
     // 下一个新来的nt应分配的nt index
     NTIdx nextNTIdx_;
 
-    // rule的自动名字生成下标
+    // rule的名字生成下标
     size_t autoRuleNameIdx_;
 
     // non-terminating symbol -> (rule name -> pointer to rule)
