@@ -1,12 +1,12 @@
 /*================================================================
-Filename: MetaLang/RuleTable.cpp
+Filename: MetaLang/RawRuleTable.cpp
 Date: 2018.4.17
 Created by AirGuanZ
 ================================================================*/
 #include <cassert>
 #include <sstream>
 
-#include <MetaLang/RuleTable.h>
+#include <MetaLang/RawRuleTable.h>
 #include <MetaLang/Tokenizer.h>
 
 NS_BEGIN(AGZ)
@@ -14,9 +14,9 @@ NS_BEGIN(MetaLang)
 
 String RawRule::ToString(void) const
 {
-    auto ToStr = [](const RawSymbol &sym) -> String
+    auto ToStr = [](const RawSym &sym) -> String
     {
-        return sym.type == SymbolType::Token ?
+        return sym.type == SymT::Token ?
                     "\"" + sym.sym + "\"" :
                     sym.sym;
     };
@@ -36,11 +36,11 @@ namespace
 {
     bool FindReference(const Ptr<ScopeNode> context,
                        const Ptr<ASTNode_Symbol> sym,
-                       RawSymbol &result)
+                       RawSym &result)
     {
         if(sym->token.size())
         {
-            result.type = SymbolType::Token;
+            result.type = SymT::Token;
             result.sym  = sym->token;
             return true;
         }
@@ -79,7 +79,7 @@ namespace
         {
             if(ctx->localSyms.find(sym->idens.back()) != ctx->localSyms.end())
             {
-                result.type = SymbolType::NT;
+                result.type = SymT::NT;
                 result.sym  = (ctx->globalNameStr.empty() ? "" : ctx->globalNameStr + ".")
                             + sym->idens.back();
                 return true;
@@ -91,7 +91,7 @@ namespace
             {
                 if(ctx->localSyms.find(sym->idens.back()) != ctx->localSyms.end())
                 {
-                    result.type = SymbolType::NT;
+                    result.type = SymT::NT;
                     result.sym  = (ctx->globalNameStr.empty() ? "" : ctx->globalNameStr + ".")
                                 + sym->idens.back();
                     return true;
@@ -152,12 +152,12 @@ namespace
                         (ctx->globalNameStr.empty() ? "" : ctx->globalNameStr + ".")
                       + *left;
                     
-                    Vec<RawSymbol> ruleSyms(right->size());
+                    Vec<RawSym> ruleSyms(right->size());
                     for(size_t i = 0;i != right->size(); ++i)
                     {
                         if(!FindReference(ctx, (*right)[i], ruleSyms[i]))
                         {
-                            throw RuleTableException(
+                            throw RawRuleTableException(
                                 "Symbol reference for "
                               + StrJoin((*right)[i]->idens, ".")
                               + " not found", *filename, line);
@@ -165,7 +165,7 @@ namespace
                     }
 
                     symTab.insert({ globalLeft, RawRule{ (name ? *name : ""),
-                                    globalLeft, std::move(ruleSyms) } });
+                                                         globalLeft, std::move(ruleSyms) } });
                 }
             }
         }

@@ -23,6 +23,9 @@ using Vec = std::vector<T>;
 template<typename K, typename V>
 using Map = std::map<K, V>;
 
+template<typename K, typename V>
+using MulMap = std::multimap<K, V>;
+
 template<typename E>
 using Set = std::set<E>;
 

@@ -1,5 +1,5 @@
 /*================================================================
-Filename: MetaLang/RuleTable.h
+Filename: MetaLang/RawRuleTable.h
 Date: 2018.4.17
 Created by AirGuanZ
 ================================================================*/
@@ -11,29 +11,30 @@ Created by AirGuanZ
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
-class RuleTableException
+class RawRuleTableException
 {
 public:
-    RuleTableException(const String &msg, const String &filename, int line)
+    RawRuleTableException(const String &msg, const String &filename, int line)
         : msg(msg), filename(filename), line(line)
     {
 
     }
 
-    String msg;
-    String filename;
-    int line;
+    const String msg;
+    const String filename;
+    const int line;
 };
 
-enum class SymbolType
+/* 符号类型 */
+enum class SymT
 {
-    Token,
-    NT
+    Token,  // 终结符
+    NT      // 非终结符
 };
 
-struct RawSymbol
+struct RawSym
 {
-    SymbolType type;
+    SymT type;
     String sym;
 };
 
@@ -41,7 +42,7 @@ struct RawRule
 {
     String name;
     String left;
-    Vec<RawSymbol> right;
+    Vec<RawSym> right;
 
     String ToString(void) const;
 };

@@ -59,9 +59,9 @@ public:
 
     }
 
-    String msg;
-    String filename;
-    int line;
+    const String msg;
+    const String filename;
+    const int line;
 };
 
 class Tokenizer

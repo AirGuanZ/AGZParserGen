@@ -15,7 +15,7 @@ NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
 const String KEYWORD_STR_NAMESPACE = "namespace";
-const String KEYWORD_STR_START     = "aGZStart";
+const String KEYWORD_STR_START     = "AGZStart";
 const String KEYWORD_STR_IMPORT    = "import";
 
 const String &GetTokenTypeName(TokenType type)

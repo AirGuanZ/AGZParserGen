@@ -2,9 +2,10 @@
 
 #include <MetaLang/Parser.h>
 #include <MetaLang/PrettyPrinter.h>
-#include <MetaLang/RuleTable.h>
+#include <MetaLang/RawRuleTable.h>
 #include <MetaLang/Scope.h>
 #include <MetaLang/Tokenizer.h>
+#include <RuleTable.h>
 
 int main(void)
 {
@@ -33,14 +34,28 @@ int main(void)
             )____";
 
         Tokenizer tokenizer("namespace Global {" + src + "}", "TestFilename");
+
         Parser parser;
         auto ast = parser.ParseFromTokens(tokenizer);
-        PrettyPrinter().Print(std::cout, ast, "");
 
         auto scopeTree = BuildScopeTree(ast, { }, "");
         auto rawRuleTab = RawRuleTableBuilder().Build(scopeTree);
+        
         for(auto &it : *rawRuleTab)
-            std::cout << it.second.ToString() << std::endl;            
+            std::cout << it.second.ToString() << std::endl;
+
+        struct TA
+        {
+            using Token = int;
+
+            Token ToToken(const AGZ::String &tok) const
+            {
+                return 0;
+            }
+        };
+        AGZ::RuleTable<TA> ruleTable;
+        TA tA;
+        ruleTable.Build(*rawRuleTab, tA);
     }
     catch(const TokenException &err)
     {
@@ -60,7 +75,7 @@ int main(void)
                   << ":\n\t"
                   << err.msg << std::endl;
     }
-    catch(const RuleTableException &err)
+    catch(const RawRuleTableException &err)
     {
         std::cout << "Symbol error around line "
                   << err.line
