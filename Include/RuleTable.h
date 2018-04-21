@@ -5,6 +5,8 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <cassert>
+
 #include <MetaLang/RawRuleTable.h>
 #include <Utility.h>
 
@@ -19,10 +21,7 @@ template<typename _tA>
 using Tok = typename _tA::Token;
 
 template<typename _tA>
-inline Tok<_tA> ToToken(_tA &tA, const String &tok)
-{
-    return tA.ToToken(tok);
-}
+inline Tok<_tA> ToToken(_tA &tA, const String &tok);
 
 /* 单个符号 */
 template<typename _tA>
@@ -45,11 +44,7 @@ struct Rule
 class RuleTableException
 {
 public:
-    RuleTableException(const String &msg)
-        : msg(msg)
-    {
-
-    }
+    RuleTableException(const String &msg);
     
     const String msg;
 };
@@ -58,83 +53,29 @@ template<typename _tA>
 class RuleTable
 {
 public:
-    RuleTable(void)
-        : nextNTIdx_(1), autoRuleNameIdx_(1)
-    {
-
-    }
+    RuleTable(void);
 
     void Build(const MetaLang::RawRuleTableBuilder::RawRuleTable &rawRules,
-               _tA &tA)
-    {
-        Clear();
-        Append(rawRules, tA);
-    }
+               _tA &tA);
 
     void Append(const MetaLang::RawRuleTableBuilder::RawRuleTable &rawRules,
-                _tA &tA)
-    {
-        for(auto &it : rawRules)
-        {
-            const String &left = it.first;
-            const auto &rule   = it.second;
+                _tA &tA);
 
-            NTIdx newLeft = GetNTIdx(left);
-            Vec<Sym<_tA>> newRight(rule.right.size());
-            for(size_t i = 0;i != newRight.size(); ++i)
-                newRight[i] = GetSym(rule.right[i], tA);
-            
-            auto newRule = MakePtr<Rule<_tA>>();
-            newRule->name  = rule.name.empty() ? GenRuleName() :
-                                                 rule.name;
-            newRule->left  = newLeft;
-            newRule->right = std::move(newRight);
+    void Clear(void);
 
-            auto &nMap = rules_[newLeft];
-            auto oldIt = nMap.find(newRule->name);
-            if(oldIt != nMap.end())
-            {
-                throw RuleTableException(
-                    "rule name conflict between " +
-                    rule.ToString() + " and a previous rule");
-            }
-            else
-                nMap[newRule->name] = newRule;
-        }
-    }
+    const String &Detrans(NTIdx NT) const;
 
-    void Clear(void)
-    {
-        idx2NT_.clear();
-        NT2Idx_.clear();
-        nextNTIdx_ = 1;
-        autoRuleNameIdx_ = 1;
-        rules_.clear();
-    }
+    // 合法的NT index范围为[1, ruleTable.GetNTCount()]
+    NTIdx GetNTCount(void) const;
+
+    const Map<String, Ptr<Rule<_tA>>> &GetRulesByLeft(NTIdx left) const;
 
 private:
-    NTIdx GetNTIdx(const String &NT)
-    {
-        auto it = NT2Idx_.find(NT);
-        if(it == NT2Idx_.end())
-        {
-            NT2Idx_[NT] = nextNTIdx_;
-            return nextNTIdx_++;
-        }
-        return it->second;
-    }
+    NTIdx GetNTIdx(const String &NT);
 
-    Sym<_tA> GetSym(const MetaLang::RawSym &sym, _tA &tA)
-    {
-        if(sym.type == SymT::NT)
-            return Sym<_tA>{ SymT::NT, GetNTIdx(sym.sym) };
-        return Sym<_tA>{ SymT::Token, 0, ToToken(tA, sym.sym) };
-    }
+    Sym<_tA> GetSym(const MetaLang::RawSym &sym, _tA &tA);
 
-    String GenRuleName(void)
-    {
-        return "@rulename" + std::to_string(autoRuleNameIdx_++);
-    }
+    String GenRuleName(void);
 
 private:
     // nt index -> nt name
@@ -153,3 +94,5 @@ private:
 };
 
 NS_END(AGZ)
+
+#include <RuleTable.inl>

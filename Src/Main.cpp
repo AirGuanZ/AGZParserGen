@@ -46,11 +46,11 @@ int main(void)
 
         struct TA
         {
-            using Token = int;
+            using Token = AGZ::String;
 
             Token ToToken(const AGZ::String &tok) const
             {
-                return 0;
+                return tok;
             }
         };
         AGZ::RuleTable<TA> ruleTable;

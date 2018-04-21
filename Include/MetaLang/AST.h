@@ -5,6 +5,20 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+/*
+    元语言AST
+
+    Script    := Statement*
+
+    Statement := Namespace | Start | Import | Rule
+    Namespace := "namespace" Identifier "{" Script "}"
+    Start     := "AGZStart" := Symbol
+    Import    := "import" Path
+    Rule      := Identifier ":=" Symbol(+Symbol)*
+
+    Symbol    := Token | Identifier(.Identifier)*
+*/
+
 #include <vector>
 
 #include <Utility.h>
