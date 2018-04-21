@@ -7,7 +7,7 @@ Created by AirGuanZ
 NS_BEGIN(AGZ)
 
 template<typename _tA>
-inline Tok<_tA> ToToken(_tA &tA, const String &tok)
+inline TokT<_tA> ToToken(_tA &tA, const String &tok)
 {
     return tA.ToToken(tok);
 }

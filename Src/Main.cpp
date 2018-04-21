@@ -6,6 +6,7 @@
 #include <MetaLang/Scope.h>
 #include <MetaLang/Tokenizer.h>
 #include <FirstSet.h>
+#include <LRItem.h>
 #include <RuleTable.h>
 
 int main(void)
@@ -15,22 +16,18 @@ int main(void)
     try
     {
         const std::string src =
-            R"____(# this is a comment
-                   namespace Expr
-                   {
-                       F  := "integer";             (Int)
-                       F  := "ParL" + F + "ParR";   (Par)
-                       T  := F + T_;                (FRest)
-                       T  := F;                     (F)
-                       T_ := "Times" + F;           (F)
-                       T_ := "Times" + F + T_;      (FRest)
-                       E  := T;                     (T)
-                       E  := T + E_;                (TRest)
-                       E_ := "PLus" + T;            (T)
-                       E_ := "PLus" + T + E_;       (TRest)
-                   }
-                   AGZStart := Expr.E;
-            )____";
+             R"____(# this is a comment
+                    namespace Expr
+                    {
+                        F := "integer";             (Int)
+                        F := "lpar" + F + "rpar";   (Par)
+                        T := F;                     (F)
+                        T := F + "times" + T;       (FRest)
+                        E := T;                     (T)
+                        E := T + "plus" + E;        (TRest)
+                    }
+                    AGZStart := Expr.E;
+             )____";
 
         Tokenizer tokenizer("namespace Global {" + src + "}", "TestFilename");
 
@@ -45,15 +42,15 @@ int main(void)
 
         struct TA
         {
-            using Token = AGZ::String;
+            using TokenType = AGZ::String;
 
-            Token ToToken(const AGZ::String &tok) const
+            TokenType ToToken(const AGZ::String &tok) const
             {
                 return tok;
             }
-        };
+        } tA;
+
         AGZ::RuleTable<TA> ruleTable;
-        TA tA;
         ruleTable.Build(*rawRuleTab, tA);
 
         AGZ::FirstSetTable<TA> fstTab(ruleTable);
@@ -65,6 +62,8 @@ int main(void)
                 std::cout << tok << " ";
             std::cout << std::endl;
         }
+
+        AGZ::LRItemSetConstructor<TA> LRItemCons;
     }
     catch(const TokenException &err)
     {

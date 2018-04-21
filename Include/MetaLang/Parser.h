@@ -22,9 +22,9 @@ public:
 
     }
 
-    int line;
-    String filename;
     String msg;
+    String filename;
+    int line;
 };
 
 class Parser

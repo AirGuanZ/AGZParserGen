@@ -18,10 +18,10 @@ using SymT = MetaLang::SymT;
 using NTIdx = size_t;
 
 template<typename _tA>
-using Tok = typename _tA::Token;
+using TokT = typename _tA::TokenType;
 
 template<typename _tA>
-inline Tok<_tA> ToToken(_tA &tA, const String &tok);
+inline TokT<_tA> ToToken(_tA &tA, const String &tok);
 
 /* 单个符号 */
 template<typename _tA>
@@ -29,7 +29,7 @@ struct Sym
 {
     SymT type;
     NTIdx NT;
-    Tok<_tA> tok;
+    TokT<_tA> tok;
 };
 
 /* 单条规则 */

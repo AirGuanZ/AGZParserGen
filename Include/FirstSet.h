@@ -16,7 +16,7 @@ template<typename _tA>
 class FirstSetTable
 {
 public:
-    using FstSet = Set<typename _tA::Token>;
+    using FstSet = Set<TokT<_tA>>;
 
     FirstSetTable(const RuleTable<_tA> &ruleTab);
 

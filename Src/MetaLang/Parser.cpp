@@ -64,7 +64,6 @@ Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
     // Start definition
     // AGZStart := Symbol;
 
-    int startLine = toks.Line();
     if(toks.Match(TokenType::Kw_Start))
     {
         if(!toks.Match(TokenType::DefinedAs))
