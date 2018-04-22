@@ -48,6 +48,10 @@ extern const String KEYWORD_STR_NAMESPACE;
 extern const String KEYWORD_STR_START;
 extern const String KEYWORD_STR_IMPORT;
 
+extern const String GLOBAL_NAMESPACE_STR;
+
+extern const String TOKEN_STR_ENDMARK;
+
 class TokenException
 {
 public:

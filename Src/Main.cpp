@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include <MetaLang/Parser.h>
 #include <MetaLang/PrettyPrinter.h>
@@ -63,7 +64,8 @@ int main(void)
             std::cout << std::endl;
         }
 
-        AGZ::LRItemSetConstructor<TA> LRItemCons;
+        AGZ::LRItemSetConstructor<TA> LRCons;
+        LRCons.Build(ruleTable, fstTab, tA);
     }
     catch(const TokenException &err)
     {

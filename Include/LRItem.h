@@ -29,9 +29,50 @@ template<typename _tA>
 class LRItemSetConstructor
 {
 public:
+    void Build(const RuleTable<_tA> &ruleTab,
+               const FirstSetTable<_tA> &fstSets,
+               _tA &tA);
+
+    void Clear(void);
+
+private:
     void Closure(LRSet<_tA> &itemSet,
                  const RuleTable<_tA> &ruleTab,
                  const FirstSetTable<_tA> &fstSets) const;
+
+    LRSet<_tA> Goto(const LRSet<_tA> &src,
+                    const RuleTable<_tA> &ruleTab,
+                    const FirstSetTable<_tA> &fstSets,
+                    const TokT<_tA> &tok) const;
+
+    size_t GetIndexOf(LRSet<_tA> &&s);
+
+private:
+    Vec<LRSet<_tA>> idx2Set_;
+    Map<LRSet<_tA>, size_t> set2Idx_;
+
+    Deq<size_t> unmarkedSets_;
+
+    struct TransInput
+    {
+        size_t setIdx;
+        TokT<_tA> tok;
+    };
+
+    class CompareTransInput
+    {
+    public:
+        bool operator()(const TransInput &L, const TransInput &R)
+        {
+            if(L.setIdx < R.setIdx)
+                return true;
+            if(L.setIdx > R.setIdx)
+                return false;
+            return L.tok < R.tok;
+        }
+    };
+
+    Map<TransInput, size_t, CompareTransInput> trans_;
 };
 
 NS_END(AGZ)

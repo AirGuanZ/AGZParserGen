@@ -7,6 +7,7 @@ Created by AirGuanZ
 
 #include <map>
 #include <memory>
+#include <deque>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -20,11 +21,14 @@ NS_BEGIN(AGZ)
 template<typename T>
 using Vec = std::vector<T>;
 
-template<typename K, typename V>
-using Map = std::map<K, V>;
+template<typename K, typename V, typename Compare = std::less<K>>
+using Map = std::map<K, V, Compare>;
 
 template<typename K, typename V>
 using MulMap = std::multimap<K, V>;
+
+template<typename T>
+using Deq = std::deque<T>;
 
 template<typename E>
 using Set = std::set<E>;

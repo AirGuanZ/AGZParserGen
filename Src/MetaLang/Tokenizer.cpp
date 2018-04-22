@@ -18,6 +18,10 @@ const String KEYWORD_STR_NAMESPACE = "namespace";
 const String KEYWORD_STR_START     = "AGZStart";
 const String KEYWORD_STR_IMPORT    = "import";
 
+const String GLOBAL_NAMESPACE_STR  = "Global";
+
+const String TOKEN_STR_ENDMARK     = "#";
+
 const String &GetTokenTypeName(TokenType type)
 {
     static const String TOKEN_TYPE_NAMES[] =

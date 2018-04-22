@@ -65,6 +65,10 @@ public:
 
     const String &Detrans(NTIdx NT) const;
 
+    NTIdx Trans(const String &NT) const;
+
+    bool HasNTDef(const String &NT) const;
+
     // 合法的NT index范围为[0, ruleTable.GetNTCount() - 1]
     NTIdx GetNTCount(void) const;
 

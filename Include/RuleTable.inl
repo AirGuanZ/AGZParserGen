@@ -77,9 +77,31 @@ inline void RuleTable<_tA>::Clear(void)
 template<typename _tA>
 inline const String &RuleTable<_tA>::Detrans(NTIdx NT) const
 {
-    static const String EMPTY_STR;
     auto it = idx2NT_.find(NT);
-    return it != idx2NT_.end() ? it->second : EMPTY_STR;
+    if(it == idx2NT_.end())
+    {
+        throw RuleTableException(
+            "invalid NT index " + std::to_string(NT));
+    }
+    return it->second;
+}
+
+template<typename _tA>
+NTIdx RuleTable<_tA>::Trans(const String &NT) const
+{
+    auto it = NT2Idx_.find(NT);
+    if(it == NT2Idx_.end())
+    {
+        throw RuleTableException(
+            "invalid NT name " + NT);
+    }
+    return it->second;
+}
+
+template<typename _tA>
+bool RuleTable<_tA>::HasNTDef(const String &NT) const
+{
+    return NT2Idx_.find(NT) != NT2Idx_.end();
 }
 
 template<typename _tA>
