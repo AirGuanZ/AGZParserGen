@@ -41,7 +41,7 @@ const String &GetTokenTypeName(TokenType type)
         "Import",
         "EndMark"
     };
-    auto idx = std::underlying_type_t<TokenType>(type);
+    auto idx = std::underlying_type<TokenType>::type(type);
     return TOKEN_TYPE_NAMES[idx];
 }
 

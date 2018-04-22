@@ -1,6 +1,6 @@
 CC = clang++
 CC_INCLUDE_FLAGS = -I ./Include/
-CC_FLAGS = -std=c++14 -g $(CC_INCLUDE_FLAGS) -Werror -Wall
+CC_FLAGS = -std=c++11 -O2 $(CC_INCLUDE_FLAGS) -Werror -Wall
 
 CPP_SRC_FILES = $(shell find ./Src/ -name "*.cpp")
 CPP_OBJ_FILES = $(patsubst %.cpp, %.o, $(CPP_SRC_FILES))

@@ -45,7 +45,7 @@ inline void LRItemSetConstructor<_tA>::Build(const RuleTable<_tA> &ruleTab,
                 continue;
 
             LRSet<_tA> dst;
-            
+
             const Sym<_tA> &s = item.rule->right[item.dotPos];
             dst = Goto(CCi, ruleTab, fstSets, s);
 
