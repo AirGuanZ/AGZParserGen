@@ -1,4 +1,4 @@
-/*================================================================
+﻿/*================================================================
 Filename: RuleTable.h
 Date: 2018.4.21
 Created by AirGuanZ
@@ -31,6 +31,9 @@ struct Sym
     NTIdx NT;
     TokT<_tA> tok;
 };
+
+template<typename _tA>
+inline bool operator<(const Sym<_tA> &L, const Sym<_tA> &R);
 
 /* 单条规则 */
 template<typename _tA>

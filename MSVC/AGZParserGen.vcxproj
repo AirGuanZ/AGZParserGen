@@ -19,22 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\FirstSet.h" />
+    <ClInclude Include="..\Include\LRItem.h" />
     <ClInclude Include="..\Include\MetaLang\AST.h" />
     <ClInclude Include="..\Include\MetaLang\Parser.h" />
     <ClInclude Include="..\Include\MetaLang\PrettyPrinter.h" />
     <ClInclude Include="..\Include\MetaLang\RuleTable.h" />
     <ClInclude Include="..\Include\MetaLang\Scope.h" />
     <ClInclude Include="..\Include\MetaLang\Tokenizer.h" />
+    <ClInclude Include="..\Include\RuleTable.h" />
     <ClInclude Include="..\Include\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\Main.cpp" />
     <ClCompile Include="..\Src\MetaLang\Parser.cpp" />
     <ClCompile Include="..\Src\MetaLang\PrettyPrinter.cpp" />
-    <ClCompile Include="..\Src\MetaLang\RuleTable.cpp" />
+    <ClCompile Include="..\Src\MetaLang\RawRuleTable.cpp" />
     <ClCompile Include="..\Src\MetaLang\Scope.cpp" />
     <ClCompile Include="..\Src\MetaLang\Tokenizer.cpp" />
     <ClCompile Include="..\Src\Utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Include\FirstSet.inl" />
+    <None Include="..\Include\LRItem.inl" />
+    <None Include="..\Include\RuleTable.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

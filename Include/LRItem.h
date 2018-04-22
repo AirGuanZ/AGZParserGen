@@ -35,7 +35,6 @@ public:
 
     void Clear(void);
 
-private:
     void Closure(LRSet<_tA> &itemSet,
                  const RuleTable<_tA> &ruleTab,
                  const FirstSetTable<_tA> &fstSets) const;
@@ -44,10 +43,14 @@ private:
                     const RuleTable<_tA> &ruleTab,
                     const FirstSetTable<_tA> &fstSets,
                     const TokT<_tA> &tok) const;
+    
+    LRSet<_tA> Goto(const LRSet<_tA> &src,
+                    const RuleTable<_tA> &ruleTab,
+                    const FirstSetTable<_tA> &fstSets,
+                    NTIdx NT) const;
 
     size_t GetIndexOf(LRSet<_tA> &&s);
 
-private:
     Vec<LRSet<_tA>> idx2Set_;
     Map<LRSet<_tA>, size_t> set2Idx_;
 
@@ -56,19 +59,19 @@ private:
     struct TransInput
     {
         size_t setIdx;
-        TokT<_tA> tok;
+        Sym<_tA> sym;
     };
 
     class CompareTransInput
     {
     public:
-        bool operator()(const TransInput &L, const TransInput &R)
+        bool operator()(const TransInput &L, const TransInput &R) const
         {
             if(L.setIdx < R.setIdx)
                 return true;
             if(L.setIdx > R.setIdx)
                 return false;
-            return L.tok < R.tok;
+            return L.sym < R.sym;
         }
     };
 

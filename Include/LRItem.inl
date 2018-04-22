@@ -1,4 +1,4 @@
-NS_BEGIN(AGZ)
+﻿NS_BEGIN(AGZ)
 
 template<typename _tA>
 inline bool operator<(const LRItem<_tA> &L, const LRItem<_tA> &R)
@@ -37,26 +37,31 @@ inline void LRItemSetConstructor<_tA>::Build(const RuleTable<_tA> &ruleTab,
     {
         size_t idx = unmarkedSets_.front();
         unmarkedSets_.pop_front();
-        const LRSet<_tA> &CCi = idx2Set_[idx];
+        const LRSet<_tA> CCi = idx2Set_[idx];
 
         for(const LRItem<_tA> &item : CCi)
         {
             if(item.dotPos >= item.rule->right.size())
                 continue;
+
+            LRSet<_tA> dst;
             
-            const Sym<_tA> &s = item.rule->right[item.dotPos + 1];
-            if(s.type != SymT::Token)
-                continue;
+            const Sym<_tA> &s = item.rule->right[item.dotPos];
+            if(s.type == SymT::Token)
+                dst = Goto(CCi, ruleTab, fstSets, s.tok);
+            else
+                dst = Goto(CCi, ruleTab, fstSets, s.NT);
 
-            LRSet<_tA> dst = Goto(CCi, ruleTab, fstSets, s.tok);
+            TransInput transInput = { idx, s };
 
-            TransInput transInput = { idx, s.tok };
-            if(trans_.find(transInput) != trans_.end())
+            auto it = trans_.find(transInput);
+            size_t newIdx = GetIndexOf(std::move(dst));
+            if(it != trans_.end() && it->second != newIdx)
             {
                 throw RuleTableException(
                     "translation repeated");
             }
-            trans_[transInput] = GetIndexOf(std::move(dst));
+            trans_[transInput] = newIdx;
         }
     }
 }
@@ -128,6 +133,28 @@ inline LRSet<_tA> LRItemSetConstructor<_tA>::Goto(
             continue;
         const auto &sym = item.rule->right[item.dotPos];
         if(sym.type == SymT::Token && sym.tok == tok)
+            ret.insert({ item.rule, item.dotPos + 1, item.lookAhead });
+    }
+
+    Closure(ret, ruleTab, fstSets);
+    return ret;
+}
+
+template<typename _tA>
+inline LRSet<_tA> LRItemSetConstructor<_tA>::Goto(
+            const LRSet<_tA> &src,
+            const RuleTable<_tA> &ruleTab,
+            const FirstSetTable<_tA> &fstSets,
+            NTIdx NT) const
+{
+    LRSet<_tA> ret;
+
+    for(const LRItem<_tA> &item : src)
+    {
+        if(item.dotPos >= item.rule->right.size())
+            continue;
+        const auto &sym = item.rule->right[item.dotPos];
+        if(sym.type == SymT::NT && sym.NT == NT)
             ret.insert({ item.rule, item.dotPos + 1, item.lookAhead });
     }
 

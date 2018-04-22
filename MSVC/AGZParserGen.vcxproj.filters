@@ -36,6 +36,15 @@
     <ClInclude Include="..\Include\MetaLang\RuleTable.h">
       <Filter>Include\MetaLang</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\FirstSet.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\LRItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\RuleTable.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\Main.cpp">
@@ -56,8 +65,19 @@
     <ClCompile Include="..\Src\MetaLang\Tokenizer.cpp">
       <Filter>Source\MetaLang</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\MetaLang\RuleTable.cpp">
+    <ClCompile Include="..\Src\MetaLang\RawRuleTable.cpp">
       <Filter>Source\MetaLang</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Include\FirstSet.inl">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="..\Include\LRItem.inl">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="..\Include\RuleTable.inl">
+      <Filter>Include</Filter>
+    </None>
   </ItemGroup>
 </Project>

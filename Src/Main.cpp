@@ -10,6 +10,50 @@
 #include <LRItem.h>
 #include <RuleTable.h>
 
+using namespace AGZ;
+
+struct TA
+{
+    using TokenType = AGZ::String;
+
+    TokenType ToToken(const AGZ::String &tok) const
+    {
+        return tok;
+    }
+};
+
+String ToString(const LRItem<TA> &item, RuleTable<TA> &ruleTab)
+{
+    std::stringstream sst;
+
+    auto SymToStr = [&](const Sym<TA> &s)
+    {
+        if(s.type == SymT::Token)
+            sst << "\"" << s.tok << "\"";
+        else
+            sst << ruleTab.Detrans(s.NT);
+    };
+
+    sst << "(";
+    sst << ruleTab.Detrans(item.rule->left);
+    sst << " := ";
+    for(size_t i = 0; i < item.dotPos; ++i)
+    {
+        SymToStr(item.rule->right[i]);
+        sst << " ";
+    }
+    sst << "@ ";
+    for(size_t i = item.dotPos; i < item.rule->right.size(); ++i)
+    {
+        SymToStr(item.rule->right[i]);
+        sst << " ";
+    }
+
+    sst << item.lookAhead << ")";
+
+    return sst.str();
+}
+
 int main(void)
 {
     using namespace AGZ::MetaLang;
@@ -18,16 +62,11 @@ int main(void)
     {
         const std::string src =
              R"____(# this is a comment
-                    namespace Expr
-                    {
-                        F := "integer";             (Int)
-                        F := "lpar" + F + "rpar";   (Par)
-                        T := F;                     (F)
-                        T := F + "times" + T;       (FRest)
-                        E := T;                     (T)
-                        E := T + "plus" + E;        (TRest)
-                    }
-                    AGZStart := Expr.E;
+                    L := L + P;
+                    L := P;
+                    P := "lpar" + P + "rpar";
+                    P := "lpar" + "rpar";
+                    AGZStart := L;
              )____";
 
         Tokenizer tokenizer("namespace Global {" + src + "}", "TestFilename");
@@ -41,31 +80,31 @@ int main(void)
         for(auto &it : *rawRuleTab)
             std::cout << it.second.ToString() << std::endl;
 
-        struct TA
-        {
-            using TokenType = AGZ::String;
-
-            TokenType ToToken(const AGZ::String &tok) const
-            {
-                return tok;
-            }
-        } tA;
+        TA tA;
 
         AGZ::RuleTable<TA> ruleTable;
         ruleTable.Build(*rawRuleTab, tA);
 
         AGZ::FirstSetTable<TA> fstTab(ruleTable);
-        for(AGZ::NTIdx NT = 0;NT != ruleTable.GetNTCount(); ++NT)
+        /*for(AGZ::NTIdx NT = 0;NT != ruleTable.GetNTCount(); ++NT)
         {
             std::cout << AGZ::String(20, '=') << std::endl;
             std::cout << ruleTable.Detrans(NT) << std::endl;
             for(auto &tok : fstTab.GetFirstSet(NT))
                 std::cout << tok << " ";
             std::cout << std::endl;
-        }
+        }*/
+        std::cout << String(2, '\n');
 
         AGZ::LRItemSetConstructor<TA> LRCons;
         LRCons.Build(ruleTable, fstTab, tA);
+
+        for(auto &set : LRCons.idx2Set_)
+        {
+            for(auto &item : set)
+                std::cout << ToString(item, ruleTable) << std::endl;
+            std::cout << std::endl;
+        }
     }
     catch(const TokenException &err)
     {
@@ -93,5 +132,9 @@ int main(void)
                   << err.filename
                   << ":\n\t"
                   << err.msg << std::endl;
+    }
+    catch(const AGZ::RuleTableException &err)
+    {
+        std::cout << err.msg << std::endl;
     }
 }

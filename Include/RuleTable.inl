@@ -12,6 +12,21 @@ inline TokT<_tA> ToToken(_tA &tA, const String &tok)
     return tA.ToToken(tok);
 }
 
+template<typename _tA>
+inline bool operator<(const Sym<_tA> &L, const Sym<_tA> &R)
+{
+    if(L.type == SymT::Token)
+    {
+        if(R.type == SymT::Token)
+            return L.tok < R.tok;
+        return true;
+    }
+    
+    if(R.type == SymT::NT)
+        return L.NT < R.NT;
+    return false;
+}
+
 inline RuleTableException::RuleTableException(const String &msg)
     : msg(msg)
 {
