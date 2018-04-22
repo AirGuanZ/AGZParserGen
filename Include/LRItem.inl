@@ -47,10 +47,7 @@ inline void LRItemSetConstructor<_tA>::Build(const RuleTable<_tA> &ruleTab,
             LRSet<_tA> dst;
             
             const Sym<_tA> &s = item.rule->right[item.dotPos];
-            if(s.type == SymT::Token)
-                dst = Goto(CCi, ruleTab, fstSets, s.tok);
-            else
-                dst = Goto(CCi, ruleTab, fstSets, s.NT);
+            dst = Goto(CCi, ruleTab, fstSets, s);
 
             TransInput transInput = { idx, s };
 
@@ -123,7 +120,7 @@ inline LRSet<_tA> LRItemSetConstructor<_tA>::Goto(
             const LRSet<_tA> &src,
             const RuleTable<_tA> &ruleTab,
             const FirstSetTable<_tA> &fstSets,
-            const TokT<_tA> &tok) const
+            const Sym<_tA> &x) const
 {
     LRSet<_tA> ret;
 
@@ -132,29 +129,7 @@ inline LRSet<_tA> LRItemSetConstructor<_tA>::Goto(
         if(item.dotPos >= item.rule->right.size())
             continue;
         const auto &sym = item.rule->right[item.dotPos];
-        if(sym.type == SymT::Token && sym.tok == tok)
-            ret.insert({ item.rule, item.dotPos + 1, item.lookAhead });
-    }
-
-    Closure(ret, ruleTab, fstSets);
-    return ret;
-}
-
-template<typename _tA>
-inline LRSet<_tA> LRItemSetConstructor<_tA>::Goto(
-            const LRSet<_tA> &src,
-            const RuleTable<_tA> &ruleTab,
-            const FirstSetTable<_tA> &fstSets,
-            NTIdx NT) const
-{
-    LRSet<_tA> ret;
-
-    for(const LRItem<_tA> &item : src)
-    {
-        if(item.dotPos >= item.rule->right.size())
-            continue;
-        const auto &sym = item.rule->right[item.dotPos];
-        if(sym.type == SymT::NT && sym.NT == NT)
+        if(sym == x)
             ret.insert({ item.rule, item.dotPos + 1, item.lookAhead });
     }
 

@@ -38,16 +38,11 @@ public:
     void Closure(LRSet<_tA> &itemSet,
                  const RuleTable<_tA> &ruleTab,
                  const FirstSetTable<_tA> &fstSets) const;
-
-    LRSet<_tA> Goto(const LRSet<_tA> &src,
-                    const RuleTable<_tA> &ruleTab,
-                    const FirstSetTable<_tA> &fstSets,
-                    const TokT<_tA> &tok) const;
     
     LRSet<_tA> Goto(const LRSet<_tA> &src,
                     const RuleTable<_tA> &ruleTab,
                     const FirstSetTable<_tA> &fstSets,
-                    NTIdx NT) const;
+                    const Sym<_tA> &x) const;
 
     size_t GetIndexOf(LRSet<_tA> &&s);
 

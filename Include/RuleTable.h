@@ -35,6 +35,9 @@ struct Sym
 template<typename _tA>
 inline bool operator<(const Sym<_tA> &L, const Sym<_tA> &R);
 
+template<typename _tA>
+inline bool operator==(const Sym<_tA> &L, const Sym<_tA> &R);
+
 /* 单条规则 */
 template<typename _tA>
 struct Rule

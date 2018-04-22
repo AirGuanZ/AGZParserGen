@@ -27,6 +27,14 @@ inline bool operator<(const Sym<_tA> &L, const Sym<_tA> &R)
     return false;
 }
 
+template<typename _tA>
+inline bool operator==(const Sym<_tA> &L, const Sym<_tA> &R)
+{
+    if(L.type == SymT::Token)
+        return R.type == SymT::Token && L.tok == R.tok;
+    return R.type == SymT::NT && L.NT == R.NT;
+}
+
 inline RuleTableException::RuleTableException(const String &msg)
     : msg(msg)
 {

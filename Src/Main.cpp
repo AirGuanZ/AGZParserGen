@@ -31,11 +31,11 @@ String ToString(const LRItem<TA> &item, RuleTable<TA> &ruleTab)
         if(s.type == SymT::Token)
             sst << "\"" << s.tok << "\"";
         else
-            sst << ruleTab.Detrans(s.NT);
+            sst << ruleTab.Detrans(s.NT).substr(7);
     };
 
     sst << "(";
-    sst << ruleTab.Detrans(item.rule->left);
+    sst << ruleTab.Detrans(item.rule->left).substr(7);
     sst << " := ";
     for(size_t i = 0; i < item.dotPos; ++i)
     {
