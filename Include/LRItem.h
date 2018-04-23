@@ -35,6 +35,7 @@ public:
 
     void Clear(void);
 
+private:
     void Closure(LRSet<_tA> &itemSet,
                  const RuleTable<_tA> &ruleTab,
                  const FirstSetTable<_tA> &fstSets) const;
@@ -46,10 +47,9 @@ public:
 
     size_t GetIndexOf(LRSet<_tA> &&s);
 
+public:
     Vec<LRSet<_tA>> idx2Set_;
     Map<LRSet<_tA>, size_t> set2Idx_;
-
-    Deq<size_t> unmarkedSets_;
 
     struct TransInput
     {
@@ -71,6 +71,9 @@ public:
     };
 
     Map<TransInput, size_t, CompareTransInput> trans_;
+
+private:
+    Deq<size_t> unmarkedSets_;
 };
 
 NS_END(AGZ)

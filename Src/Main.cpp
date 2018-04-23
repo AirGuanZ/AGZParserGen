@@ -8,6 +8,7 @@
 #include <MetaLang/Tokenizer.h>
 #include <FirstSet.h>
 #include <LRItem.h>
+#include <LRTable.h>
 #include <RuleTable.h>
 
 using namespace AGZ;
@@ -105,6 +106,9 @@ int main(void)
                 std::cout << ToString(item, ruleTable) << std::endl;
             std::cout << std::endl;
         }
+
+        LRTable<TA> LRTab;
+        LRTab.Build(ruleTable, LRCons, tA);
     }
     catch(const TokenException &err)
     {
