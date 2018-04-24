@@ -136,6 +136,7 @@ int main(void)
 
         AGZ::Parser<TA> finalPsr(LRTab);
         finalPsr.Parse(toks, ruleTable, tA);
+        std::cout << "Parsing completed!" << std::endl;
     }
     catch(const AGZ::MetaLang::TokenException &err)
     {
