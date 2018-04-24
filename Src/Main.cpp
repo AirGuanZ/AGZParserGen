@@ -1,4 +1,5 @@
 #include <iostream>
+#include <list>
 #include <sstream>
 
 #include <MetaLang/Parser.h>
@@ -9,27 +10,55 @@
 #include <FirstSet.h>
 #include <LRItem.h>
 #include <LRTable.h>
+#include <Parser.h>
 #include <RuleTable.h>
 
-using namespace AGZ;
+struct TokenStream
+{
+    std::list<AGZ::String>::iterator cur;
+    std::list<AGZ::String> toks;
+};
 
 struct TA
 {
-    using TokenType = AGZ::String;
+    using TokenType   = AGZ::String;
+    using TokenStream = ::TokenStream;
+    using TokenData   = TokenType;
 
-    TokenType ToToken(const AGZ::String &tok) const
+    const TokenType &ToToken(const AGZ::String &tok) const
     {
         return tok;
     }
+
+    const TokenType &ToType(const TokenData &tok) const
+    {
+        return tok;
+    }
+
+    const TokenData &Current(TokenStream &toks) const
+    {
+        return *toks.cur;
+    }
+
+    void Next(TokenStream &toks) const
+    {
+        if(toks.cur != toks.toks.end())
+            ++toks.cur;
+    }
+
+    void ParsingError(const TokenStream &toks) const
+    {
+        throw std::runtime_error("Syntax error!");        
+    }
 };
 
-String ToString(const LRItem<TA> &item, RuleTable<TA> &ruleTab)
+AGZ::String ToString(const AGZ::LRItem<TA> &item, AGZ::RuleTable<TA> &ruleTab)
 {
     std::stringstream sst;
 
-    auto SymToStr = [&](const Sym<TA> &s)
+    auto SymToStr = [&](const AGZ::Sym<TA> &s)
     {
-        if(s.type == SymT::Token)
+        if(s.type == AGZ::SymT::Token)
             sst << "\"" << s.tok << "\"";
         else
             sst << ruleTab.Detrans(s.NT).substr(7);
@@ -57,8 +86,6 @@ String ToString(const LRItem<TA> &item, RuleTable<TA> &ruleTab)
 
 int main(void)
 {
-    using namespace AGZ::MetaLang;
-
     try
     {
         const std::string src =
@@ -70,13 +97,13 @@ int main(void)
                     AGZStart := L;
              )____";
 
-        Tokenizer tokenizer("namespace Global {" + src + "}", "TestFilename");
+        AGZ::MetaLang::Tokenizer tokenizer("namespace Global {" + src + "}", "TestFilename");
 
-        Parser parser;
+        AGZ::MetaLang::Parser parser;
         auto ast = parser.ParseFromTokens(tokenizer);
 
-        auto scopeTree = BuildScopeTree(ast, { }, "");
-        auto rawRuleTab = RawRuleTableBuilder().Build(scopeTree);
+        auto scopeTree = AGZ::MetaLang::BuildScopeTree(ast, { }, "");
+        auto rawRuleTab = AGZ::MetaLang::RawRuleTableBuilder().Build(scopeTree);
         
         for(auto &it : *rawRuleTab)
             std::cout << it.second.ToString() << std::endl;
@@ -87,15 +114,8 @@ int main(void)
         ruleTable.Build(*rawRuleTab, tA);
 
         AGZ::FirstSetTable<TA> fstTab(ruleTable);
-        /*for(AGZ::NTIdx NT = 0;NT != ruleTable.GetNTCount(); ++NT)
-        {
-            std::cout << AGZ::String(20, '=') << std::endl;
-            std::cout << ruleTable.Detrans(NT) << std::endl;
-            for(auto &tok : fstTab.GetFirstSet(NT))
-                std::cout << tok << " ";
-            std::cout << std::endl;
-        }*/
-        std::cout << String(2, '\n');
+
+        std::cout << AGZ::String(2, '\n');
 
         AGZ::LRItemSetConstructor<TA> LRCons;
         LRCons.Build(ruleTable, fstTab, tA);
@@ -107,10 +127,17 @@ int main(void)
             std::cout << std::endl;
         }
 
-        LRTable<TA> LRTab;
+        AGZ::LRTable<TA> LRTab;
         LRTab.Build(ruleTable, LRCons, tA);
+
+        TokenStream toks;
+        toks.toks = { "lpar", "rpar", "#" };
+        toks.cur = toks.toks.begin();
+
+        AGZ::Parser<TA> finalPsr(LRTab);
+        finalPsr.Parse(toks, tA);
     }
-    catch(const TokenException &err)
+    catch(const AGZ::MetaLang::TokenException &err)
     {
         std::cout << "Lex error around line "
                   << err.line
@@ -119,7 +146,7 @@ int main(void)
                   << ":\n\t"
                   << err.msg << std::endl;
     }
-    catch(const ParserException &err)
+    catch(const AGZ::MetaLang::ParserException &err)
     {
         std::cout << "Syntax error around line "
                   << err.line
@@ -128,7 +155,7 @@ int main(void)
                   << ":\n\t"
                   << err.msg << std::endl;
     }
-    catch(const RawRuleTableException &err)
+    catch(const AGZ::MetaLang::RawRuleTableException &err)
     {
         std::cout << "Symbol error around line "
                   << err.line
@@ -140,5 +167,9 @@ int main(void)
     catch(const AGZ::RuleTableException &err)
     {
         std::cout << err.msg << std::endl;
+    }
+    catch(const std::runtime_error &err)
+    {
+        std::cout << err.what() << std::endl;
     }
 }

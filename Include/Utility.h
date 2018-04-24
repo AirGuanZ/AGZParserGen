@@ -9,6 +9,7 @@ Created by AirGuanZ
 #include <memory>
 #include <deque>
 #include <set>
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -40,6 +41,9 @@ using UrdMap = std::unordered_map<K, V, H, E>;
 
 template<typename K, typename V>
 using UrdMulMap = std::unordered_multimap<K, V>;
+
+template<typename T>
+using Stack = std::stack<T>;
 
 using String = std::string;
 

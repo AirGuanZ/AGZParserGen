@@ -11,6 +11,9 @@ Created by AirGuanZ
 NS_BEGIN(AGZ)
 
 template<typename _tA>
+class Parser;
+
+template<typename _tA>
 class LRTable
 {
 public:
@@ -22,6 +25,8 @@ private:
     bool IsDotFrontToken(const LRItem<_tA> &item) const;
 
 private:
+    friend class Parser<_tA>;
+
     struct ActionTransInput
     {
         size_t state;
