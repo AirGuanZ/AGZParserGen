@@ -37,7 +37,7 @@ Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenStream &toks, _tA &tA) const
         if(opr.type == TransOpr::Reduce)
         {
             Vec<Ptr<ASTSym<_tA>>> children(opr.reduceRule->right.size());
-            for(int i = static_cast<int>(opr.reduceRule->right.size());
+            for(int i = static_cast<int>(opr.reduceRule->right.size()) - 1;
                 i >= 0; --i)
             {
                 children[i] = symStk.top();

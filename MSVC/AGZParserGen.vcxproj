@@ -19,14 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\AST.h" />
     <ClInclude Include="..\Include\FirstSet.h" />
     <ClInclude Include="..\Include\LRItem.h" />
+    <ClInclude Include="..\Include\LRTable.h" />
     <ClInclude Include="..\Include\MetaLang\AST.h" />
     <ClInclude Include="..\Include\MetaLang\Parser.h" />
     <ClInclude Include="..\Include\MetaLang\PrettyPrinter.h" />
     <ClInclude Include="..\Include\MetaLang\RuleTable.h" />
     <ClInclude Include="..\Include\MetaLang\Scope.h" />
     <ClInclude Include="..\Include\MetaLang\Tokenizer.h" />
+    <ClInclude Include="..\Include\Parser.h" />
     <ClInclude Include="..\Include\RuleTable.h" />
     <ClInclude Include="..\Include\Utility.h" />
   </ItemGroup>
@@ -40,8 +43,11 @@
     <ClCompile Include="..\Src\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Include\AST.inl" />
     <None Include="..\Include\FirstSet.inl" />
     <None Include="..\Include\LRItem.inl" />
+    <None Include="..\Include\LRTable.inl" />
+    <None Include="..\Include\Parser.inl" />
     <None Include="..\Include\RuleTable.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

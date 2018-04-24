@@ -45,6 +45,15 @@
     <ClInclude Include="..\Include\RuleTable.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\AST.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\LRTable.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Parser.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\Main.cpp">
@@ -77,6 +86,15 @@
       <Filter>Include</Filter>
     </None>
     <None Include="..\Include\RuleTable.inl">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="..\Include\AST.inl">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="..\Include\LRTable.inl">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="..\Include\Parser.inl">
       <Filter>Include</Filter>
     </None>
   </ItemGroup>

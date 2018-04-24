@@ -57,7 +57,7 @@ inline bool LRTable<_tA>::IsDotFrontToken(const LRItem<_tA> &item) const
 
 template<typename _tA>
 inline size_t LRTable<_tA>::ActionTransInput::Hasher::operator()(
-        const LRTable<_tA>::ActionTransInput &x) const
+        const typename LRTable<_tA>::ActionTransInput &x) const
 {
     return std::hash<size_t>()(
             (std::hash<size_t>()(x.state) ^
@@ -74,7 +74,7 @@ inline bool LRTable<_tA>::ActionTransInput::Equal::operator()(
 
 template<typename _tA>
 inline size_t LRTable<_tA>::GotoTransInput::Hasher::operator()(
-        const LRTable<_tA>::GotoTransInput &x) const
+        const typename LRTable<_tA>::GotoTransInput &x) const
 {
     return std::hash<size_t>()(
             (std::hash<size_t>()(x.state) ^
