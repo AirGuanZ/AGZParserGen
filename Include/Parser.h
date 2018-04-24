@@ -7,6 +7,7 @@ Created by AirGuanZ
 
 #include <AST.h>
 #include <LRTable.h>
+#include <RuleTable.h>
 #include <Utility.h>
 
 NS_BEGIN(AGZ)
@@ -22,7 +23,9 @@ public:
 
     Parser(const LRTable<_tA> &LRTab);
 
-    Ptr<ASTNode<_tA>> Parse(TokenStream &toks, _tA &tA) const;
+    Ptr<ASTNode<_tA>> Parse(TokenStream &toks,
+                            const RuleTable<_tA> &ruleTab,
+                            _tA &tA) const;
 
 private:
     const LRTable<_tA> &LRTab_;

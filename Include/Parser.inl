@@ -8,11 +8,15 @@ Parser<_tA>::Parser(const LRTable<_tA> &LRTab)
 }
 
 template<typename _tA>
-Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenStream &toks, _tA &tA) const
+Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenStream &toks,
+                                     const RuleTable<_tA> &ruleTab,
+                                     _tA &tA) const
 {
     using TransOpr = typename LRTable<_tA>::TransOperation;
 
     TokT<_tA> endTok = ToToken(tA, MetaLang::TOKEN_STR_ENDMARK);
+    NTIdx startIdx = ruleTab.Trans(MetaLang::GLOBAL_NAMESPACE_STR + "." +
+                                   MetaLang::KEYWORD_STR_START);
 
     Stack<size_t> stateStk;
     Stack<Ptr<ASTSym<_tA>>> symStk;
@@ -47,10 +51,14 @@ Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenStream &toks, _tA &tA) const
 
             Ptr<ASTNode<_tA>> left = MakePtr<ASTNode<_tA>>(
                 opr.reduceRule, std::move(children));
+
+            if(opr.reduceRule->left == startIdx && curT == endTok)
+                return left;
+
             auto leftSym = MakePtr<ASTSym<_tA>>();
             leftSym->type = SymT::NT;
             leftSym->NT   = left;
-            symStk.push(std::move(leftSym));
+            symStk.push(leftSym);
 
             size_t tState = stateStk.top();
             

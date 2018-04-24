@@ -131,11 +131,11 @@ int main(void)
         LRTab.Build(ruleTable, LRCons, tA);
 
         TokenStream toks;
-        toks.toks = { "lpar", "rpar", "#" };
+        toks.toks = { "lpar","lpar", "rpar", "rpar", "lpar", "rpar", "#" };
         toks.cur = toks.toks.begin();
 
         AGZ::Parser<TA> finalPsr(LRTab);
-        finalPsr.Parse(toks, tA);
+        finalPsr.Parse(toks, ruleTable, tA);
     }
     catch(const AGZ::MetaLang::TokenException &err)
     {
