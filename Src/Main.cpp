@@ -1,6 +1,5 @@
 #include <iostream>
 #include <list>
-#include <sstream>
 
 #include <Parser.h>
 
@@ -42,38 +41,6 @@ struct TA
         throw std::runtime_error("Syntax error!");        
     }
 };
-
-AGZ::String ToString(const AGZ::LRItem<TA> &item, AGZ::RuleTable<TA> &ruleTab)
-{
-    std::stringstream sst;
-
-    auto SymToStr = [&](const AGZ::Sym<TA> &s)
-    {
-        if(s.type == AGZ::SymT::Token)
-            sst << "\"" << s.tok << "\"";
-        else
-            sst << ruleTab.Detrans(s.NT).substr(7);
-    };
-
-    sst << "(";
-    sst << ruleTab.Detrans(item.rule->left).substr(7);
-    sst << " := ";
-    for(size_t i = 0; i < item.dotPos; ++i)
-    {
-        SymToStr(item.rule->right[i]);
-        sst << " ";
-    }
-    sst << "@ ";
-    for(size_t i = item.dotPos; i < item.rule->right.size(); ++i)
-    {
-        SymToStr(item.rule->right[i]);
-        sst << " ";
-    }
-
-    sst << item.lookAhead << ")";
-
-    return sst.str();
-}
 
 int main(void)
 {
