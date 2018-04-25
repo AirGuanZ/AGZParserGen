@@ -5,8 +5,8 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <Common/Utility.h>
 #include <MetaLang/Scope.h>
-#include <Utility.h>
 
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)

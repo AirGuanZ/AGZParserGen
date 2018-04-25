@@ -5,8 +5,7 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
-#include <Utility.h>
-
+#include <Common/Utility.h>
 #include <MetaLang/AST.h>
 #include <MetaLang/Tokenizer.h>
 

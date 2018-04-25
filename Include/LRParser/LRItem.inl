@@ -1,4 +1,6 @@
-﻿NS_BEGIN(AGZ)
+﻿#include <MetaLang/Tokenizer.h>
+
+NS_BEGIN(AGZ)
 
 template<typename _tA>
 inline bool operator<(const LRItem<_tA> &L, const LRItem<_tA> &R)

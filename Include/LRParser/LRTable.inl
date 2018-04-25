@@ -48,6 +48,13 @@ inline void LRTable<_tA>::Build(const RuleTable<_tA> &ruleTab,
 }
 
 template<typename _tA>
+inline void LRTable<_tA>::Clear(void)
+{
+    action_.clear();
+    goto_.clear();
+}
+
+template<typename _tA>
 inline bool LRTable<_tA>::IsDotFrontToken(const LRItem<_tA> &item) const
 {
     if(item.dotPos >= item.rule->right.size())

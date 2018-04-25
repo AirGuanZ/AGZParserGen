@@ -7,8 +7,8 @@ Created by AirGuanZ
 
 #include <ostream>
 
+#include <Common/Utility.h>
 #include <MetaLang/AST.h>
-#include <Utility.h>
 
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)

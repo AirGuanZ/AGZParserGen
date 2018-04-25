@@ -7,8 +7,8 @@ Created by AirGuanZ
 
 #include <cassert>
 
+#include <Common/Utility.h>
 #include <MetaLang/RawRuleTable.h>
-#include <Utility.h>
 
 NS_BEGIN(AGZ)
 

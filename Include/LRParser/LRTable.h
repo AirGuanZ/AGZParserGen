@@ -5,8 +5,8 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <Common/Utility.h>
 #include <LRParser/LRItem.h>
-#include <Utility.h>
 
 NS_BEGIN(AGZ)
 
@@ -20,6 +20,8 @@ public:
     void Build(const RuleTable<_tA> &ruleTab,
                const LRItemSetConstructor<_tA> &sets,
                _tA &tA);
+    
+    void Clear(void);
 
 private:
     bool IsDotFrontToken(const LRItem<_tA> &item) const;

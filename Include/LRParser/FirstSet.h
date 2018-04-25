@@ -7,8 +7,8 @@ Created by AirGuanZ
 
 #include <set>
 
+#include <Common/Utility.h>
 #include <LRParser/RuleTable.h>
-#include <Utility.h>
 
 NS_BEGIN(AGZ)
 

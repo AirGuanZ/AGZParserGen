@@ -5,9 +5,9 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <Common/Utility.h>
 #include <LRParser/FirstSet.h>
 #include <LRParser/RuleTable.h>
-#include <Utility.h>
 
 NS_BEGIN(AGZ)
 

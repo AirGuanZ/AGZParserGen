@@ -21,7 +21,7 @@ Created by AirGuanZ
 
 #include <vector>
 
-#include <Utility.h>
+#include <Common/Utility.h>
 
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
