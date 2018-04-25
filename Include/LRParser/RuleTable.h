@@ -105,4 +105,4 @@ private:
 
 NS_END(AGZ)
 
-#include <RuleTable.inl>
+#include <LRParser/RuleTable.inl>

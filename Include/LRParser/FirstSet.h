@@ -7,7 +7,7 @@ Created by AirGuanZ
 
 #include <set>
 
-#include <RuleTable.h>
+#include <LRParser/RuleTable.h>
 #include <Utility.h>
 
 NS_BEGIN(AGZ)
@@ -33,4 +33,4 @@ private:
 
 NS_END(AGZ)
 
-#include <FirstSet.inl>
+#include <LRParser/FirstSet.inl>

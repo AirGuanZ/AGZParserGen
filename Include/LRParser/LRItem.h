@@ -5,8 +5,8 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
-#include <FirstSet.h>
-#include <RuleTable.h>
+#include <LRParser/FirstSet.h>
+#include <LRParser/RuleTable.h>
 #include <Utility.h>
 
 NS_BEGIN(AGZ)
@@ -78,4 +78,4 @@ private:
 
 NS_END(AGZ)
 
-#include <LRItem.inl>
+#include <LRParser/LRItem.inl>

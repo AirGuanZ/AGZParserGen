@@ -5,13 +5,13 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
-#include <LRItem.h>
+#include <LRParser/LRItem.h>
 #include <Utility.h>
 
 NS_BEGIN(AGZ)
 
 template<typename _tA>
-class Parser;
+class ASTCons;
 
 template<typename _tA>
 class LRTable
@@ -25,7 +25,7 @@ private:
     bool IsDotFrontToken(const LRItem<_tA> &item) const;
 
 private:
-    friend class Parser<_tA>;
+    friend class ASTCons<_tA>;
 
     struct ActionTransInput
     {
@@ -84,4 +84,4 @@ private:
 
 NS_END(AGZ)
 
-#include <LRTable.inl>
+#include <LRParser/LRTable.inl>

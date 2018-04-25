@@ -1,14 +1,14 @@
 NS_BEGIN(AGZ)
 
 template<typename _tA>
-Parser<_tA>::Parser(const LRTable<_tA> &LRTab)
+ASTCons<_tA>::ASTCons(const LRTable<_tA> &LRTab)
     : LRTab_(LRTab)
 {
 
 }
 
 template<typename _tA>
-Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenStream &toks,
+Ptr<ASTNode<_tA>> ASTCons<_tA>::Parse(TokenStream &toks,
                                      const RuleTable<_tA> &ruleTab,
                                      _tA &tA) const
 {

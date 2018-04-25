@@ -5,7 +5,7 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
-#include <RuleTable.h>
+#include <LRParser/RuleTable.h>
 #include <Utility.h>
 
 NS_BEGIN(AGZ)
@@ -47,4 +47,4 @@ private:
 
 NS_END(AGZ)
 
-#include <AST.inl>
+#include <LRParser/AST.inl>

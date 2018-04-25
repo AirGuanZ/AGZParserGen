@@ -7,11 +7,12 @@
 #include <MetaLang/RawRuleTable.h>
 #include <MetaLang/Scope.h>
 #include <MetaLang/Tokenizer.h>
-#include <FirstSet.h>
-#include <LRItem.h>
-#include <LRTable.h>
-#include <Parser.h>
-#include <RuleTable.h>
+
+#include <LRParser/ASTCons.h>
+#include <LRParser/FirstSet.h>
+#include <LRParser/LRItem.h>
+#include <LRParser/LRTable.h>
+#include <LRParser/RuleTable.h>
 
 struct TokenStream
 {
@@ -134,7 +135,7 @@ int main(void)
         toks.toks = { "(","(", ")", ")", "(", ")", "#" };
         toks.cur = toks.toks.begin();
 
-        AGZ::Parser<TA> finalPsr(LRTab);
+        AGZ::ASTCons<TA> finalPsr(LRTab);
         finalPsr.Parse(toks, ruleTable, tA);
         std::cout << "Parsing completed!" << std::endl;
     }

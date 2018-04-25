@@ -5,15 +5,15 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
-#include <AST.h>
-#include <LRTable.h>
-#include <RuleTable.h>
+#include <LRParser/AST.h>
+#include <LRParser/LRTable.h>
+#include <LRParser/RuleTable.h>
 #include <Utility.h>
 
 NS_BEGIN(AGZ)
 
 template<typename _tA>
-class Parser
+class ASTCons
 {
 public:
     using TokenAdaptor = _tA;
@@ -21,7 +21,7 @@ public:
     using TokenType    = TokT<_tA>;
     using TokenData    = TokD<_tA>;
 
-    Parser(const LRTable<_tA> &LRTab);
+    ASTCons(const LRTable<_tA> &LRTab);
 
     Ptr<ASTNode<_tA>> Parse(TokenStream &toks,
                             const RuleTable<_tA> &ruleTab,
@@ -33,4 +33,4 @@ private:
 
 NS_END(AGZ)
 
-#include <Parser.inl>
+#include <LRParser/ASTCons.inl>
