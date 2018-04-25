@@ -180,7 +180,13 @@ Token Tokenizer::NextToken(void)
                 ++idx_;
                 return Token{ TokenType::Token, tok };
             }
-            tok += src_[idx_++];
+            else if(src_[idx_] == '\\' && src_[idx_] == '\"')
+            {
+                idx_ += 2;
+                tok += "\"";
+            }
+            else
+                tok += src_[idx_++];
         }
     }
 

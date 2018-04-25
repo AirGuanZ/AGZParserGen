@@ -92,8 +92,8 @@ int main(void)
              R"____(# this is a comment
                     L := L + P;
                     L := P;
-                    P := "lpar" + P + "rpar";
-                    P := "lpar" + "rpar";
+                    P := "(" + P + ")";
+                    P := "(" + ")";
                     AGZStart := L;
              )____";
 
@@ -131,7 +131,7 @@ int main(void)
         LRTab.Build(ruleTable, LRCons, tA);
 
         TokenStream toks;
-        toks.toks = { "lpar","lpar", "rpar", "rpar", "lpar", "rpar", "#" };
+        toks.toks = { "(","(", ")", ")", "(", ")", "#" };
         toks.cur = toks.toks.begin();
 
         AGZ::Parser<TA> finalPsr(LRTab);
