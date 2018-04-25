@@ -46,7 +46,7 @@ struct TA
             ++toks.cur;
     }
 
-    void ParsingError(const TokenStream &toks) const
+    void ParsingError(const TokenStream &toks, size_t curState) const
     {
         throw std::runtime_error("Syntax error!");        
     }

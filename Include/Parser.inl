@@ -33,7 +33,7 @@ Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenStream &toks,
         auto itAct = LRTab_.action_.find({ state, curT });
         if(itAct == LRTab_.action_.end())
         {
-            tA.ParsingError(toks);
+            tA.ParsingError(toks, state);
             return MakePtr<ASTNode<_tA>>();
         }
         const TransOpr &opr = itAct->second;
