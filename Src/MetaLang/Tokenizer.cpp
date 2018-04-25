@@ -28,6 +28,7 @@ const String &GetTokenTypeName(TokenType type)
     {
         "Identifier",
         "Path",
+        "Token",
         "LeftBrace",
         "RightBrace",
         "RuleName",
@@ -35,7 +36,6 @@ const String &GetTokenTypeName(TokenType type)
         "Plus",
         "Point",
         "Semicolon",
-        "DoubleQuotation",
         "Namespace",
         "Start",
         "Import",
@@ -113,7 +113,6 @@ Token Tokenizer::NextToken(void)
         { "}",  TokenType::RightBrace      },
         { ".",  TokenType::Point           },
         { "+",  TokenType::Plus            },
-        { "\"", TokenType::DoubleQuotation },
         { ";",  TokenType::Semicolon       },
     };
 
@@ -164,6 +163,24 @@ Token Tokenizer::NextToken(void)
                 return Token{ TokenType::Path, path };
             }
             path += src_[idx_++];
+        }
+    }
+
+    // Token
+    if(ch == '\"')
+    {
+        ++idx_;
+        String tok;
+        while(true)
+        {
+            if(src_[idx_] == '\0')
+                throw TokenException("unclosed \"", filename_, line_);
+            else if(src_[idx_] == '\"')
+            {
+                ++idx_;
+                return Token{ TokenType::Token, tok };
+            }
+            tok += src_[idx_++];
         }
     }
 

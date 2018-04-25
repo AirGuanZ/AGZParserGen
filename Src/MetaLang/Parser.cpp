@@ -201,26 +201,12 @@ Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
 Ptr<ASTNode_Symbol> Parser::ParseSymbol(Tokenizer &toks)
 {
     // token
-    // "Identifier"
-    if(toks.Match(TokenType::DoubleQuotation))
+    // Token
+    if(toks.Current().type == TokenType::Token)
     {
-        if(toks.Current().type != TokenType::Identifier)
-        {
-            throw ParserException(
-                "token name expected", toks.Filename(), toks.Line());
-        }
-
-        String id = std::move(toks.Current().str);
-        toks.Next();
-
-        if(!toks.Match(TokenType::DoubleQuotation))
-        {
-            throw ParserException(
-                "\" expected", toks.Filename(), toks.Line());
-        }
-
         auto rt = MakePtr<ASTNode_Symbol>();
-        rt->token = std::move(id);
+        rt->token = toks.Current().str;
+        toks.Next();
         return rt;
     }
 

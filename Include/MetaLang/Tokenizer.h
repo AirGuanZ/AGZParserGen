@@ -16,6 +16,7 @@ enum class TokenType
 {
     Identifier,
     Path,
+    Token,
 
     LeftBrace,
     RightBrace,
@@ -27,7 +28,6 @@ enum class TokenType
     Plus,
     Point,
     Semicolon,
-    DoubleQuotation,
 
     Kw_Namespace,
     Kw_Start,
