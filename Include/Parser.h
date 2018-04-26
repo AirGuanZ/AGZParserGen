@@ -41,6 +41,12 @@ public:
     LRBuildingException(const String &msg);
 };
 
+class SymbolException : public Exception
+{
+public:
+    SymbolException(const String &msg);
+};
+
 template<typename _tA>
 class Parser
 {
@@ -59,6 +65,10 @@ public:
 
     Ptr<ASTNode<_tA>> Parse(TokenAdaptor &tA,
                             TokenStream &toks) const;
+    
+    NTIdx NTName2Idx(const String &name) const;
+
+    const String &NTIdx2Name(NTIdx idx) const;
 
 private:
     RuleTable<_tA> ruleTab_;

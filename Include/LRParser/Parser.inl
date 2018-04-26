@@ -38,6 +38,12 @@ inline LRBuildingException::LRBuildingException(const String &msg)
 
 }
 
+inline SymbolException::SymbolException(const String &msg)
+    : Exception(msg)
+{
+
+}
+
 template<typename _tA>
 inline void Parser<_tA>::BuildFromSource(TokenAdaptor &tA, const String &src,
                                                            const String &srcFilename)
@@ -111,6 +117,32 @@ template<typename _tA>
 Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenAdaptor &tA, TokenStream &toks) const
 {
     return ASTCons<_tA>(LRTab_).Parse(toks, ruleTab_, tA);
+}
+
+template<typename _tA>
+NTIdx Parser<_tA>::NTName2Idx(const String &name) const
+{
+    try
+    {
+        return ruleTab_.Trans(name);
+    }
+    catch(const RuleTableException &err)
+    {
+        throw SymbolException(err.msg);
+    }
+}
+
+template<typename _tA>
+const String &Parser<_tA>::NTIdx2Name(NTIdx idx) const
+{
+    try
+    {
+        return ruleTab_.Detrans(idx);
+    }
+    catch(const RuleTableException &err)
+    {
+        throw SymbolException(err.msg);
+    }
 }
 
 NS_END(AGZ)
