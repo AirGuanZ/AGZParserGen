@@ -12,8 +12,8 @@
     namespace MyNamespace
     {
         # 定义非终结符
-   	    A := Utility.S + A; # 使用'.'访问命名空间成员
-   	    A := "token_name";  # 使用双引号包住token类型名
+        A := Utility.S + A; # 使用'.'访问命名空间成员
+        A := "token_name";  # 使用双引号包住token类型名
     }
 
     # 定义开始符号
@@ -33,7 +33,6 @@
 
    ```cpp
    // 直接分析源代码，得到AST
-   // 这个功能已经完成了
    auto AST = parser.Parse(tokenAdaptor, tokemStream);
 
    // 输出成C++静态分析代码
@@ -46,6 +45,7 @@
 到目前为止已经完成了Parser的主体部分，接下来要做的是：
 
 - [ ] 支持把建立好的LR分析表保存到文件，以免每次使用都重新建立
+- [ ] 使用文档
 - [ ] 设计好输出到其他语言代码的后端接口
 - [ ] 实现一个输出到C++的后端
 - [ ] 优化性能

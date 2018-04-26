@@ -13,6 +13,12 @@
     <Filter Include="Source\MetaLang">
       <UniqueIdentifier>{ecff239b-8d1f-48e9-9dea-11836b3edc65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include\LRParser">
+      <UniqueIdentifier>{c3c35061-8cc6-4bca-98a6-25cbc5f239f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Common">
+      <UniqueIdentifier>{55996ec4-d32c-492f-8019-448790966848}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\MetaLang\AST.h">
@@ -30,26 +36,29 @@
     <ClInclude Include="..\Include\MetaLang\Tokenizer.h">
       <Filter>Include\MetaLang</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\Utility.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\MetaLang\RuleTable.h">
       <Filter>Include\MetaLang</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\FirstSet.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\Include\LRParser\AST.h">
+      <Filter>Include\LRParser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\LRItem.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\Include\LRParser\ASTCons.h">
+      <Filter>Include\LRParser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\RuleTable.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\Include\LRParser\FirstSet.h">
+      <Filter>Include\LRParser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\AST.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\Include\LRParser\LRItem.h">
+      <Filter>Include\LRParser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\LRTable.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\Include\LRParser\LRTable.h">
+      <Filter>Include\LRParser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\LRParser\RuleTable.h">
+      <Filter>Include\LRParser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Common\Utility.h">
+      <Filter>Include\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\Parser.h">
       <Filter>Include</Filter>
@@ -79,23 +88,26 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Include\FirstSet.inl">
-      <Filter>Include</Filter>
+    <None Include="..\Include\LRParser\AST.inl">
+      <Filter>Include\LRParser</Filter>
     </None>
-    <None Include="..\Include\LRItem.inl">
-      <Filter>Include</Filter>
+    <None Include="..\Include\LRParser\ASTCons.inl">
+      <Filter>Include\LRParser</Filter>
     </None>
-    <None Include="..\Include\RuleTable.inl">
-      <Filter>Include</Filter>
+    <None Include="..\Include\LRParser\FirstSet.inl">
+      <Filter>Include\LRParser</Filter>
     </None>
-    <None Include="..\Include\AST.inl">
-      <Filter>Include</Filter>
+    <None Include="..\Include\LRParser\LRItem.inl">
+      <Filter>Include\LRParser</Filter>
     </None>
-    <None Include="..\Include\LRTable.inl">
-      <Filter>Include</Filter>
+    <None Include="..\Include\LRParser\LRTable.inl">
+      <Filter>Include\LRParser</Filter>
     </None>
-    <None Include="..\Include\Parser.inl">
-      <Filter>Include</Filter>
+    <None Include="..\Include\LRParser\Parser.inl">
+      <Filter>Include\LRParser</Filter>
+    </None>
+    <None Include="..\Include\LRParser\RuleTable.inl">
+      <Filter>Include\LRParser</Filter>
     </None>
   </ItemGroup>
 </Project>

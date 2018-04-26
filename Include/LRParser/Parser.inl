@@ -1,4 +1,4 @@
-#include <LRParser/AST.h>
+﻿#include <LRParser/AST.h>
 #include <LRParser/ASTCons.h>
 #include <LRParser/FirstSet.h>
 #include <LRParser/LRItem.h>
