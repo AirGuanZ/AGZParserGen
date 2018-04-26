@@ -7,18 +7,18 @@ AGZParserGen的常规使用流程是：
 3. 在程序中定义`AGZ::Parser<TokenAdaptor>`实例，用它加载文法脚本。
 4. 至此，已经可以调用`AGZ::Parser<TokenAdaptor>::Parser`方法进行语法分析，输出AST。
 
-## 文法描述语言简介
+## 文法描述语言
 
 在理论计算机科学中，上下文无关文法被形式化地定义为一个四元组$(N, T, S, R)$，分别表示非终结符号集合（Non-terminating symbols），终结符号集合（Terminating symbols），开始符号（Start symbol）和规则集合（Rules）。AGZParserGen用来描述文法的语言以列出规则集合为主，其间使用到的非终结符和终结符都被自动记录下来，无需显式定义。以带括号的整数四则运算文法为例：
 
 ```
-F := "integer";
-F := "(" + E + ")";
-T := F;
-T := T + "*" + F;
-E := T;
-E := E + "+" + T;
-AGZStart := E;
+F := "integer"     ;
+F := "(" + E + ")" ;
+T := F             ;
+T := T + "*" + F   ;
+E := T             ;
+E := E + "+" + T   ;
+AGZStart := E      ;
 ```
 
 可以看到，整个文法完全由其规则所描述。和C语言标识符相似的符号为非终结符；`:=`将一条规则的左侧和右侧区分开来，规则结尾处用`;`进行标记；终结符则用双引号包起来，将会以字符串的形式被传给`TokenAdaptor`并转换为用户指定的词法单元类型；最后一条规则是`AGZStart := E`，表示将非终结符`E`定义为文法的开始符号。
@@ -44,9 +44,9 @@ $$
 一个非终结符可以出现在多条规则的左边，表示它可以被展开为这些规则右边中的任意一个。为了在最终得到的语法分析树中方便地区分每个内部节点使用了哪条规则，可以在规则定义的分号之后加上一个规则名。规则名用一对圆括号包裹起来，除了未命名规则外，每个终结符不能有两条以上名字相同的规则。譬如：
 
 ```
-A := "minecraft" + A; # 普通的规则定义，+表示连接运算
-A := B;               # 这条规则和上一条构成“或”关系
-                      # 这两条A的规则都没有命名
+A := "minecraft" + A;           # 普通的规则定义，+表示连接运算
+A := B;                         # 这条规则和上一条构成“或”关系
+                                # 这两条A的规则都没有命名
 
 B := "token"; (First Rule Of B) # 将这条规则命名为“First Rule Of B”
 B := B + "token"; (X)           # 将这条规则命名为“X”
@@ -65,7 +65,7 @@ C := A; (X)                     # 这条规则和B的某规则名字相同
 A := B; # 这是注释
 ```
 
-### 使用命名空间
+### 命名空间
 
 一个实际意义的文法可能会非常复杂，对此，AGZParserGen提供了命名空间来避免非终结符名字污染。命名空间语法为：
 
@@ -82,24 +82,24 @@ namespace 命名空间名字 {
 ```
 namespace X {
     namespace Y {
-        B := A;	# 把B定义为Global.X.A
+        B := A;	          # 把B定义为Global.X.A
     }
     A := "minecraft" + A; # 在X的作用域内，这个定义屏蔽了全局的A
     C := Global.A;		  # 通过Global.XXX的写法可以引用被内层作用域屏蔽的外层符号
 }
-A := "dark souls"; # 在全局作用域内定义符号A
-AGZStart := X.C;   # 把开始符号定义为命名空间X中的符号C
+A := "dark souls";        # 在全局作用域内定义符号A
+AGZStart := X.C;          # 把开始符号定义为命名空间X中的符号C
 ```
 
 一个命名空间的定义可以由多个部分构成，譬如下面的代码：
 
 ```
 namespace MyNamespace {
-	A := "minecraft"    
+	A := "minecraft";
 }
 
 namespace MyNamespace {
-    B := "dark souls"
+    B := "dark souls";
 }
 ```
 
@@ -115,7 +115,7 @@ AGZ所有的组件均定义在`AGZ`命名空间中，使用时引入头文件`In
 
 ### TokenAdaptor
 
-AGZParserGen可以应对各种类型的词法单元流，因而需要用户提供用于描述词法单元流的`TokenAdaptor`。通常，一个合法的`TokenAdaptor`定义应符合以下形式：
+AGZParserGen可以应对各种类型的词法单元流，因而需要用户提供用于描述词法单元流的`TokenAdaptor`。通常，一个合法的`TokenAdaptor`定义包含以下内容：
 
 ```cpp
 class TokenAdaptor
@@ -140,6 +140,8 @@ class TokenAdaptor
     void ParsingError(const TokenStream &toks, size_t curState) const;
 };
 ```
+
+上面代码中出现的`const`限定符和引用都不是必须的，只需要成员函数的调用形式符合要求即可。比如，若`TokenData`是个庞大的结构体，那么应当使用`const TypeData &`作为`TokenAdaptor::Current`的返回值类型；反之，若`TokenData`很小，那么直接用`TypeData`类型进行值传递也是可行的。
 
 举个例子，假设我们正在编写一个四则运算计算器，它的文法脚本是：
 
@@ -170,7 +172,7 @@ enum class MyTokenType
 
 struct MyToken
 {
-    MyTokenType type;       // 该词法单元的类型
+    MyTokenType type;     // 该词法单元的类型
     double numberLiteral; // 如果是数字字面量，那么值就存放在numberLiteral中
 };
 ```
@@ -245,4 +247,30 @@ public:
 
 有了上述的`MyTokenAdaptor`，就能够使用`AGZ::Parser<MyTokenAdaptor>`分析四则运算语言了。
 
-施工中……
+### 使用AGZ::Parser
+
+仍然以上述的四则运算语言为例，假设我们已经写好了文法描述脚本（保存在`script.txt`中）和需要的TokenAdaptor，那么在程序中可以这样使用`AGZ::Parser`得到AST：
+
+```cpp
+MyTokenAdaptor tokenAdaptor;
+AGZ::Parser<MyTokenAdaptor> parser;
+
+// 从文法脚本构建语法分析器
+try
+{
+    parser.BuildFromSourceFile(tokenAdaptor, "script.txt");
+}
+catch(const AGZ::Exception &err)
+{
+    std::cerr << err.msg << std::endl;
+}
+
+// 用语法分析器从词法单元流创建AST
+auto AST = parser.Parse(tokenAdaptor, myTokenStream);
+```
+
+在进行语法分析时，若遇到语法错误，`TokenAdaptor::ParsingError`会被调用，且返回的AST为空值（表达式`!AST`为真）。
+
+### 生成的AST结构
+
+（施工中……）
