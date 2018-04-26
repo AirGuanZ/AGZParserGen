@@ -155,7 +155,7 @@ Token Tokenizer::NextToken(void)
         String path;
         while(true)
         {
-            if(src_[idx_] == '\0')
+            if(src_[idx_] == '\0' || src_[idx_] == '\n')
                 throw TokenException("unclosed [", filename_, line_);
             else if(src_[idx_] == ']')
             {
@@ -198,7 +198,7 @@ Token Tokenizer::NextToken(void)
         String name;
         while(true)
         {
-            if(src_[idx_] == '\0')
+            if(src_[idx_] == '\0' || src_[idx_] == '\n')
                 throw TokenException("unclosed (", filename_, line_);
             else if(src_[idx_] == ')')
             {

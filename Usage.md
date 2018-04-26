@@ -37,6 +37,25 @@ $$
 
 一般而言，词法单元流的末尾应有一个特殊的词法单元，专门用来标记词法单元流的结束。AGZParserGen将字符串`“#”`作为结束单元的非终结符名字，其使用在稍后的TokenAdaptor一节中介绍。
 
+### 规则
+
+一条规则由左右两边构成，中间由`:=`连接，末尾用一个分号表示结束。规则左边必须是一个非终结符或关键字`AGZStart`；右边则是一连串用`+`分隔的符号，每个符号要么是一个终结符，要么是对其他非终结符的引用。
+
+一个非终结符可以出现在多条规则的左边，表示它可以被展开为这些规则右边中的任意一个。为了在最终得到的语法分析树中方便地区分每个内部节点使用了哪条规则，可以在规则定义的分号之后加上一个规则名。规则名用一对圆括号包裹起来，除了未命名规则外，每个终结符不能有两条以上名字相同的规则。譬如：
+
+```
+A := "minecraft" + A; # 普通的规则定义，+表示连接运算
+A := B;               # 这条规则和上一条构成“或”关系
+                      # 这两条A的规则都没有命名
+
+B := "token"; (First Rule Of B) # 将这条规则命名为“First Rule Of B”
+B := B + "token"; (X)           # 将这条规则命名为“X”
+B := A + "dark souls"; (X)      # 这条规则和上一条名字重复了，因此会报错
+
+C := A; (X)                     # 这条规则和B的某规则名字相同
+                                # 但其左侧的非终结符不同，因此是合法的
+```
+
 ### 注释
 
 每一行第一个`#`以及其后该行所有的内容都被视为注释。譬如：
@@ -139,7 +158,7 @@ AGZStart := E;
 
 我们用下面的枚举类型表示词法单元的类型：
 
-```
+```cpp
 enum class MyTokenType
 {
     EndMark,
@@ -158,7 +177,7 @@ struct MyToken
 
 不妨假设我们已经实现了一个词法分析器，它输出一个`std::list<MyToken>`，其中最后一个词法单元固定为`MyTokenType::EndMark`类型（用于标志词法单元流的结尾）。此时，此时，我们的词法单元流可以被定义为：
 
-```
+```cpp
 struct MyTokenStream
 {
     std::list<MyToken> tokens;            // 所有词法单元的链表
@@ -170,7 +189,7 @@ struct MyTokenStream
 
 综上，我们针对这一四则运算语言的`TokenAdaptor`可以被实现为：
 
-```
+```cpp
 class MyTokenAdaptor
 {
 public:
@@ -190,7 +209,7 @@ public:
             { "/",      MyTokenType::Div           },
             { "+",      MyTokenType::Add           },
             { "-",      MyTokenType::Sub           },
-            { "#",      MyTokenType::EndMark       }
+            { "#",      MyTokenType::EndMark       } // 规定“#”表示结束符
         };
         auto it = m.find(tok);
         assert(it != m.end());
