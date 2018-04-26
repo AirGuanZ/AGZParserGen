@@ -1,6 +1,6 @@
 试着做个Parser Generator，算是一次做一百个人的编译原理作业吧XD……
 
-使用姿势是：
+使用姿势大概是这样的：
 
 1. 先写文法描述脚本，描述想要的Parser的上下文无关文法，脚本大概长这样：
 
@@ -40,6 +40,8 @@
    // 待完成
    parser.PrintAs<AGZ::CppBackend>("staticCppParser.h", "staticCppParser.cpp");
    ```
+
+详细的用法参见[Usage](./Usage.md)。
 
 到目前为止已经完成了Parser的主体部分，接下来要做的是：
 
