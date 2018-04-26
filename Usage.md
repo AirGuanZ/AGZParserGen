@@ -247,7 +247,7 @@ public:
 
 有了上述的`MyTokenAdaptor`，就能够使用`AGZ::Parser<MyTokenAdaptor>`分析四则运算语言了。
 
-### 使用AGZ::Parser
+### AGZ::Parser
 
 仍然以上述的四则运算语言为例，假设我们已经写好了文法描述脚本（保存在`script.txt`中）和需要的TokenAdaptor，那么在程序中可以这样使用`AGZ::Parser`得到AST：
 
@@ -271,6 +271,6 @@ auto AST = parser.Parse(tokenAdaptor, myTokenStream);
 
 在进行语法分析时，若遇到语法错误，`TokenAdaptor::ParsingError`会被调用，且返回的AST为空值（表达式`!AST`为真）。
 
-### 生成的AST结构
+### AST结构
 
 （施工中……）

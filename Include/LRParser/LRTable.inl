@@ -13,8 +13,8 @@ inline void LRTable<_tA>::Build(const RuleTable<_tA> &ruleTab,
 
     for(size_t i = 0;i != sets.idx2Set_.size(); ++i)
     {
-        const LRSet<_tA> &CCi = sets.idx2Set_[i];
-        for(const LRItem<_tA> &item : CCi)
+        const Ptr<LRSet<_tA>> CCi = sets.idx2Set_[i];
+        for(const LRItem<_tA> &item : *CCi)
         {
             if(IsDotFrontToken(item))
             {

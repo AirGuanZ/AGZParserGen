@@ -40,15 +40,15 @@ private:
                  const RuleTable<_tA> &ruleTab,
                  const FirstSetTable<_tA> &fstSets) const;
     
-    LRSet<_tA> Goto(const LRSet<_tA> &src,
-                    const RuleTable<_tA> &ruleTab,
-                    const FirstSetTable<_tA> &fstSets,
-                    const Sym<_tA> &x) const;
+    Ptr<LRSet<_tA>> Goto(const LRSet<_tA> &src,
+                         const RuleTable<_tA> &ruleTab,
+                         const FirstSetTable<_tA> &fstSets,
+                         const Sym<_tA> &x) const;
 
-    size_t GetIndexOf(LRSet<_tA> &&s);
+    size_t GetIndexOf(Ptr<LRSet<_tA>> s);
 
 public:
-    Vec<LRSet<_tA>> idx2Set_;
+    Vec<Ptr<LRSet<_tA>>> idx2Set_;
     Map<LRSet<_tA>, size_t> set2Idx_;
 
     struct TransInput
