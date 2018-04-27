@@ -57,3 +57,5 @@ public:
 
 NS_END(MetaLang)
 NS_END(AGZ)
+
+#include <MetaLang/RawRuleTable.inl>

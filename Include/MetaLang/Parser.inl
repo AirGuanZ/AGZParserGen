@@ -1,16 +1,9 @@
-﻿/*================================================================
-Filename: MetaLang/Parser.cpp
-Date: 2018.4.15
-Created by AirGuanZ
-================================================================*/
-#include <MetaLang/Parser.h>
-
-NS_BEGIN(AGZ)
+﻿NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
 namespace
 {
-    bool GetParentPath(const String &path, String &parentPath)
+    inline bool GetParentPath(const String &path, String &parentPath)
     {
         size_t i = path.rfind('/');
         if(i == String::npos)
@@ -20,7 +13,7 @@ namespace
     }
 }
 
-Ptr<ASTNode_Script> Parser::ParseFromTokens(Tokenizer &toks)
+inline Ptr<ASTNode_Script> Parser::ParseFromTokens(Tokenizer &toks)
 {
     auto rt = ParseScript(toks);
     if(!toks.Match(TokenType::EndMark))
@@ -32,7 +25,7 @@ Ptr<ASTNode_Script> Parser::ParseFromTokens(Tokenizer &toks)
     return rt;
 }
 
-Ptr<ASTNode_Script> Parser::ParseFromFile(const String &dstFilename,
+inline Ptr<ASTNode_Script> Parser::ParseFromFile(const String &dstFilename,
     const String &callerFilename,
     int callerLine)
 {
@@ -47,7 +40,7 @@ Ptr<ASTNode_Script> Parser::ParseFromFile(const String &dstFilename,
     return ParseFromTokens(toks);
 }
 
-Ptr<ASTNode_Script> Parser::ParseScript(Tokenizer &toks)
+inline Ptr<ASTNode_Script> Parser::ParseScript(Tokenizer &toks)
 {
     Vec<Ptr<ASTNode_Statement>> stmts;
     Ptr<ASTNode_Statement> stmt;
@@ -59,7 +52,7 @@ Ptr<ASTNode_Script> Parser::ParseScript(Tokenizer &toks)
     return rt;
 }
 
-Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
+inline Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
 {
     // Start definition
     // AGZStart := Symbol;
@@ -198,7 +191,7 @@ Ptr<ASTNode_Statement> Parser::ParseStatement(Tokenizer &toks)
     return Ptr<ASTNode_Statement>();
 }
 
-Ptr<ASTNode_Symbol> Parser::ParseSymbol(Tokenizer &toks)
+inline Ptr<ASTNode_Symbol> Parser::ParseSymbol(Tokenizer &toks)
 {
     // token
     // Token

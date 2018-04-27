@@ -2,7 +2,7 @@ CC = clang++
 CC_INCLUDE_FLAGS = -I ./Include/
 CC_FLAGS = -std=c++11 -O2 $(CC_INCLUDE_FLAGS) -Werror -Wall
 
-CPP_SRC_FILES = $(shell find ./Src/ -name "*.cpp")
+CPP_SRC_FILES = $(shell find ./Sample/ -name "*.cpp")
 CPP_OBJ_FILES = $(patsubst %.cpp, %.o, $(CPP_SRC_FILES))
 CPP_DPT_FILES = $(patsubst %.cpp, %.d, $(CPP_SRC_FILES))
 
@@ -27,7 +27,7 @@ clean :
 	rm -f $(DST)
 	rm -f $(CPP_OBJ_FILES)
 	rm -f $(CPP_DPT_FILES)
-	rm -f $(shell find ./Src/ -name "*.dtmp")
+	rm -f $(shell find ./Sample/ -name "*.dtmp")
 
 run :
 	make

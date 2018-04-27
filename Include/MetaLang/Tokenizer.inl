@@ -14,13 +14,35 @@ Created by AirGuanZ
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
-const String KEYWORD_STR_NAMESPACE = "namespace";
-const String KEYWORD_STR_START     = "AGZStart";
-const String KEYWORD_STR_IMPORT    = "import";
+inline const String &KEYWORD_STR_NAMESPACE(void)
+{
+    static const String ret = "namespace";
+    return ret;
+}
 
-const String GLOBAL_NAMESPACE_STR  = "Global";
+inline const String &KEYWORD_STR_START(void)
+{
+    static const String ret = "AGZStart";
+    return ret;
+}
 
-const String TOKEN_STR_ENDMARK     = "#";
+inline const String &KEYWORD_STR_IMPORT(void)
+{
+    static const String ret = "import";
+    return ret;
+}
+
+inline const String &GLOBAL_NAMESPACE_STR(void)
+{
+    static const String ret = "Global";
+    return ret;
+}
+
+inline const String &TOKEN_STR_ENDMARK(void)
+{
+    static const String ret = "#";
+    return ret;
+}
 
 const String &GetTokenTypeName(TokenType type)
 {
@@ -131,9 +153,9 @@ Token Tokenizer::NextToken(void)
 
     static const std::map<String, TokenType> KEYWORDS =
     {
-        { KEYWORD_STR_NAMESPACE, TokenType::Kw_Namespace },
-        { KEYWORD_STR_START,     TokenType::Kw_Start     },
-        { KEYWORD_STR_IMPORT,    TokenType::Kw_Import    },
+        { KEYWORD_STR_NAMESPACE(), TokenType::Kw_Namespace },
+        { KEYWORD_STR_START(),     TokenType::Kw_Start     },
+        { KEYWORD_STR_IMPORT(),    TokenType::Kw_Import    },
     };
 
     if(std::isalpha(ch) || ch == '_')

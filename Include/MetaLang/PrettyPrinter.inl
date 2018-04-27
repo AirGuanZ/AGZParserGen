@@ -1,24 +1,18 @@
-/*================================================================
-Filename: MetaLang/PrettyPrinter.cpp
-Date: 2018.4.16
-Created by AirGuanZ
-================================================================*/
 #include <cassert>
 
-#include <MetaLang/PrettyPrinter.h>
 #include <MetaLang/Tokenizer.h>
 
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
-void PrettyPrinter::Print(std::ostream &out, Ptr<ASTNode_Script> script,
+inline void PrettyPrinter::Print(std::ostream &out, Ptr<ASTNode_Script> script,
                           const String &lp) const
 {
     for(auto stmt : script->stmts)
         Print(out, stmt, lp);
 }
 
-void PrettyPrinter::Print(std::ostream &out, Ptr<ASTNode_Statement> stmt,
+inline void PrettyPrinter::Print(std::ostream &out, Ptr<ASTNode_Statement> stmt,
                           const String &lp) const
 {
     using std::endl;
@@ -51,7 +45,7 @@ void PrettyPrinter::Print(std::ostream &out, Ptr<ASTNode_Statement> stmt,
     }
 }
 
-String PrettyPrinter::ToString(Ptr<ASTNode_Symbol> sym) const
+inline String PrettyPrinter::ToString(Ptr<ASTNode_Symbol> sym) const
 {
     if(sym->token.size())
     {

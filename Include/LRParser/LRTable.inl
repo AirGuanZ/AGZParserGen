@@ -7,9 +7,9 @@ inline void LRTable<_tA>::Build(const RuleTable<_tA> &ruleTab,
                                 const LRItemSetConstructor<_tA> &sets,
                                 _tA &tA)
 {
-    size_t startIdx = ruleTab.Trans(MetaLang::GLOBAL_NAMESPACE_STR + "." +
-                                    MetaLang::KEYWORD_STR_START);
-    TokT<_tA> endmarkType = ToToken(tA, MetaLang::TOKEN_STR_ENDMARK);
+    size_t startIdx = ruleTab.Trans(MetaLang::GLOBAL_NAMESPACE_STR() + "." +
+                                    MetaLang::KEYWORD_STR_START());
+    TokT<_tA> endmarkType = ToToken(tA, MetaLang::TOKEN_STR_ENDMARK());
 
     for(size_t i = 0;i != sets.idx2Set_.size(); ++i)
     {

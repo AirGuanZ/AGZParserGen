@@ -64,3 +64,5 @@ bool ReadTxt(const String &filename, String &output);
 String StrJoin(const Vec<String> &strs, const String &join);
 
 NS_END(AGZ)
+
+#include <Common/Utility.inl>

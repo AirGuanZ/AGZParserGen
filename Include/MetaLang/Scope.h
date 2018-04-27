@@ -28,3 +28,5 @@ Ptr<ScopeNode> BuildScopeTree(Ptr<ASTNode_Script> script,
 
 NS_END(MetaLang)
 NS_END(AGZ)
+
+#include <MetaLang/Scope.inl>

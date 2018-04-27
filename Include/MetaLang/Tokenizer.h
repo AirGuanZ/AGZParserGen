@@ -44,14 +44,6 @@ struct Token
     String str;
 };
 
-extern const String KEYWORD_STR_NAMESPACE;
-extern const String KEYWORD_STR_START;
-extern const String KEYWORD_STR_IMPORT;
-
-extern const String GLOBAL_NAMESPACE_STR;
-
-extern const String TOKEN_STR_ENDMARK;
-
 class TokenException
 {
 public:
@@ -67,6 +59,12 @@ public:
     const String filename;
     const int line;
 };
+
+inline const String &KEYWORD_STR_NAMESPACE(void);
+inline const String &KEYWORD_STR_START    (void);
+inline const String &KEYWORD_STR_IMPORT   (void);
+inline const String &GLOBAL_NAMESPACE_STR (void);
+inline const String &TOKEN_STR_ENDMARK    (void);
 
 class Tokenizer
 {
@@ -100,3 +98,5 @@ private:
 
 NS_END(MetaLang)
 NS_END(AGZ)
+
+#include <MetaLang/Tokenizer.inl>

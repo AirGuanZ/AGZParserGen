@@ -14,9 +14,9 @@ Ptr<ASTNode<_tA>> ASTCons<_tA>::Parse(TokenStream &toks,
 {
     using TransOpr = typename LRTable<_tA>::TransOperation;
 
-    TokT<_tA> endTok = ToToken(tA, MetaLang::TOKEN_STR_ENDMARK);
-    NTIdx startIdx = ruleTab.Trans(MetaLang::GLOBAL_NAMESPACE_STR + "." +
-                                   MetaLang::KEYWORD_STR_START);
+    TokT<_tA> endTok = ToToken(tA, MetaLang::TOKEN_STR_ENDMARK());
+    NTIdx startIdx = ruleTab.Trans(MetaLang::GLOBAL_NAMESPACE_STR() + "." +
+                                   MetaLang::KEYWORD_STR_START());
 
     Stack<size_t> stateStk;
     Stack<Ptr<ASTSym<_tA>>> symStk;

@@ -25,9 +25,9 @@ inline void LRItemSetConstructor<_tA>::Build(const RuleTable<_tA> &ruleTab,
 
     // 初始状态
     Ptr<LRSet<_tA>> CC0 = MakePtr<LRSet<_tA>>();
-    NTIdx startNT = ruleTab.Trans(MetaLang::GLOBAL_NAMESPACE_STR
-                                + "." + MetaLang::KEYWORD_STR_START);
-    TokT<_tA> endmarkTok = ToToken(tA, MetaLang::TOKEN_STR_ENDMARK);
+    NTIdx startNT = ruleTab.Trans(MetaLang::GLOBAL_NAMESPACE_STR()
+                                + "." + MetaLang::KEYWORD_STR_START());
+    TokT<_tA> endmarkTok = ToToken(tA, MetaLang::TOKEN_STR_ENDMARK());
     for(auto &r : ruleTab.GetRulesByLeft(startNT))
         CC0->insert(LRItem<_tA>{ r.second, 0, endmarkTok });
     Closure(*CC0, ruleTab, fstSets);

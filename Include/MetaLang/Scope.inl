@@ -1,17 +1,11 @@
-/*================================================================
-Filename: MetaLang/Scope.cpp
-Date: 2018.4.16
-Created by AirGuanZ
-================================================================*/
 #include <cassert>
 
-#include <MetaLang/Scope.h>
 #include <MetaLang/Tokenizer.h>
 
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
-static void AddScopeChild(Map<String, Ptr<ScopeNode>> &children,
+inline static void AddScopeChild(Map<String, Ptr<ScopeNode>> &children,
                           const String &childName,
                           Ptr<ScopeNode> child)
 {
@@ -34,7 +28,7 @@ static void AddScopeChild(Map<String, Ptr<ScopeNode>> &children,
         ori->entrys.insert(entry);
 }
 
-Ptr<ScopeNode> BuildScopeTree(Ptr<ASTNode_Script> script,
+inline Ptr<ScopeNode> BuildScopeTree(Ptr<ASTNode_Script> script,
                               const Vec<String> &globalName,
                               const String &globalNameStr)
 {
@@ -46,7 +40,7 @@ Ptr<ScopeNode> BuildScopeTree(Ptr<ASTNode_Script> script,
     for(auto stmt : script->stmts)
     {
         if(stmt->start)
-            rt->localSyms.insert(KEYWORD_STR_START);
+            rt->localSyms.insert(KEYWORD_STR_START());
         else if(stmt->ns)
         {
             Vec<String> childGlobalName = globalName;

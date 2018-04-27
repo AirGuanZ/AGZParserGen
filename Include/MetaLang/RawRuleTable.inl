@@ -1,18 +1,12 @@
-/*================================================================
-Filename: MetaLang/RawRuleTable.cpp
-Date: 2018.4.17
-Created by AirGuanZ
-================================================================*/
 #include <cassert>
 #include <sstream>
 
-#include <MetaLang/RawRuleTable.h>
 #include <MetaLang/Tokenizer.h>
 
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
-String RawRule::ToString(void) const
+inline String RawRule::ToString(void) const
 {
     auto ToStr = [](const RawSym &sym) -> String
     {
@@ -34,7 +28,7 @@ String RawRule::ToString(void) const
 
 namespace
 {
-    bool FindReference(const Ptr<ScopeNode> context,
+    inline bool FindReference(const Ptr<ScopeNode> context,
                        const Ptr<ASTNode_Symbol> sym,
                        RawSym &result)
     {
@@ -110,7 +104,7 @@ namespace
         return false;
     }
 
-    void Globalize(const Ptr<ScopeNode> scope,
+    inline void Globalize(const Ptr<ScopeNode> scope,
                    const Ptr<ScopeNode> ctx,
                    RawRuleTableBuilder::RawRuleTable &symTab)
     {
@@ -133,7 +127,7 @@ namespace
                     startDefRight = { stmt->start->sym };
                     line          = stmt->start->line;
                     name          = nullptr;
-                    left          = &KEYWORD_STR_START;
+                    left          = &KEYWORD_STR_START();
                     right         = &startDefRight;
                     filename      = &stmt->start->filename;
                 }
@@ -175,7 +169,7 @@ namespace
     }
 }
 
-Ptr<RawRuleTableBuilder::RawRuleTable>
+inline Ptr<RawRuleTableBuilder::RawRuleTable>
 RawRuleTableBuilder::Build(Ptr<ScopeNode> root) const
 {
     assert(root);

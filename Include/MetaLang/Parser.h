@@ -42,3 +42,5 @@ private:
 
 NS_END(MetaLang)
 NS_END(AGZ)
+
+#include <MetaLang/Parser.inl>
