@@ -13,8 +13,6 @@ DST = ./Build/ParserGen
 $(DST): $(CPP_OBJ_FILES)
 	$(CC) $^ -o $@
 
--include $(CPP_DPT_FILES)
-
 %.o: %.cpp
 	$(CC) $(CC_FLAGS) -c $< -o $@
 
@@ -22,10 +20,10 @@ $(DST): $(CPP_OBJ_FILES)
 	@set -e; \
 	rm -f $@; \
 	$(CC) -MM $(CC_FLAGS) $< $(CC_INCLUDE_FLAGS) > $@.$$$$.dtmp; \
-	sed 's,\(.*\)\.o\:,$*\.o\:,g' < $@.$$$$.dtmp > $@; \
+	sed 's,\(.*\)\.o\:,$*\.o $*\.d\:,g' < $@.$$$$.dtmp > $@; \
 	rm -f $@.$$$$.dtmp
 
-#include $(CPP_DPT_FILES)
+-include $(CPP_DPT_FILES)
 
 clean:
 	rm -f $(DST)
