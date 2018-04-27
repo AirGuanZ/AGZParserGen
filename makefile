@@ -1,4 +1,6 @@
-CC = clang++
+VPATH = ./Include/
+
+CC = g++
 CC_INCLUDE_FLAGS = -I ./Include/
 CC_FLAGS = -std=c++11 -O2 $(CC_INCLUDE_FLAGS) -Werror -Wall
 
@@ -8,27 +10,29 @@ CPP_DPT_FILES = $(patsubst %.cpp, %.d, $(CPP_SRC_FILES))
 
 DST = ./Build/ParserGen
 
-$(DST) : $(CPP_OBJ_FILES)
+$(DST): $(CPP_OBJ_FILES)
 	$(CC) $^ -o $@
 
-%.o : %.cpp
+-include $(CPP_DPT_FILES)
+
+%.o: %.cpp
 	$(CC) $(CC_FLAGS) -c $< -o $@
 
-%.d : %.cpp
+%.d: %.cpp
 	@set -e; \
 	rm -f $@; \
-	$(CC) -MM $< $(CC_INCLUDE_FLAGS) > $@.$$$$.dtmp; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$.dtmp > $@; \
+	$(CC) -MM $(CC_FLAGS) $< $(CC_INCLUDE_FLAGS) > $@.$$$$.dtmp; \
+	sed 's,\(.*\)\.o\:,$*\.o\:,g' < $@.$$$$.dtmp > $@; \
 	rm -f $@.$$$$.dtmp
 
--include $(CPP_OBJ_FILES:.o=.d)
+#include $(CPP_DPT_FILES)
 
-clean :
+clean:
 	rm -f $(DST)
 	rm -f $(CPP_OBJ_FILES)
 	rm -f $(CPP_DPT_FILES)
 	rm -f $(shell find ./Sample/ -name "*.dtmp")
 
-run :
+run:
 	make
 	$(DST)
