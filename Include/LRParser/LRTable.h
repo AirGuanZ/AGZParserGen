@@ -5,6 +5,8 @@ Created by AirGuanZ
 ================================================================*/
 #pragma once
 
+#include <fstream>
+
 #include <Common/Utility.h>
 #include <LRParser/LRItem.h>
 
@@ -23,8 +25,10 @@ public:
     
     void Clear(void);
 
-private:
-    bool IsDotFrontToken(const LRItem<_tA> &item) const;
+    bool ToBinaryFile(std::ofstream &fout, _tA &tA) const;
+
+    bool FromBinaryFile(std::ifstream &fin, _tA &tA,
+                        const RuleTable<_tA> &ruleTab);
 
 private:
     friend class ASTCons<_tA>;
@@ -65,7 +69,7 @@ private:
 
     struct TransOperation
     {
-        enum
+        enum : uint8_t
         {
             Shift,
             Reduce,
@@ -76,6 +80,16 @@ private:
         Ptr<Rule<_tA>> reduceRule;
     };
 
+    bool IsDotFrontToken(const LRItem<_tA> &item) const;
+
+    bool ToBinaryFile(std::ofstream &fout, _tA &tA,
+                      const TransOperation &opr) const;
+
+    bool FromBinaryFile(std::ifstream &fin, _tA &tA,
+                        TransOperation &opr,
+                        const RuleTable<_tA> &ruleTab);
+
+private:
     UrdMap<ActionTransInput, TransOperation,
            typename ActionTransInput::Hasher,
            typename ActionTransInput::Equal> action_;

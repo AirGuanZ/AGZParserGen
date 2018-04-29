@@ -81,6 +81,8 @@ public:
 
     const Map<String, Ptr<Rule<_tA>>> &GetRulesByLeft(NTIdx left) const;
 
+    Ptr<Rule<_tA>> GetRuleByLeftAndName(NTIdx left, const String &name) const;
+
     bool ToBinaryFile(std::ofstream &fout, _tA &tA) const;
 
     bool FromBinaryFile(std::ifstream &fin, _tA &tA);

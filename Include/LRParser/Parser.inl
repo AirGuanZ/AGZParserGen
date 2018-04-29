@@ -107,20 +107,20 @@ inline void Parser<_tA>::BuildFromSourceFile(TokenAdaptor &tA, const String &fil
 }
 
 template<typename _tA>
-void Parser<_tA>::Clear(void)
+inline void Parser<_tA>::Clear(void)
 {
     ruleTab_.Clear();
     LRTab_.Clear();
 }
 
 template<typename _tA>
-Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenAdaptor &tA, TokenStream &toks) const
+inline Ptr<ASTNode<_tA>> Parser<_tA>::Parse(TokenAdaptor &tA, TokenStream &toks) const
 {
     return ASTCons<_tA>(LRTab_).Parse(toks, ruleTab_, tA);
 }
 
 template<typename _tA>
-NTIdx Parser<_tA>::NTName2Idx(const String &name) const
+inline NTIdx Parser<_tA>::NTName2Idx(const String &name) const
 {
     try
     {
@@ -133,7 +133,7 @@ NTIdx Parser<_tA>::NTName2Idx(const String &name) const
 }
 
 template<typename _tA>
-const String &Parser<_tA>::NTIdx2Name(NTIdx idx) const
+inline const String &Parser<_tA>::NTIdx2Name(NTIdx idx) const
 {
     try
     {
@@ -143,6 +143,28 @@ const String &Parser<_tA>::NTIdx2Name(NTIdx idx) const
     {
         throw SymbolException(err.msg);
     }
+}
+
+template<typename _tA>
+inline bool Parser<_tA>::ToBinaryFile(const String &filename, _tA &tA) const
+{
+    std::ofstream fout(filename, std::ofstream::out |
+                                 std::ofstream::binary |
+                                 std::ofstream::trunc);
+    return fout && ruleTab_.ToBinaryFile(fout, tA)
+                && LRTab_.ToBinaryFile(fout, tA);
+}
+
+template<typename _tA>
+inline bool Parser<_tA>::FromBinaryFile(const String &filename, _tA &tA)
+{
+    ruleTab_.Clear();
+    LRTab_.Clear();
+
+    std::ifstream fin(filename, std::ofstream::in |
+                                std::ofstream::binary);
+    return fin && ruleTab_.FromBinaryFile(fin, tA)
+               && LRTab_.FromBinaryFile(fin, tA, ruleTab_);
 }
 
 NS_END(AGZ)

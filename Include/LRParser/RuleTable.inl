@@ -147,6 +147,17 @@ inline const Map<String, Ptr<Rule<_tA>>> &RuleTable<_tA>::GetRulesByLeft(NTIdx l
 }
 
 template<typename _tA>
+inline Ptr<Rule<_tA>> RuleTable<_tA>::GetRuleByLeftAndName(NTIdx left, const String &name) const
+{
+    auto it = rules_.find(left);
+    if(it == rules_.end())
+        return MakePtr<Rule<_tA>>();
+    auto jt = it->second.find(name);
+    return jt == it->second.end() ? MakePtr<Rule<_tA>>() :
+                                    jt->second;
+}
+
+template<typename _tA>
 inline bool RuleTable<_tA>::ToBinaryFile(std::ofstream &fout, _tA &tA) const
 {
 #define WRITE_BINARY(X) \

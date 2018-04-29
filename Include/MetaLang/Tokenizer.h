@@ -12,7 +12,7 @@ Created by AirGuanZ
 NS_BEGIN(AGZ)
 NS_BEGIN(MetaLang)
 
-enum class TokenType
+enum class TokenType : uint8_t
 {
     Identifier,
     Path,

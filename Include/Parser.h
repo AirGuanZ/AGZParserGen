@@ -70,6 +70,10 @@ public:
 
     const String &NTIdx2Name(NTIdx idx) const;
 
+    bool ToBinaryFile(const String &filename, _tA &tA) const;
+
+    bool FromBinaryFile(const String &filename, _tA &tA);
+
 private:
     RuleTable<_tA> ruleTab_;
     LRTable<_tA> LRTab_;

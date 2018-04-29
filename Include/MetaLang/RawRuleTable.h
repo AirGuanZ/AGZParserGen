@@ -26,7 +26,7 @@ public:
 };
 
 /* 符号类型 */
-enum class SymT
+enum class SymT : uint8_t
 {
     Token,  // 终结符
     NT      // 非终结符
