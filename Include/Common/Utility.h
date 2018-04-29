@@ -51,17 +51,24 @@ template<typename T>
 using Ptr = std::shared_ptr<T>;
 
 template<typename T, typename...Args>
-inline Ptr<T> MakePtr(Args&&...args)
-{
-    return std::make_shared<T>(std::forward<Args>(args)...);
-}
+inline Ptr<T> MakePtr(Args&&...args);
 
 template<typename T>
 using WPtr = std::weak_ptr<T>;
 
-bool ReadTxt(const String &filename, String &output);
+inline bool ReadTxt(const String &filename, String &output);
 
-String StrJoin(const Vec<String> &strs, const String &join);
+inline String StrJoin(const Vec<String> &strs, const String &join);
+
+template<typename T>
+inline bool WriteBinary(std::ofstream &fout, const T &data);
+
+inline bool WriteString(std::ofstream &fout, const String &str);
+
+template<typename T>
+inline bool ReadBinary(std::ifstream &fin, T &data);
+
+inline bool ReadString(std::ifstream &fin, String &str);
 
 NS_END(AGZ)
 

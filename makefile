@@ -1,6 +1,4 @@
-VPATH = ./Include/
-
-CC = g++
+CC = clang++
 CC_INCLUDE_FLAGS = -I ./Include/
 CC_FLAGS = -std=c++11 -O2 $(CC_INCLUDE_FLAGS) -Werror -Wall
 

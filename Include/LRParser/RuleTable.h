@@ -6,6 +6,7 @@ Created by AirGuanZ
 #pragma once
 
 #include <cassert>
+#include <fstream>
 
 #include <Common/Utility.h>
 #include <MetaLang/RawRuleTable.h>
@@ -79,6 +80,10 @@ public:
     NTIdx GetNTCount(void) const;
 
     const Map<String, Ptr<Rule<_tA>>> &GetRulesByLeft(NTIdx left) const;
+
+    bool ToBinaryFile(std::ofstream &fout, _tA &tA) const;
+
+    bool FromBinaryFile(std::ifstream &fin, _tA &tA);
 
 private:
     NTIdx GetNTIdx(const String &NT);

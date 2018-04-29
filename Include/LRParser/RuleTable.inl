@@ -147,6 +147,146 @@ inline const Map<String, Ptr<Rule<_tA>>> &RuleTable<_tA>::GetRulesByLeft(NTIdx l
 }
 
 template<typename _tA>
+inline bool RuleTable<_tA>::ToBinaryFile(std::ofstream &fout, _tA &tA) const
+{
+#define WRITE_BINARY(X) \
+    do { if(!WriteBinary(fout, X)) return false; } while(0)
+
+    // idx2NT和NT2Idx写其中一个就行，我选择idx2NT
+    WRITE_BINARY(idx2NT_.size());
+    for(const auto &it : idx2NT_)
+    {
+        WRITE_BINARY(it.first);
+        if(!WriteString(it.second))
+            return false;
+    }
+
+    WRITE_BINARY(nextNTIdx_);
+    WRITE_BINARY(autoRuleNameIdx_);
+
+    WRITE_BINARY(rules_.size());
+    for(const auto &it : rules_)
+    {
+        const auto &m = it.second;
+
+        WRITE_BINARY(it.first);
+
+        WRITE_BINARY(m.size());
+        for(const auto &jt : m)
+        {
+            auto &rule = *jt.second;
+            if(!WriteString(fout, jt.first))
+                return false;
+            if(!WriteString(fout, rule.name))
+                return false;
+            WRITE_BINARY(rule.left);
+            WRITE_BINARY(rule.right.size());
+            for(const Sym<_tA> &sym : rule.right)
+            {
+                WRITE_BINARY(sym.type);
+                if(sym.type == SymT::NT)
+                    WRITE_BINARY(sym.NT);
+                else
+                {
+                    if(!tA.ToBinaryFile(fout, sym.tok))
+                        return false;
+                }
+            }
+        }
+    }
+
+#undef WRITE_BINARY
+
+    return true;
+}
+
+template<typename _tA>
+inline bool RuleTable<_tA>::FromBinaryFile(std::ifstream &fin, _tA &tA)
+{
+    Clear();
+
+#define READ_BINARY(X) \
+    do { if(!ReadBinary(fin, X)) \
+         { \
+            Clear(); \
+            return false; \
+         } } while(0)
+
+    decltype(idx2NT_.size()) idx2NTSize;
+    READ_BINARY(idx2NTSize);
+
+    for(size_t i = 0;i != idx2NTSize; ++i)
+    {
+        NTIdx idx;
+        READ_BINARY(idx);
+
+        String str;
+        if(!ReadString(fin, str))
+        {
+            Clear();
+            return false;
+        }
+
+        idx2NT_[idx] = str;
+        NT2Idx_[str] = idx;
+    }
+
+    READ_BINARY(nextNTIdx_);
+    READ_BINARY(autoRuleNameIdx_);
+
+    decltype(rules_.size()) ruleLeftCount;
+    READ_BINARY(ruleLeftCount);
+    for(size_t i = 0;i != ruleLeftCount; ++i)
+    {
+        NTIdx idx;
+        READ_BINARY(idx);
+
+        decltype(rules_[0].size()) mSize;
+        READ_BINARY(mSize);
+
+        Map<String, Ptr<Rule<_tA>>> m;
+        for(size_t j = 0;j != mSize; ++j)
+        {
+            String str, name;
+            if(!ReadString(fin, str) || !ReadString(fin, name))
+            {
+                Clear();
+                return false;
+            }
+
+            NTIdx left;
+            typename Vec<Sym<_tA>>::size_type rightSize;
+            READ_BINARY(left);
+            READ_BINARY(rightSize);
+            Vec<Sym<_tA>> right(rightSize);
+            for(size_t k = 0;k != rightSize; ++k)
+            {
+                READ_BINARY(right[k].type);
+                if(right[k].type == SymT::NT)
+                    READ_BINARY(right[k].NT);
+                else if(!tA.FromBinaryFile(fin, right[k].tok))
+                {
+                    Clear();
+                    return false;
+                }
+            }
+
+            Ptr<Rule<_tA>> r = MakePtr<Rule<_tA>>();
+            r->name  = name;
+            r->left  = left;
+            r->right = std::move(right);
+            m[name]  = r;
+        }
+
+        rules_[idx] = std::move(m);
+    }
+
+#undef READ_BINARY
+
+    return true;
+}
+
+template<typename _tA>
 inline NTIdx RuleTable<_tA>::GetNTIdx(const String &NT)
 {
     auto it = NT2Idx_.find(NT);
