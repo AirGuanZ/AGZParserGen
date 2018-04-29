@@ -40,6 +40,16 @@ struct TA
     {
         throw std::runtime_error("Syntax error!");        
     }
+
+    bool ToBinaryFile(std::ofstream &fout, TokenType type)
+    {
+        return AGZ::WriteString(fout, type);
+    }
+
+    bool FromBinaryFile(std::ifstream &fin, TokenType &type)
+    {
+        return AGZ::ReadString(fin, type);
+    }
 };
 
 int main(void)

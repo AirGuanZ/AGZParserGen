@@ -157,7 +157,7 @@ inline bool RuleTable<_tA>::ToBinaryFile(std::ofstream &fout, _tA &tA) const
     for(const auto &it : idx2NT_)
     {
         WRITE_BINARY(it.first);
-        if(!WriteString(it.second))
+        if(!WriteString(fout, it.second))
             return false;
     }
 
