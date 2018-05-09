@@ -1,23 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source">
-      <UniqueIdentifier>{c7e16e71-1ac4-4f08-9faf-8f49b3f1fbc0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Include">
-      <UniqueIdentifier>{0e823a99-90c4-40b1-a06b-805c47e3f711}</UniqueIdentifier>
+      <UniqueIdentifier>{2353fc92-1f3e-4d4a-927a-850a1f16cd9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sample">
+      <UniqueIdentifier>{1c9f57e8-a6e1-49a4-a450-a8397ab8351e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Include\MetaLang">
-      <UniqueIdentifier>{b723aeac-e7be-4a8a-93c5-3b99735bc074}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\MetaLang">
-      <UniqueIdentifier>{ecff239b-8d1f-48e9-9dea-11836b3edc65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Include\LRParser">
-      <UniqueIdentifier>{c3c35061-8cc6-4bca-98a6-25cbc5f239f8}</UniqueIdentifier>
+      <UniqueIdentifier>{3adb1bf2-2a48-48dd-8273-26229f377155}</UniqueIdentifier>
     </Filter>
     <Filter Include="Include\Common">
-      <UniqueIdentifier>{55996ec4-d32c-492f-8019-448790966848}</UniqueIdentifier>
+      <UniqueIdentifier>{1c4a9a6c-1fe4-4f08-aa23-36227cff4a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\LRParser">
+      <UniqueIdentifier>{2a043c8b-3e76-4937-bea7-163b58c35b54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,14 +27,17 @@
     <ClInclude Include="..\Include\MetaLang\PrettyPrinter.h">
       <Filter>Include\MetaLang</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\MetaLang\RawRuleTable.h">
+      <Filter>Include\MetaLang</Filter>
+    </ClInclude>
     <ClInclude Include="..\Include\MetaLang\Scope.h">
       <Filter>Include\MetaLang</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\MetaLang\Tokenizer.h">
       <Filter>Include\MetaLang</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\MetaLang\RuleTable.h">
-      <Filter>Include\MetaLang</Filter>
+    <ClInclude Include="..\Include\Common\Utility.h">
+      <Filter>Include\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\LRParser\AST.h">
       <Filter>Include\LRParser</Filter>
@@ -57,37 +57,29 @@
     <ClInclude Include="..\Include\LRParser\RuleTable.h">
       <Filter>Include\LRParser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\Common\Utility.h">
-      <Filter>Include\Common</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\Parser.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Src\Main.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Utility.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\MetaLang\Parser.cpp">
-      <Filter>Source\MetaLang</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\MetaLang\PrettyPrinter.cpp">
-      <Filter>Source\MetaLang</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\MetaLang\Scope.cpp">
-      <Filter>Source\MetaLang</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\MetaLang\Tokenizer.cpp">
-      <Filter>Source\MetaLang</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\MetaLang\RawRuleTable.cpp">
-      <Filter>Source\MetaLang</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="..\Include\MetaLang\Parser.inl">
+      <Filter>Include\MetaLang</Filter>
+    </None>
+    <None Include="..\Include\MetaLang\PrettyPrinter.inl">
+      <Filter>Include\MetaLang</Filter>
+    </None>
+    <None Include="..\Include\MetaLang\RawRuleTable.inl">
+      <Filter>Include\MetaLang</Filter>
+    </None>
+    <None Include="..\Include\MetaLang\Scope.inl">
+      <Filter>Include\MetaLang</Filter>
+    </None>
+    <None Include="..\Include\MetaLang\Tokenizer.inl">
+      <Filter>Include\MetaLang</Filter>
+    </None>
+    <None Include="..\Include\Common\Utility.inl">
+      <Filter>Include\Common</Filter>
+    </None>
     <None Include="..\Include\LRParser\AST.inl">
       <Filter>Include\LRParser</Filter>
     </None>
@@ -109,5 +101,10 @@
     <None Include="..\Include\LRParser\RuleTable.inl">
       <Filter>Include\LRParser</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Sample\Main.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
